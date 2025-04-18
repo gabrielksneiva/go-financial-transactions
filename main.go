@@ -14,33 +14,25 @@ import (
 	"github.com/financialkafkaconsumerproject/producer/repositories"
 	s "github.com/financialkafkaconsumerproject/producer/services"
 	"github.com/financialkafkaconsumerproject/producer/workers"
-	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	fmt.Println("🚀 Starting application...")
 
-	// Init database
+	// Initialize database
 	db := repositories.InitDatabase()
 
-	// Repository & services
+	// Repositories and services
 	repo := repositories.NewGormRepository(db)
 	depositService := s.NewDepositService(repo, repo)
 	withdrawService := s.NewWithdrawService(repo, repo)
 	statementService := s.NewStatementService(repo, repo)
 
-	// Handlers
-	handlers := api.NewHandlers(depositService, withdrawService, statementService)
-
-	// HTTP server
-	app := fiber.New()
-	app.Post("/deposit", handlers.DepositHandler)
-	app.Post("/withdraw", handlers.WithdrawHandler)
-	app.Get("/balance/:user_id", handlers.BalanceHandler)
-	app.Get("/statement/:user_id", handlers.StatementHandler)
+	// Create and start Fiber app
+	apiApp := api.NewApp(depositService, withdrawService, statementService)
 
 	go func() {
-		if err := app.Listen(":8080"); err != nil {
+		if err := apiApp.Fiber.Listen(":8080"); err != nil {
 			fmt.Printf("⚠️ Failed to start API server: %v\n", err)
 		}
 	}()
@@ -55,11 +47,12 @@ func main() {
 	done := make(chan struct{})
 	transactions := make(chan d.Transaction, 100)
 
-	// Start Kafka producer/consumer and workers
+	// Start Kafka producer, consumer, and worker pool
 	go producer.InitProducer(ctx)
 	go consumer.InitConsumer(ctx, transactions)
 	go workers.StartWorkers(ctx, transactions, 4, repo, repo)
 
+	// Shutdown handler
 	go func() {
 		<-sigs
 		fmt.Println("\n🛑 Interrupt signal received, shutting down...")
