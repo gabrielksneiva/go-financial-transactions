@@ -6,8 +6,9 @@ import (
 
 // Struct principal da service
 type StatementService struct {
-	Repo        d.TransactionRepository
-	BalanceRepo d.BalanceRepository
+	Repo            d.TransactionRepository
+	BalanceRepo     d.BalanceRepository
+	TransactionRepo d.TransactionRepository
 }
 
 // Construtor

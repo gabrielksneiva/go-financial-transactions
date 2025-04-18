@@ -10,11 +10,11 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-func InitConsumer(ctx context.Context, ch chan<- d.Transaction) {
+func InitConsumer(ctx context.Context, ch chan<- d.Transaction, kafkaBroker, kafkaTopic, kafkaGroupID string) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{"localhost:9092"},
-		Topic:   "transacoes",
-		GroupID: "grupo-transacoes",
+		Brokers: []string{kafkaBroker},
+		Topic:   kafkaTopic,
+		GroupID: kafkaGroupID,
 	})
 	defer reader.Close()
 

@@ -14,13 +14,35 @@ import (
 	"github.com/financialkafkaconsumerproject/producer/repositories"
 	s "github.com/financialkafkaconsumerproject/producer/services"
 	"github.com/financialkafkaconsumerproject/producer/workers"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	fmt.Println("🚀 Starting application...")
 
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("⚠️ Error loading .env file")
+	}
+
+	apiPort := os.Getenv("API_PORT")
+	if apiPort == "" {
+		apiPort = "8080"
+	}
+	kafkaBroker := os.Getenv("KAFKA_BROKER")
+	kafkaTopic := os.Getenv("KAFKA_TOPIC")
+	kafkaGroupID := os.Getenv("KAFKA_GROUP_ID")
+
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+
 	// Initialize database
-	db := repositories.InitDatabase()
+	db := repositories.InitDatabase(dbHost, dbUser, dbPassword, dbName, dbPort)
+	if db == nil {
+		panic("Database connection error")
+	}
 
 	// Repositories and services
 	repo := repositories.NewGormRepository(db)
@@ -48,9 +70,9 @@ func main() {
 	transactions := make(chan d.Transaction, 100)
 
 	// Start Kafka producer, consumer, and worker pool
-	go producer.InitProducer(ctx)
-	go consumer.InitConsumer(ctx, transactions)
-	go workers.StartWorkers(ctx, transactions, 4, repo, repo)
+	go producer.InitProducer(ctx, kafkaBroker, kafkaTopic, kafkaGroupID)
+	go consumer.InitConsumer(ctx, transactions, kafkaBroker, kafkaTopic, kafkaGroupID)
+	go workers.StartWorkers(ctx, transactions, 4, db)
 
 	// Shutdown handler
 	go func() {

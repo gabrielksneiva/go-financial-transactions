@@ -84,14 +84,14 @@ func (h *Handlers) BalanceHandler(c *fiber.Ctx) error {
 
 func (h *Handlers) StatementHandler(c *fiber.Ctx) error {
 	userID := c.Params("user_id")
-	balance, err := h.StatementService.GetStatement(userID)
+	statement, err := h.StatementService.GetStatement(userID)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	return c.JSON(StatementResponse{
 		UserID:       userID,
-		Balance:      balance.Balance,
-		Transactions: services.ToTransactionDisplay(balance.Transactions),
+		Balance:      statement.Balance,
+		Transactions: services.ToTransactionDisplay(statement.Transactions),
 	})
 }

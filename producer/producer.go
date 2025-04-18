@@ -12,10 +12,10 @@ import (
 
 var writer *kafka.Writer
 
-func InitProducer(ctx context.Context) {
+func InitProducer(ctx context.Context, kafkaBroker string, kafkaTopic string, kafkaGroupID string) {
 	writer = kafka.NewWriter(kafka.WriterConfig{
-		Brokers:      []string{"localhost:9092"},
-		Topic:        "transacoes",
+		Brokers:      []string{kafkaBroker},
+		Topic:        kafkaTopic,
 		Balancer:     &kafka.LeastBytes{},
 		RequiredAcks: int(kafka.RequireAll),
 	})

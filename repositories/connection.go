@@ -8,8 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitDatabase() *gorm.DB {
-	dsn := "host=localhost user=user password=password dbname=finance port=5432 sslmode=disable"
+func InitDatabase(dbHost, dbUser, dbPassword, dbName, dbPort string) *gorm.DB {
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("❌ Failed to connect to database: %v", err)
