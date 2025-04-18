@@ -67,7 +67,7 @@ go run main.go
 Example payload for deposit/withdraw:
 ```json
 {
-  "user_id": "123",
+  "user_id": 123,
   "amount": 100.50
 }
 ```
