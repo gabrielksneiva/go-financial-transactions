@@ -12,22 +12,30 @@ Este é um projeto de exemplo que simula um sistema financeiro com operações d
 - GORM
 - Docker
 
-## 🧱 Estrutura de Pastas
+📁 Estrutura do Projeto
 
 .
-├── api/              # Handlers da API e configuração do Fiber
-│   ├── handlers.go
-│   ├── api.go
-│   └── routes.go
-├── consumer/         # Consumer Kafka
-├── domain/           # Entidades e interfaces
-├── producer/         # Producer Kafka
-├── repositories/     # Implementações de repositórios (GORM)
-├── services/         # Regras de negócio (Deposit, Withdraw, Statement)
-├── workers/          # Worker pool para processar transações
-├── go.mod / go.sum   # Dependências Go
-├── main.go           # Entry point da aplicação
-└── README.md
+├── api/               # Handlers da API e configuração do Fiber
+│   ├── api.go         # Inicialização do servidor HTTP
+│   ├── handlers.go    # Funções HTTP (deposit, withdraw, balance, statement)
+│   └── routes.go      # Definição das rotas da aplicação
+│
+├── consumer/          # Lógica do consumidor Kafka
+│
+├── domain/            # Definição das entidades e interfaces
+│
+├── producer/          # Lógica do produtor Kafka
+│
+├── repositories/      # Implementações dos repositórios com GORM
+│
+├── services/          # Regras de negócio (Depósito, Saque, Extrato)
+│
+├── workers/           # Worker pool para processar transações recebidas
+│
+├── go.mod             # Arquivo de definição de módulos Go
+├── go.sum             # Checksum das dependências
+├── main.go            # Ponto de entrada da aplicação
+└── README.md          # Documentação do projeto
 
 ## 🚀 Como Rodar o Projeto
 
