@@ -12,8 +12,9 @@ Este é um projeto de exemplo que simula um sistema financeiro com operações d
 - GORM
 - Docker
 
-📁 Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
+```text
 .
 ├── api/               # Handlers da API e configuração do Fiber
 │   ├── api.go         # Inicialização do servidor HTTP
@@ -36,6 +37,7 @@ Este é um projeto de exemplo que simula um sistema financeiro com operações d
 ├── go.sum             # Checksum das dependências
 ├── main.go            # Ponto de entrada da aplicação
 └── README.md          # Documentação do projeto
+```
 
 ## 🚀 Como Rodar o Projeto
 
