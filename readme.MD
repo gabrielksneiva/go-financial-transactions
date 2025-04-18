@@ -13,6 +13,8 @@ This is a backend system designed to process financial transactions using Go, Ka
 - HTTP API built with Fiber
 - Domain-driven structure with separation of concerns
 - Balance and transaction statement queries
+- Transaction processing with Kafka for asynchronous operations
+- Worker pool for processing transactions in the background
 
 ---
 
@@ -29,8 +31,8 @@ This is a backend system designed to process financial transactions using Go, Ka
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/gabrielksneiva/github.com/gabrielksneiva/go-financial-transactions.git
-cd financial-kafka-processor
+git clone https://github.com/gabrielksneiva/go-financial-transactions.git
+cd go-financial-transactions
 ```
 
 2. **Install dependencies**
@@ -41,7 +43,7 @@ go mod tidy
 
 3. **Start PostgreSQL and Kafka**
 
-You can use Docker or local services. Ensure Kafka is running on `localhost:9092` and PostgreSQL on `localhost:5432` with database name, user, and password configured in `repositories.InitDatabase()`.
+You can use Docker or local services. Ensure Kafka is running on `localhost:9092` and PostgreSQL on `localhost:5432` with the database name, user, and password configured in `repositories.InitDatabase()`.
 
 4. **Run the application**
 
@@ -57,8 +59,10 @@ go run main.go
 |--------|------------------------|---------------------------|
 | POST   | `/deposit`             | Submit a deposit          |
 | POST   | `/withdraw`            | Submit a withdrawal       |
+| POST   | `/user`                | Create a user             |
 | GET    | `/balance/:user_id`    | Get user balance          |
 | GET    | `/statement/:user_id`  | Get transaction statement |
+
 
 Example payload for deposit/withdraw:
 ```json
@@ -75,7 +79,7 @@ Example payload for deposit/withdraw:
 You can use [k6](https://k6.io/) to perform load tests:
 
 1. Install k6.
-2. Create a script (e.g. `loadtest.js`).
+2. Create a script (e.g., `loadtest.js`).
 3. Run:
 ```bash
 k6 run loadtest.js
