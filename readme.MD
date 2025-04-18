@@ -1,95 +1,112 @@
 
-# 💸 Financial Kafka Consumer Project
+# 💸 Financial Kafka Transaction Processor
 
-Este é um projeto de exemplo que simula um sistema financeiro com operações de depósito, saque, saldo e extrato. A comunicação entre os serviços é feita via Apache Kafka, com persistência em PostgreSQL, API em Go + Fiber e uso de GORM como ORM.
+This is a backend system designed to process financial transactions using Go, Kafka, and GORM. It receives deposit and withdrawal requests via an HTTP API, queues them in Kafka, and asynchronously processes them using a worker pool that updates the database.
 
-## 📦 Tecnologias Utilizadas
+---
 
-- Go
-- Fiber
+## 🚀 Features
+
+- Kafka Producer and Consumer integration
+- Asynchronous processing with worker pool
+- Persistent storage using PostgreSQL and GORM
+- HTTP API built with Fiber
+- Domain-driven structure with separation of concerns
+- Balance and transaction statement queries
+
+---
+
+## 📦 Requirements
+
+- Go 1.20+
 - Kafka
 - PostgreSQL
-- GORM
-- Docker
 
-## 📁 Estrutura do Projeto
+---
+
+## ⚙️ Setup
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/yourusername/financial-kafka-processor.git
+cd financial-kafka-processor
+```
+
+2. **Install dependencies**
+
+```bash
+go mod tidy
+```
+
+3. **Start PostgreSQL and Kafka**
+
+You can use Docker or local services. Ensure Kafka is running on `localhost:9092` and PostgreSQL on `localhost:5432` with database name, user, and password configured in `repositories.InitDatabase()`.
+
+4. **Run the application**
+
+```bash
+go run main.go
+```
+
+---
+
+## 📘 API Endpoints
+
+| Method | Endpoint               | Description               |
+|--------|------------------------|---------------------------|
+| POST   | `/deposit`             | Submit a deposit          |
+| POST   | `/withdraw`            | Submit a withdrawal       |
+| GET    | `/balance/:user_id`    | Get user balance          |
+| GET    | `/statement/:user_id`  | Get transaction statement |
+
+Example payload for deposit/withdraw:
+```json
+{
+  "user_id": "123",
+  "amount": 100.50
+}
+```
+
+---
+
+## 🧪 Load Testing
+
+You can use [k6](https://k6.io/) to perform load tests:
+
+1. Install k6.
+2. Create a script (e.g. `loadtest.js`).
+3. Run:
+```bash
+k6 run loadtest.js
+```
+
+---
+
+## 🛠️ Project Structure
 
 ```text
 .
-├── api/               # Handlers da API e configuração do Fiber
-│   ├── api.go         # Inicialização do servidor HTTP
-│   ├── handlers.go    # Funções HTTP (deposit, withdraw, balance, statement)
-│   └── routes.go      # Definição das rotas da aplicação
+├── api/               # HTTP handlers and Fiber setup
+│   ├── api.go         # Initializes the HTTP server
+│   ├── handlers.go    # Request handlers
+│   └── routes.go      # Route definitions
 │
-├── consumer/          # Lógica do consumidor Kafka
+├── consumer/          # Kafka consumer logic
+├── domain/            # Domain entities and interfaces
+├── producer/          # Kafka producer logic
+├── repositories/      # Repository implementations using GORM
+├── services/          # Business logic (Deposit, Withdraw, Statement)
+├── workers/           # Worker pool for background transaction processing
 │
-├── domain/            # Definição das entidades e interfaces
-│
-├── producer/          # Lógica do produtor Kafka
-│
-├── repositories/      # Implementações dos repositórios com GORM
-│
-├── services/          # Regras de negócio (Depósito, Saque, Extrato)
-│
-├── workers/           # Worker pool para processar transações recebidas
-│
-├── go.mod             # Arquivo de definição de módulos Go
-├── go.sum             # Checksum das dependências
-├── main.go            # Ponto de entrada da aplicação
-└── README.md          # Documentação do projeto
+├── go.mod             # Go module file
+├── go.sum             # Dependency checksum file
+├── main.go            # Application entry point
+└── README.md          # Project documentation
 ```
 
-## 🚀 Como Rodar o Projeto
+---
 
-### Pré-requisitos
+## 📄 License
 
-- Go 1.21+
-- Docker & Docker Compose
-
-### 1. Suba os containers (Kafka + PostgreSQL)
-
-docker-compose up -d
-
-### 2. Rode a aplicação Go
-
-go run main.go
-
-## 📬 Endpoints da API
-
-| Método | Rota                     | Descrição                  |
-|--------|--------------------------|----------------------------|
-| POST   | /deposit                 | Envia depósito para Kafka  |
-| POST   | /withdraw                | Envia saque para Kafka     |
-| GET    | /balance/:user_id        | Retorna saldo atual        |
-| GET    | /statement/:user_id      | Retorna extrato completo   |
-
-### Exemplo de POST /deposit
-
-{
-  "user_id": "user123",
-  "amount": 100.0
-}
-
-## 🛠 Teste de Carga (Opcional)
-
-Você pode usar k6 para realizar testes de carga:
-
-k6 run load-test.js
-
-## 📊 Visualização do Kafka
-
-Ferramentas recomendadas para visualizar mensagens Kafka:
-
-- Kafdrop
-- Kafka Tool
-
-## 📌 Possíveis Melhorias Futuras
-
-- Autenticação com JWT
-- Integração com Fireblocks (saques)
-- Métricas com Prometheus/Grafana
-- Testes unitários e integração
-
-## 👨‍💻 Autor
-
-Desenvolvido com 💙 em Go para estudos de Kafka + arquitetura limpa.
+MIT License © 2025 Gabriel Krzyzanovski dos Santos Neiva
