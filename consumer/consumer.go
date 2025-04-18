@@ -6,16 +6,13 @@ import (
 	"fmt"
 	"log"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	d "go-financial-transactions/domain"
+
 	"github.com/segmentio/kafka-go"
 )
 
-func InitConsumer(ctx context.Context, ch chan<- d.Transaction, kafkaBroker, kafkaTopic, kafkaGroupID string) {
-	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{kafkaBroker},
-		Topic:   kafkaTopic,
-		GroupID: kafkaGroupID,
-	})
+// consumer/consumer.go
+func InitConsumerWithReader(ctx context.Context, ch chan<- d.Transaction, reader KafkaReader) {
 	defer reader.Close()
 
 	for {
@@ -36,7 +33,17 @@ func InitConsumer(ctx context.Context, ch chan<- d.Transaction, kafkaBroker, kaf
 				continue
 			}
 
-			ch <- tx // envia transação para os workers
+			ch <- tx
 		}
 	}
+}
+
+// consumer/consumer.go
+func InitConsumer(ctx context.Context, ch chan<- d.Transaction, kafkaBroker, kafkaTopic, kafkaGroupID string) {
+	reader := kafka.NewReader(kafka.ReaderConfig{
+		Brokers: []string{kafkaBroker},
+		Topic:   kafkaTopic,
+		GroupID: kafkaGroupID,
+	})
+	InitConsumerWithReader(ctx, ch, reader)
 }

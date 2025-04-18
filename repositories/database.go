@@ -1,7 +1,8 @@
 package repositories
 
 import (
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	d "go-financial-transactions/domain"
+
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -43,8 +44,8 @@ func (r *GormRepository) UpdateBalance(tx d.Transaction) error {
 	}).Error
 }
 
-func (r *GormRepository) GetBalance(userID string) (d.Balance, error) {
+func (r *GormRepository) GetBalance(userID string) (*d.Balance, error) {
 	var b d.Balance
 	err := r.db.Where("user_id = ?", userID).First(&b).Error
-	return b, err
+	return &b, err
 }

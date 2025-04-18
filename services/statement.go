@@ -1,7 +1,7 @@
 package services
 
 import (
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	d "go-financial-transactions/domain"
 )
 
 // Struct principal da service
@@ -9,6 +9,11 @@ type StatementService struct {
 	Repo            d.TransactionRepository
 	BalanceRepo     d.BalanceRepository
 	TransactionRepo d.TransactionRepository
+}
+
+type Statement struct {
+	Balance      float64
+	Transactions []d.Transaction
 }
 
 // Construtor
@@ -34,10 +39,6 @@ func (s *StatementService) GetTransactions(userID string) ([]d.Transaction, erro
 }
 
 // Struct para retorno unificado de extrato
-type Statement struct {
-	Balance      float64
-	Transactions []d.Transaction
-}
 
 // Retorna extrato completo (saldo + transações)
 func (s *StatementService) GetStatement(userID string) (*Statement, error) {

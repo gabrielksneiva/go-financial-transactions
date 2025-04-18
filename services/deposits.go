@@ -3,20 +3,23 @@ package services
 import (
 	"time"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
-	"github.com/financialkafkaconsumerproject/producer/producer"
+	d "go-financial-transactions/domain"
+	p "go-financial-transactions/producer"
+
 	"github.com/google/uuid"
 )
 
 type DepositService struct {
 	Repo        d.TransactionRepository
 	BalanceRepo d.BalanceRepository
+	producer    p.Producer
 }
 
-func NewDepositService(r d.TransactionRepository, b d.BalanceRepository) *DepositService {
+func NewDepositService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer) *DepositService {
 	return &DepositService{
 		Repo:        r,
 		BalanceRepo: b,
+		producer:    p,
 	}
 }
 
@@ -29,5 +32,5 @@ func (s *DepositService) Deposit(userID string, amount float64) error {
 		Type:      "deposit",
 	}
 
-	return producer.SendTransaction(tx)
+	return s.producer.SendTransaction(tx)
 }

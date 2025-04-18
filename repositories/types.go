@@ -14,4 +14,3 @@ type Balance struct {
 	UserID string  `gorm:"primaryKey" json:"user_id"`
 	Amount float64 `json:"amount"`
 }
-

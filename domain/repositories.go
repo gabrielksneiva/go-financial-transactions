@@ -4,6 +4,11 @@ import (
 	"time"
 )
 
+var (
+	DepositTransaction  = "deposit"
+	WithdrawTransaction = "withdraw"
+)
+
 type Transaction struct {
 	ID        string
 	UserID    string
@@ -24,5 +29,5 @@ type TransactionRepository interface {
 
 type BalanceRepository interface {
 	UpdateBalance(tx Transaction) error
-	GetBalance(userID string) (Balance, error)
+	GetBalance(userID string) (*Balance, error)
 }

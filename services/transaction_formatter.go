@@ -3,7 +3,7 @@ package services
 import (
 	"time"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	d "go-financial-transactions/domain"
 )
 
 type TransactionDisplay struct {

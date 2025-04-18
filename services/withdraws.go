@@ -4,20 +4,23 @@ import (
 	"errors"
 	"time"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
-	"github.com/financialkafkaconsumerproject/producer/producer"
+	d "go-financial-transactions/domain"
+	p "go-financial-transactions/producer"
+
 	"github.com/google/uuid"
 )
 
 type WithdrawService struct {
 	Repo        d.TransactionRepository
 	BalanceRepo d.BalanceRepository
+	producer    p.Producer
 }
 
-func NewWithdrawService(r d.TransactionRepository, b d.BalanceRepository) *WithdrawService {
+func NewWithdrawService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer) *WithdrawService {
 	return &WithdrawService{
 		Repo:        r,
 		BalanceRepo: b,
+		producer:    p,
 	}
 }
 
@@ -39,5 +42,5 @@ func (s *WithdrawService) Withdraw(userID string, amount float64) error {
 		Type:      "withdraw",
 	}
 
-	return producer.SendTransaction(tx)
+	return s.producer.SendTransaction(tx)
 }

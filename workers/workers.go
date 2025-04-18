@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	d "go-financial-transactions/domain"
+
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

@@ -1,7 +1,8 @@
 package api
 
 import (
-	"github.com/financialkafkaconsumerproject/producer/services"
+	"go-financial-transactions/services"
+
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -7,18 +7,23 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/financialkafkaconsumerproject/producer/api"
-	"github.com/financialkafkaconsumerproject/producer/consumer"
-	d "github.com/financialkafkaconsumerproject/producer/domain"
-	"github.com/financialkafkaconsumerproject/producer/producer"
-	"github.com/financialkafkaconsumerproject/producer/repositories"
-	s "github.com/financialkafkaconsumerproject/producer/services"
-	"github.com/financialkafkaconsumerproject/producer/workers"
+	"go-financial-transactions/api"
+	"go-financial-transactions/consumer"
+	d "go-financial-transactions/domain"
+	"go-financial-transactions/producer"
+	"go-financial-transactions/repositories"
+	s "go-financial-transactions/services"
+	"go-financial-transactions/workers"
+
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func Run() {
 	fmt.Println("🚀 Starting application...")
+
+	// Graceful shutdown setup
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("⚠️ Error loading .env file")
@@ -44,33 +49,33 @@ func main() {
 		panic("Database connection error")
 	}
 
+	// Initialize Kafka writer (producer)
+	kafkaWriter := producer.NewKafkaWriter(kafkaBroker, kafkaTopic)
+	defer kafkaWriter.Close()
+
 	// Repositories and services
 	repo := repositories.NewGormRepository(db)
-	depositService := s.NewDepositService(repo, repo)
-	withdrawService := s.NewWithdrawService(repo, repo)
+	depositService := s.NewDepositService(repo, repo, kafkaWriter)
+	withdrawService := s.NewWithdrawService(repo, repo, kafkaWriter)
 	statementService := s.NewStatementService(repo, repo)
 
 	// Create and start Fiber app
 	apiApp := api.NewApp(depositService, withdrawService, statementService)
 
 	go func() {
-		if err := apiApp.Fiber.Listen(":8080"); err != nil {
+		if err := apiApp.Fiber.Listen(":" + apiPort); err != nil {
 			fmt.Printf("⚠️ Failed to start API server: %v\n", err)
 		}
 	}()
 
-	// Graceful shutdown setup
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
+	// Signal handling
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
 
 	done := make(chan struct{})
 	transactions := make(chan d.Transaction, 100)
 
-	// Start Kafka producer, consumer, and worker pool
-	go producer.InitProducer(ctx, kafkaBroker, kafkaTopic, kafkaGroupID)
+	// Start Kafka consumer and worker pool
 	go consumer.InitConsumer(ctx, transactions, kafkaBroker, kafkaTopic, kafkaGroupID)
 	go workers.StartWorkers(ctx, transactions, 4, db)
 
@@ -84,4 +89,8 @@ func main() {
 
 	<-done
 	fmt.Println("✔️ Gracefully shut down.")
+}
+
+func main() {
+	Run()
 }

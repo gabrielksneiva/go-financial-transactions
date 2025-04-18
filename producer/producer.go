@@ -1,38 +1,50 @@
+// producer.go
 package producer
 
 import (
 	"context"
 	"encoding/json"
-	"log"
-	"time"
+	"go-financial-transactions/domain"
 
-	d "github.com/financialkafkaconsumerproject/producer/domain"
+	"github.com/google/uuid"
 	"github.com/segmentio/kafka-go"
 )
 
-var writer *kafka.Writer
-
-func InitProducer(ctx context.Context, kafkaBroker string, kafkaTopic string, kafkaGroupID string) {
-	writer = kafka.NewWriter(kafka.WriterConfig{
-		Brokers:      []string{kafkaBroker},
-		Topic:        kafkaTopic,
-		Balancer:     &kafka.LeastBytes{},
-		RequiredAcks: int(kafka.RequireAll),
-	})
+type Producer interface {
+	SendTransaction(tx domain.Transaction) error
+	Close() error
 }
 
-func SendTransaction(tx d.Transaction) error {
-	payload, err := json.Marshal(tx)
+type KafkaWriter struct {
+	writer WriterInterface
+}
+
+func NewKafkaWriter(broker, topic string) *KafkaWriter {
+	w := kafka.NewWriter(kafka.WriterConfig{
+		Brokers:  []string{broker},
+		Topic:    topic,
+		Balancer: &kafka.LeastBytes{},
+	})
+
+	return &KafkaWriter{
+		writer: w, // agora *kafka.Writer implementa WriterInterface corretamente
+	}
+}
+
+func (k *KafkaWriter) SendTransaction(tx domain.Transaction) error {
+	data, err := json.Marshal(tx)
 	if err != nil {
 		return err
 	}
 
 	msg := kafka.Message{
-		Key:   []byte(tx.UserID),
-		Value: payload,
-		Time:  time.Now(),
+		Key:   []byte(uuid.New().String()),
+		Value: data,
 	}
 
-	log.Printf("📤 Enviando transação %s para o Kafka", tx.ID)
-	return writer.WriteMessages(context.Background(), msg)
+	return k.writer.WriteMessages(context.Background(), msg)
+}
+
+func (k *KafkaWriter) Close() error {
+	return k.writer.Close()
 }
