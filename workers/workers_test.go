@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"go-financial-transactions/domain"
-	"go-financial-transactions/workers"
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/workers"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"

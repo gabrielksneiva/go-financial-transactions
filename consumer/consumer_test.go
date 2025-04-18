@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"go-financial-transactions/consumer"
-	"go-financial-transactions/domain"
-	"go-financial-transactions/mocks"
+	"github.com/gabrielksneiva/go-financial-transactions/consumer"
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/mocks"
 
 	"github.com/segmentio/kafka-go"
 	"github.com/stretchr/testify/assert"

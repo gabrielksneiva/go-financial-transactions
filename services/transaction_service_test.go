@@ -7,9 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"go-financial-transactions/domain"
-	"go-financial-transactions/mocks"
-	"go-financial-transactions/services"
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/mocks"
+	"github.com/gabrielksneiva/go-financial-transactions/services"
 )
 
 // Setup helpers

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	d "go-financial-transactions/domain"
+	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	"github.com/segmentio/kafka-go"
 )

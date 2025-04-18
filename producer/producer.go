@@ -4,7 +4,7 @@ package producer
 import (
 	"context"
 	"encoding/json"
-	"go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	"github.com/google/uuid"
 	"github.com/segmentio/kafka-go"

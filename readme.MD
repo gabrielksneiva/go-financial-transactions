@@ -29,7 +29,7 @@ This is a backend system designed to process financial transactions using Go, Ka
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/gabrielksneiva/go-financial-transactions.git
+git clone https://github.com/gabrielksneiva/github.com/gabrielksneiva/go-financial-transactions.git
 cd financial-kafka-processor
 ```
 

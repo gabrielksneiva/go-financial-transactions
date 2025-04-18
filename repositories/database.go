@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	d "go-financial-transactions/domain"
+	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

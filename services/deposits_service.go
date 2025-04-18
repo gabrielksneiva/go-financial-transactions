@@ -3,8 +3,8 @@ package services
 import (
 	"time"
 
-	d "go-financial-transactions/domain"
-	p "go-financial-transactions/producer"
+	d "github.com/gabrielksneiva/go-financial-transactions/domain"
+	p "github.com/gabrielksneiva/go-financial-transactions/producer"
 
 	"github.com/google/uuid"
 )

@@ -1,7 +1,7 @@
 package services
 
 import (
-	d "go-financial-transactions/domain"
+	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 )
 
 // Struct principal da service

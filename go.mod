@@ -1,4 +1,4 @@
-module go-financial-transactions
+module github.com/gabrielksneiva/go-financial-transactions
 
 go 1.24.2
 

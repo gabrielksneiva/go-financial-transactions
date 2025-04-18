@@ -1,7 +1,7 @@
 package api
 
 import (
-	"go-financial-transactions/services"
+	"github.com/gabrielksneiva/go-financial-transactions/services"
 
 	"github.com/gofiber/fiber/v2"
 )

@@ -4,11 +4,11 @@ package config
 import (
 	"context"
 	"fmt"
-	"go-financial-transactions/api"
-	d "go-financial-transactions/domain"
-	"go-financial-transactions/producer"
-	"go-financial-transactions/repositories"
-	s "go-financial-transactions/services"
+	"github.com/gabrielksneiva/go-financial-transactions/api"
+	d "github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/producer"
+	"github.com/gabrielksneiva/go-financial-transactions/repositories"
+	s "github.com/gabrielksneiva/go-financial-transactions/services"
 	"os"
 
 	"github.com/joho/godotenv"

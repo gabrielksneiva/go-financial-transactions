@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	domain "go-financial-transactions/domain"
+	domain "github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	mock "github.com/stretchr/testify/mock"
 )
