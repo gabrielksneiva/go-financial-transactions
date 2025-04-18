@@ -4,7 +4,6 @@ package mocks
 
 import (
 	domain "github.com/gabrielksneiva/go-financial-transactions/domain"
-
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -13,8 +12,16 @@ type TransactionRepository struct {
 	mock.Mock
 }
 
+type TransactionRepository_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *TransactionRepository) EXPECT() *TransactionRepository_Expecter {
+	return &TransactionRepository_Expecter{mock: &_m.Mock}
+}
+
 // GetByUser provides a mock function with given fields: userID
-func (_m *TransactionRepository) GetByUser(userID string) ([]domain.Transaction, error) {
+func (_m *TransactionRepository) GetByUser(userID uint) ([]domain.Transaction, error) {
 	ret := _m.Called(userID)
 
 	if len(ret) == 0 {
@@ -23,10 +30,10 @@ func (_m *TransactionRepository) GetByUser(userID string) ([]domain.Transaction,
 
 	var r0 []domain.Transaction
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) ([]domain.Transaction, error)); ok {
+	if rf, ok := ret.Get(0).(func(uint) ([]domain.Transaction, error)); ok {
 		return rf(userID)
 	}
-	if rf, ok := ret.Get(0).(func(string) []domain.Transaction); ok {
+	if rf, ok := ret.Get(0).(func(uint) []domain.Transaction); ok {
 		r0 = rf(userID)
 	} else {
 		if ret.Get(0) != nil {
@@ -34,13 +41,41 @@ func (_m *TransactionRepository) GetByUser(userID string) ([]domain.Transaction,
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
 		r1 = rf(userID)
 	} else {
 		r1 = ret.Error(1)
 	}
 
 	return r0, r1
+}
+
+// TransactionRepository_GetByUser_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetByUser'
+type TransactionRepository_GetByUser_Call struct {
+	*mock.Call
+}
+
+// GetByUser is a helper method to define mock.On call
+//   - userID uint
+func (_e *TransactionRepository_Expecter) GetByUser(userID interface{}) *TransactionRepository_GetByUser_Call {
+	return &TransactionRepository_GetByUser_Call{Call: _e.mock.On("GetByUser", userID)}
+}
+
+func (_c *TransactionRepository_GetByUser_Call) Run(run func(userID uint)) *TransactionRepository_GetByUser_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(uint))
+	})
+	return _c
+}
+
+func (_c *TransactionRepository_GetByUser_Call) Return(_a0 []domain.Transaction, _a1 error) *TransactionRepository_GetByUser_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *TransactionRepository_GetByUser_Call) RunAndReturn(run func(uint) ([]domain.Transaction, error)) *TransactionRepository_GetByUser_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // Save provides a mock function with given fields: tx
@@ -59,6 +94,34 @@ func (_m *TransactionRepository) Save(tx domain.Transaction) error {
 	}
 
 	return r0
+}
+
+// TransactionRepository_Save_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Save'
+type TransactionRepository_Save_Call struct {
+	*mock.Call
+}
+
+// Save is a helper method to define mock.On call
+//   - tx domain.Transaction
+func (_e *TransactionRepository_Expecter) Save(tx interface{}) *TransactionRepository_Save_Call {
+	return &TransactionRepository_Save_Call{Call: _e.mock.On("Save", tx)}
+}
+
+func (_c *TransactionRepository_Save_Call) Run(run func(tx domain.Transaction)) *TransactionRepository_Save_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(domain.Transaction))
+	})
+	return _c
+}
+
+func (_c *TransactionRepository_Save_Call) Return(_a0 error) *TransactionRepository_Save_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *TransactionRepository_Save_Call) RunAndReturn(run func(domain.Transaction) error) *TransactionRepository_Save_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // NewTransactionRepository creates a new instance of TransactionRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.

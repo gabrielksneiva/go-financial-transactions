@@ -23,7 +23,7 @@ func NewDepositService(r d.TransactionRepository, b d.BalanceRepository, p p.Pro
 	}
 }
 
-func (s *DepositService) Deposit(userID string, amount float64) error {
+func (s *DepositService) Deposit(userID uint, amount float64) error {
 	tx := d.Transaction{
 		ID:        uuid.New().String(),
 		UserID:    userID,

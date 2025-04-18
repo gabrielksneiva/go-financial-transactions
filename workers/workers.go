@@ -45,7 +45,7 @@ func worker(
 
 				newBalance := balance.Amount + tx.Amount
 				if newBalance < 0 {
-					return fmt.Errorf("insufficient funds for user %s", tx.UserID)
+					return fmt.Errorf("insufficient funds for user %d", tx.UserID)
 				}
 
 				if err := txDB.Model(&d.Balance{}).

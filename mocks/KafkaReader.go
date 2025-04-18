@@ -14,6 +14,14 @@ type KafkaReader struct {
 	mock.Mock
 }
 
+type KafkaReader_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *KafkaReader) EXPECT() *KafkaReader_Expecter {
+	return &KafkaReader_Expecter{mock: &_m.Mock}
+}
+
 // Close provides a mock function with no fields
 func (_m *KafkaReader) Close() error {
 	ret := _m.Called()
@@ -30,6 +38,33 @@ func (_m *KafkaReader) Close() error {
 	}
 
 	return r0
+}
+
+// KafkaReader_Close_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Close'
+type KafkaReader_Close_Call struct {
+	*mock.Call
+}
+
+// Close is a helper method to define mock.On call
+func (_e *KafkaReader_Expecter) Close() *KafkaReader_Close_Call {
+	return &KafkaReader_Close_Call{Call: _e.mock.On("Close")}
+}
+
+func (_c *KafkaReader_Close_Call) Run(run func()) *KafkaReader_Close_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *KafkaReader_Close_Call) Return(_a0 error) *KafkaReader_Close_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *KafkaReader_Close_Call) RunAndReturn(run func() error) *KafkaReader_Close_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // ReadMessage provides a mock function with given fields: _a0
@@ -58,6 +93,34 @@ func (_m *KafkaReader) ReadMessage(_a0 context.Context) (kafka.Message, error) {
 	}
 
 	return r0, r1
+}
+
+// KafkaReader_ReadMessage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReadMessage'
+type KafkaReader_ReadMessage_Call struct {
+	*mock.Call
+}
+
+// ReadMessage is a helper method to define mock.On call
+//   - _a0 context.Context
+func (_e *KafkaReader_Expecter) ReadMessage(_a0 interface{}) *KafkaReader_ReadMessage_Call {
+	return &KafkaReader_ReadMessage_Call{Call: _e.mock.On("ReadMessage", _a0)}
+}
+
+func (_c *KafkaReader_ReadMessage_Call) Run(run func(_a0 context.Context)) *KafkaReader_ReadMessage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context))
+	})
+	return _c
+}
+
+func (_c *KafkaReader_ReadMessage_Call) Return(_a0 kafka.Message, _a1 error) *KafkaReader_ReadMessage_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *KafkaReader_ReadMessage_Call) RunAndReturn(run func(context.Context) (kafka.Message, error)) *KafkaReader_ReadMessage_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // NewKafkaReader creates a new instance of KafkaReader. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.

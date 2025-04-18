@@ -4,6 +4,8 @@ package producer
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+
 	"github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	"github.com/google/uuid"
@@ -41,6 +43,8 @@ func (k *KafkaWriter) SendTransaction(tx domain.Transaction) error {
 		Key:   []byte(uuid.New().String()),
 		Value: data,
 	}
+
+	fmt.Printf("Producing message: %s\n", string(msg.Value))
 
 	return k.writer.WriteMessages(context.Background(), msg)
 }

@@ -24,13 +24,13 @@ func NewWithdrawService(r d.TransactionRepository, b d.BalanceRepository, p p.Pr
 	}
 }
 
-func (s *WithdrawService) Withdraw(userID string, amount float64) error {
-	balance, err := s.BalanceRepo.GetBalance(userID)
+func (s *WithdrawService) Withdraw(userID uint, amount float64) error {
+	bal, err := s.BalanceRepo.GetBalance(userID)
 	if err != nil {
 		return err
 	}
 
-	if balance.Amount < amount {
+	if bal.Amount < amount {
 		return errors.New("insufficient funds")
 	}
 
@@ -39,7 +39,7 @@ func (s *WithdrawService) Withdraw(userID string, amount float64) error {
 		UserID:    userID,
 		Amount:    -amount,
 		Timestamp: time.Now(),
-		Type:      "withdraw",
+		Type:      "withdrawal",
 	}
 
 	return s.producer.SendTransaction(tx)

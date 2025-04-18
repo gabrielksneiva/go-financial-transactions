@@ -22,7 +22,7 @@ func TestKafkaProducer_SendTransaction(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:     "tx-123",
-		UserID: "user-456",
+		UserID: uint(456),
 		Amount: 100,
 		Type:   "deposit",
 	}
@@ -42,7 +42,7 @@ func TestKafkaProducer_SendTransaction_Error(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:     "tx-123",
-		UserID: "user-456",
+		UserID: uint(456),
 		Amount: 100,
 		Type:   "deposit",
 	}

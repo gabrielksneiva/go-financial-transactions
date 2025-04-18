@@ -15,10 +15,11 @@ func NewApp(
 	depositService *services.DepositService,
 	withdrawService *services.WithdrawService,
 	statementService *services.StatementService,
+	userService *services.UserService,
 ) *App {
 	app := fiber.New()
 
-	handlers := NewHandlers(depositService, withdrawService, statementService)
+	handlers := NewHandlers(depositService, withdrawService, statementService, userService)
 
 	RegisterRoutes(app, handlers)
 

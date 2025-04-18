@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -38,7 +39,7 @@ func connect(dbHost, dbUser, dbPassword, dbName, dbPort string) (*gorm.DB, error
 }
 
 func migrate(db *gorm.DB) error {
-	return db.AutoMigrate(&Transaction{}, &Balance{})
+	return db.AutoMigrate(&domain.Transaction{}, &domain.Balance{}, &domain.User{})
 }
 
 func CallMigrateTestHelper(db *gorm.DB) error {

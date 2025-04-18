@@ -5,8 +5,9 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App, h *Handlers) {
-	app.Post("/deposit", h.DepositHandler)
-	app.Post("/withdraw", h.WithdrawHandler)
-	app.Get("/balance/:user_id", h.BalanceHandler)
-	app.Get("/statement/:user_id", h.StatementHandler)
+	app.Post("/deposit", h.CreateDepositHandler)
+	app.Post("/withdraw", h.CreateWithdrawHandler)
+	app.Post("/user", h.CreateUsersHandler)
+	app.Get("/balance/:user_id", h.GetBalanceHandler)
+	app.Get("/statement/:user_id", h.GetStatementHandler)
 }

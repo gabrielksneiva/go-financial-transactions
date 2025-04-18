@@ -4,12 +4,14 @@ package config
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/gabrielksneiva/go-financial-transactions/api"
 	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 	"github.com/gabrielksneiva/go-financial-transactions/producer"
 	"github.com/gabrielksneiva/go-financial-transactions/repositories"
+	"github.com/gabrielksneiva/go-financial-transactions/services"
 	s "github.com/gabrielksneiva/go-financial-transactions/services"
-	"os"
 
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
@@ -64,8 +66,9 @@ func SetupApplication() *AppResources {
 	deposit := s.NewDepositService(repo, repo, kafkaWriter)
 	withdraw := s.NewWithdrawService(repo, repo, kafkaWriter)
 	statement := s.NewStatementService(repo, repo)
+	userService := services.NewUserService(repo)
 
-	apiApp := api.NewApp(deposit, withdraw, statement)
+	apiApp := api.NewApp(deposit, withdraw, statement, userService)
 
 	transactions := make(chan d.Transaction, 100)
 

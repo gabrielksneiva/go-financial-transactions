@@ -19,7 +19,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	assert.NoError(t, err)
 
-	err = db.AutoMigrate(&repositories.Transaction{}, &repositories.Balance{})
+	err = db.AutoMigrate(&domain.Transaction{}, &domain.Balance{})
 	assert.NoError(t, err)
 
 	return db
@@ -31,7 +31,7 @@ func TestGormRepository_SaveAndGetByUser(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:        "tx-1",
-		UserID:    "user-123",
+		UserID:    123,
 		Amount:    200.0,
 		Timestamp: time.Now(),
 		Type:      domain.DepositTransaction,
@@ -40,7 +40,7 @@ func TestGormRepository_SaveAndGetByUser(t *testing.T) {
 	err := repo.Save(tx)
 	assert.NoError(t, err)
 
-	txs, err := repo.GetByUser("user-123")
+	txs, err := repo.GetByUser(123)
 	assert.NoError(t, err)
 	assert.Len(t, txs, 1)
 	assert.Equal(t, tx.ID, txs[0].ID)
@@ -52,7 +52,7 @@ func TestGormRepository_GetByUser_Empty(t *testing.T) {
 	db := setupTestDB(t)
 	repo := repositories.NewGormRepository(db)
 
-	txs, err := repo.GetByUser("non-existent")
+	txs, err := repo.GetByUser(999)
 	assert.NoError(t, err)
 	assert.Len(t, txs, 0)
 }
@@ -62,14 +62,14 @@ func TestGormRepository_UpdateBalance_InsertNewUser(t *testing.T) {
 	repo := repositories.NewGormRepository(db)
 
 	tx := domain.Transaction{
-		UserID: "user-1",
+		UserID: 1,
 		Amount: 100.0,
 	}
 
 	err := repo.UpdateBalance(tx)
 	assert.NoError(t, err)
 
-	balance, err := repo.GetBalance("user-1")
+	balance, err := repo.GetBalance(1)
 	assert.NoError(t, err)
 	assert.Equal(t, 100.0, balance.Amount)
 }
@@ -79,20 +79,20 @@ func TestGormRepository_UpdateBalance_ExistingUser(t *testing.T) {
 	repo := repositories.NewGormRepository(db)
 
 	initial := domain.Transaction{
-		UserID: "user-2",
+		UserID: 2,
 		Amount: 100.0,
 	}
 	err := repo.UpdateBalance(initial)
 	assert.NoError(t, err)
 
 	additional := domain.Transaction{
-		UserID: "user-2",
+		UserID: 2,
 		Amount: 50.0,
 	}
 	err = repo.UpdateBalance(additional)
 	assert.NoError(t, err)
 
-	balance, err := repo.GetBalance("user-2")
+	balance, err := repo.GetBalance(2)
 	assert.NoError(t, err)
 	assert.Equal(t, 150.0, balance.Amount)
 }
@@ -101,7 +101,7 @@ func TestGormRepository_GetBalance_NotFound(t *testing.T) {
 	db := setupTestDB(t)
 	repo := repositories.NewGormRepository(db)
 
-	_, err := repo.GetBalance("user-notfound")
+	_, err := repo.GetBalance(999)
 	assert.Error(t, err)
 }
 
@@ -111,7 +111,7 @@ func TestGormRepository_Save_InvalidTransaction(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:     "invalid",
-		UserID: "user-x",
+		UserID: 999,
 		Amount: 100,
 		Type:   "deposit",
 	}
@@ -124,10 +124,10 @@ func TestGormRepository_Save_TableMissing(t *testing.T) {
 	db := setupTestDB(t)
 	repo := repositories.NewGormRepository(db)
 
-	_ = db.Migrator().DropTable(&repositories.Transaction{})
+	_ = db.Migrator().DropTable(&domain.Transaction{})
 	tx := domain.Transaction{
 		ID:        "invalid",
-		UserID:    "user-x",
+		UserID:    999,
 		Amount:    100.0,
 		Type:      "deposit",
 		Timestamp: time.Now(),
@@ -140,16 +140,16 @@ func TestGormRepository_GetByUser_Error(t *testing.T) {
 	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	repo := repositories.NewGormRepository(db)
 
-	_, err := repo.GetByUser("user-1")
+	_, err := repo.GetByUser(1)
 	assert.Error(t, err)
 }
 
 func TestGormRepository_UpdateBalance_TableMissing(t *testing.T) {
 	db := setupTestDB(t)
 	repo := repositories.NewGormRepository(db)
-	_ = db.Migrator().DropTable(&repositories.Balance{})
+	_ = db.Migrator().DropTable(&domain.Balance{})
 	tx := domain.Transaction{
-		UserID: "user-999",
+		UserID: 999,
 		Amount: 100.0,
 	}
 	err := repo.UpdateBalance(tx)
@@ -160,18 +160,18 @@ func TestGormRepository_UpdateBalance_ConflictUpdate(t *testing.T) {
 	db := setupTestDB(t)
 	repo := repositories.NewGormRepository(db)
 	tx1 := domain.Transaction{
-		UserID: "user-777",
+		UserID: 777,
 		Amount: 100.0,
 	}
 	err := repo.UpdateBalance(tx1)
 	assert.NoError(t, err)
 	tx2 := domain.Transaction{
-		UserID: "user-777",
+		UserID: 777,
 		Amount: 50.0,
 	}
 	err = repo.UpdateBalance(tx2)
 	assert.NoError(t, err)
-	balance, err := repo.GetBalance("user-777")
+	balance, err := repo.GetBalance(777)
 	assert.NoError(t, err)
 	assert.Equal(t, 150.0, balance.Amount)
 }

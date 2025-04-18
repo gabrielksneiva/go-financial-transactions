@@ -40,7 +40,7 @@ func setupStatementService() (*mocks.TransactionRepository, *mocks.BalanceReposi
 func TestDepositService(t *testing.T) {
 	t.Run("Deposit_Success", func(t *testing.T) {
 		producer, service := setupDepositService()
-		userID := "user-123"
+		userID := uint(123)
 		amount := 100.0
 
 		producer.On("SendTransaction", mock.AnythingOfType("domain.Transaction")).Return(nil)
@@ -54,20 +54,17 @@ func TestDepositService(t *testing.T) {
 
 // ----------------- Withdraw Tests -----------------
 func TestWithdrawService(t *testing.T) {
-	userID := "user123"
+	userID := uint(123)
 	amount := 50.0
 
 	t.Run("Withdraw_Success", func(t *testing.T) {
 		_, balanceRepo, producer, service := setupWithdrawService()
 
-		// Expect balance to be enough
-		balanceRepo.On("GetBalance", userID).Return(&domain.Balance{
-			UserID: userID,
-			Amount: 100.0,
-		}, nil)
+		balanceRepo.On("GetBalance", userID).
+			Return(&domain.Balance{UserID: userID, Amount: 100.0}, nil)
 
-		// Expect SendTransaction to be called with any transaction
-		producer.On("SendTransaction", mock.AnythingOfType("domain.Transaction")).Return(nil)
+		producer.On("SendTransaction", mock.AnythingOfType("domain.Transaction")).
+			Return(nil)
 
 		err := service.Withdraw(userID, amount)
 		assert.NoError(t, err)
@@ -107,7 +104,7 @@ func TestWithdrawService(t *testing.T) {
 func TestStatementService(t *testing.T) {
 	t.Run("GetBalance_Success", func(t *testing.T) {
 		_, balanceRepo, service := setupStatementService()
-		userID := "user-456"
+		userID := uint(456)
 
 		balanceRepo.On("GetBalance", userID).Return(&domain.Balance{UserID: userID, Amount: 200.0}, nil)
 
@@ -119,7 +116,7 @@ func TestStatementService(t *testing.T) {
 
 	t.Run("GetTransactions_Success", func(t *testing.T) {
 		txRepo, _, service := setupStatementService()
-		userID := "user-789"
+		userID := uint(789)
 		mockTxs := []domain.Transaction{
 			{ID: "tx1", UserID: userID, Amount: 100.0},
 			{ID: "tx2", UserID: userID, Amount: -50.0},
@@ -135,7 +132,7 @@ func TestStatementService(t *testing.T) {
 
 	t.Run("GetStatement_Success", func(t *testing.T) {
 		txRepo, balanceRepo, service := setupStatementService()
-		userID := "user-999"
+		userID := uint(999)
 		mockTxs := []domain.Transaction{
 			{ID: "tx1", UserID: userID, Amount: 150.0},
 		}

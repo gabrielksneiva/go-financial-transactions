@@ -39,7 +39,7 @@ func TestWorker_ProcessTransaction_Success(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:        "tx-1",
-		UserID:    "user-1",
+		UserID:    1,
 		Amount:    100.0,
 		Type:      "deposit",
 		Timestamp: time.Now(),
@@ -77,7 +77,7 @@ func TestWorker_InsufficientFunds(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:        "tx-2",
-		UserID:    "user-2",
+		UserID:    2,
 		Amount:    -100.0,
 		Type:      "withdraw",
 		Timestamp: time.Now(),
@@ -107,7 +107,7 @@ func TestWorker_ErrorOnInsert(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:        "tx-3",
-		UserID:    "user-3",
+		UserID:    3,
 		Amount:    50.0,
 		Type:      "deposit",
 		Timestamp: time.Now(),

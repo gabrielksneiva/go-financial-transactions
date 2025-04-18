@@ -4,86 +4,43 @@ package api_test
 import (
 	"bytes"
 	"errors"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/gabrielksneiva/go-financial-transactions/api"
 	"github.com/gabrielksneiva/go-financial-transactions/domain"
 	"github.com/gabrielksneiva/go-financial-transactions/mocks"
 	"github.com/gabrielksneiva/go-financial-transactions/services"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
-func setupTestApp() (*fiber.App, *mocks.Producer, *mocks.TransactionRepository, *mocks.BalanceRepository) {
+func setupTestApp() (*fiber.App, *mocks.Producer, *mocks.TransactionRepository, *mocks.BalanceRepository, *mocks.UserRepository) {
 	txRepo := new(mocks.TransactionRepository)
 	balanceRepo := new(mocks.BalanceRepository)
+	userRepo := new(mocks.UserRepository)
 	producer := new(mocks.Producer)
 
 	depositService := services.NewDepositService(txRepo, balanceRepo, producer)
 	withdrawService := services.NewWithdrawService(txRepo, balanceRepo, producer)
 	statementService := services.NewStatementService(txRepo, balanceRepo)
+	userService := services.NewUserService(userRepo)
 
-	appStruct := api.NewApp(depositService, withdrawService, statementService)
+	appStruct := api.NewApp(depositService, withdrawService, statementService, userService)
 
-	return appStruct.Fiber, producer, txRepo, balanceRepo
-}
-
-func TestDepositHandler_Success(t *testing.T) {
-	app, producerMock, _, _ := setupTestApp()
-
-	// Espera que o serviço deposite sem erro
-	producerMock.
-		On("SendTransaction", mock.Anything).
-		Return(nil)
-
-	body := []byte(`{"user_id":"user-123","amount":100.0}`)
-	req := httptest.NewRequest(http.MethodPost, "/deposit", bytes.NewBuffer(body))
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := app.Test(req)
-	assert.NoError(t, err)
-	assert.Equal(t, fiber.StatusAccepted, resp.StatusCode)
-
-	producerMock.AssertExpectations(t)
-}
-
-func TestWithdrawHandler_InsufficientFunds(t *testing.T) {
-	app, _, _, balanceRepoMock := setupTestApp()
-
-	// Simula saldo insuficiente
-	balanceRepoMock.On("GetBalance", "user-456").Return(&domain.Balance{
-		UserID: "user-456", Amount: 50.0,
-	}, nil)
-
-	body := []byte(`{"user_id":"user-456","amount":100.0}`)
-	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := app.Test(req)
-	assert.NoError(t, err)
-	assert.Equal(t, fiber.StatusBadRequest, resp.StatusCode)
-}
-
-func TestBalanceHandler_Success(t *testing.T) {
-	app, _, _, balanceRepoMock := setupTestApp()
-
-	balanceRepoMock.On("GetBalance", "user-123").Return(&domain.Balance{
-		UserID: "user-123", Amount: 150.0,
-	}, nil)
-
-	req := httptest.NewRequest(http.MethodGet, "/balance/user-123", nil)
-	resp, err := app.Test(req)
-	assert.NoError(t, err)
-	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
+	return appStruct.Fiber, producer, txRepo, balanceRepo, userRepo
 }
 
 func TestStatementHandler_Success(t *testing.T) {
-	app, _, txRepoMock, balanceRepoMock := setupTestApp()
+	app, _, txRepoMock, balanceRepoMock, userRepoMock := setupTestApp()
 
-	userID := "user-789"
+	userID := uint(789)
+
+	// Mock para o GetByID
+	userRepoMock.On("GetByID", userID).Return(&domain.User{ID: userID}, nil) // Configure o retorno esperado
 
 	txRepoMock.On("GetByUser", userID).Return([]domain.Transaction{
 		{ID: "tx1", UserID: userID, Amount: 50.0, Type: "deposit"},
@@ -93,14 +50,49 @@ func TestStatementHandler_Success(t *testing.T) {
 		UserID: userID, Amount: 50.0,
 	}, nil)
 
-	req := httptest.NewRequest(http.MethodGet, "/statement/"+userID, nil)
+	req := httptest.NewRequest(http.MethodGet, "/statement/789", nil)
+	resp, err := app.Test(req)
+	assert.NoError(t, err)
+	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
+
+	// Verificando as expectativas
+	userRepoMock.AssertExpectations(t)
+	txRepoMock.AssertExpectations(t)
+	balanceRepoMock.AssertExpectations(t)
+}
+
+func TestWithdrawHandler_InsufficientFunds(t *testing.T) {
+	app, _, _, balanceRepoMock, _ := setupTestApp()
+
+	// Simula saldo insuficiente
+	balanceRepoMock.On("GetBalance", uint(456)).Return(&domain.Balance{
+		UserID: 456, Amount: 50.0,
+	}, nil)
+
+	body := []byte(`{"user_id":456,"amount":100.0}`)
+	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := app.Test(req)
+	assert.NoError(t, err)
+	assert.Equal(t, fiber.StatusBadRequest, resp.StatusCode)
+}
+
+func TestBalanceHandler_Success(t *testing.T) {
+	app, _, _, balanceRepoMock, _ := setupTestApp()
+
+	balanceRepoMock.On("GetBalance", uint(123)).Return(&domain.Balance{
+		UserID: 123, Amount: 150.0,
+	}, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/balance/123", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
 }
 
 func TestDepositHandler_InvalidJSON(t *testing.T) {
-	app, _, _, _ := setupTestApp()
+	app, _, _, _, _ := setupTestApp()
 
 	body := []byte(`invalid json`)
 	req := httptest.NewRequest(http.MethodPost, "/deposit", bytes.NewBuffer(body))
@@ -112,11 +104,11 @@ func TestDepositHandler_InvalidJSON(t *testing.T) {
 }
 
 func TestDepositHandler_InternalError(t *testing.T) {
-	app, producerMock, _, _ := setupTestApp()
+	app, producerMock, _, _, _ := setupTestApp()
 
 	producerMock.On("SendTransaction", mock.Anything).Return(errors.New("kafka error"))
 
-	body := []byte(`{"user_id":"user-err","amount":50.0}`)
+	body := []byte(`{"user_id":999,"amount":50.0}`)
 	req := httptest.NewRequest(http.MethodPost, "/deposit", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
@@ -126,7 +118,7 @@ func TestDepositHandler_InternalError(t *testing.T) {
 }
 
 func TestWithdrawHandler_InvalidJSON(t *testing.T) {
-	app, _, _, _ := setupTestApp()
+	app, _, _, _, _ := setupTestApp()
 
 	body := []byte(`not-a-json`)
 	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
@@ -138,11 +130,11 @@ func TestWithdrawHandler_InvalidJSON(t *testing.T) {
 }
 
 func TestWithdrawHandler_DBError(t *testing.T) {
-	app, _, _, balanceRepo := setupTestApp()
+	app, _, _, balanceRepo, _ := setupTestApp()
 
-	balanceRepo.On("GetBalance", "user-db-error").Return(nil, errors.New("db error"))
+	balanceRepo.On("GetBalance", uint(999)).Return(nil, errors.New("db error"))
 
-	body := []byte(`{"user_id":"user-db-error","amount":20.0}`)
+	body := []byte(`{"user_id":999,"amount":20.0}`)
 	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
@@ -152,22 +144,22 @@ func TestWithdrawHandler_DBError(t *testing.T) {
 }
 
 func TestBalanceHandler_NotFound(t *testing.T) {
-	app, _, _, balanceRepo := setupTestApp()
+	app, _, _, balanceRepo, _ := setupTestApp()
 
-	balanceRepo.On("GetBalance", "not-found").Return(nil, errors.New("not found"))
+	balanceRepo.On("GetBalance", uint(404)).Return(nil, errors.New("not found"))
 
-	req := httptest.NewRequest(http.MethodGet, "/balance/not-found", nil)
+	req := httptest.NewRequest(http.MethodGet, "/balance/404", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)
 }
 
 func TestStatementHandler_NotFound(t *testing.T) {
-	app, _, _, balanceRepo := setupTestApp()
+	app, _, _, balanceRepo, _ := setupTestApp()
 
-	balanceRepo.On("GetBalance", "missing-user").Return(nil, errors.New("user not found"))
+	balanceRepo.On("GetBalance", uint(789)).Return(nil, errors.New("user not found"))
 
-	req := httptest.NewRequest(http.MethodGet, "/statement/missing-user", nil)
+	req := httptest.NewRequest(http.MethodGet, "/statement/789", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)

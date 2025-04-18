@@ -25,7 +25,7 @@ func TestInitConsumerWithReader_Success(t *testing.T) {
 
 	tx := domain.Transaction{
 		ID:     "tx-123",
-		UserID: "user-456",
+		UserID: uint(1),
 		Amount: 200.0,
 		Type:   "deposit",
 	}

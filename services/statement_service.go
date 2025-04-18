@@ -25,7 +25,7 @@ func NewStatementService(r d.TransactionRepository, b d.BalanceRepository) *Stat
 }
 
 // Retorna saldo
-func (s *StatementService) GetBalance(userID string) (float64, error) {
+func (s *StatementService) GetBalance(userID uint) (float64, error) {
 	balance, err := s.BalanceRepo.GetBalance(userID)
 	if err != nil {
 		return 0.0, err
@@ -34,14 +34,12 @@ func (s *StatementService) GetBalance(userID string) (float64, error) {
 }
 
 // Retorna transações
-func (s *StatementService) GetTransactions(userID string) ([]d.Transaction, error) {
+func (s *StatementService) GetTransactions(userID uint) ([]d.Transaction, error) {
 	return s.Repo.GetByUser(userID)
 }
 
-// Struct para retorno unificado de extrato
-
 // Retorna extrato completo (saldo + transações)
-func (s *StatementService) GetStatement(userID string) (*Statement, error) {
+func (s *StatementService) GetStatement(userID uint) (*Statement, error) {
 	balance, err := s.GetBalance(userID)
 	if err != nil {
 		return nil, err

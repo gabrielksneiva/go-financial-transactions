@@ -14,6 +14,14 @@ type WriterInterface struct {
 	mock.Mock
 }
 
+type WriterInterface_Expecter struct {
+	mock *mock.Mock
+}
+
+func (_m *WriterInterface) EXPECT() *WriterInterface_Expecter {
+	return &WriterInterface_Expecter{mock: &_m.Mock}
+}
+
 // Close provides a mock function with no fields
 func (_m *WriterInterface) Close() error {
 	ret := _m.Called()
@@ -30,6 +38,33 @@ func (_m *WriterInterface) Close() error {
 	}
 
 	return r0
+}
+
+// WriterInterface_Close_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Close'
+type WriterInterface_Close_Call struct {
+	*mock.Call
+}
+
+// Close is a helper method to define mock.On call
+func (_e *WriterInterface_Expecter) Close() *WriterInterface_Close_Call {
+	return &WriterInterface_Close_Call{Call: _e.mock.On("Close")}
+}
+
+func (_c *WriterInterface_Close_Call) Run(run func()) *WriterInterface_Close_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run()
+	})
+	return _c
+}
+
+func (_c *WriterInterface_Close_Call) Return(_a0 error) *WriterInterface_Close_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *WriterInterface_Close_Call) RunAndReturn(run func() error) *WriterInterface_Close_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // WriteMessages provides a mock function with given fields: ctx, msgs
@@ -55,6 +90,42 @@ func (_m *WriterInterface) WriteMessages(ctx context.Context, msgs ...kafka.Mess
 	}
 
 	return r0
+}
+
+// WriterInterface_WriteMessages_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'WriteMessages'
+type WriterInterface_WriteMessages_Call struct {
+	*mock.Call
+}
+
+// WriteMessages is a helper method to define mock.On call
+//   - ctx context.Context
+//   - msgs ...kafka.Message
+func (_e *WriterInterface_Expecter) WriteMessages(ctx interface{}, msgs ...interface{}) *WriterInterface_WriteMessages_Call {
+	return &WriterInterface_WriteMessages_Call{Call: _e.mock.On("WriteMessages",
+		append([]interface{}{ctx}, msgs...)...)}
+}
+
+func (_c *WriterInterface_WriteMessages_Call) Run(run func(ctx context.Context, msgs ...kafka.Message)) *WriterInterface_WriteMessages_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		variadicArgs := make([]kafka.Message, len(args)-1)
+		for i, a := range args[1:] {
+			if a != nil {
+				variadicArgs[i] = a.(kafka.Message)
+			}
+		}
+		run(args[0].(context.Context), variadicArgs...)
+	})
+	return _c
+}
+
+func (_c *WriterInterface_WriteMessages_Call) Return(_a0 error) *WriterInterface_WriteMessages_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *WriterInterface_WriteMessages_Call) RunAndReturn(run func(context.Context, ...kafka.Message) error) *WriterInterface_WriteMessages_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // NewWriterInterface creates a new instance of WriterInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
