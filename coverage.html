@@ -168,7 +168,7 @@ p {
 	<body>
 		<div id="doctitle">Coverage Report</div>
         
-        <div id="about">Generated on Fri, 18 Apr 2025 13:33:31 -03 with <a href="https://github.com/matm/gocov-html">gocov-html</a></div>
+        <div id="about">Generated on Fri, 18 Apr 2025 13:48:35 -03 with <a href="https://github.com/matm/gocov-html">gocov-html</a></div>
         
         
         <div class="funcname">Report Overview</div>
@@ -176,14 +176,20 @@ p {
             
             <tr id="s_pkg_go-financial-transactions">
                 <td><code><a href="#pkg_go-financial-transactions">go-financial-transactions</a></code></td>
-                <td class="percent"><code>9.3%</code></td>
-                <td class="linecount"><code>4/43</code></td>
+                <td class="percent"><code>29.2%</code></td>
+                <td class="linecount"><code>7/24</code></td>
             </tr>
             
             <tr id="s_pkg_go-financial-transactions/api">
                 <td><code><a href="#pkg_go-financial-transactions/api">go-financial-transactions/api</a></code></td>
                 <td class="percent"><code>96.8%</code></td>
                 <td class="linecount"><code>30/31</code></td>
+            </tr>
+            
+            <tr id="s_pkg_go-financial-transactions/config">
+                <td><code><a href="#pkg_go-financial-transactions/config">go-financial-transactions/config</a></code></td>
+                <td class="percent"><code>0.0%</code></td>
+                <td class="linecount"><code>0/19</code></td>
             </tr>
             
             <tr id="s_pkg_go-financial-transactions/consumer">
@@ -226,36 +232,36 @@ p {
             <p>
             This coverage report has been generated with the following command:
             </p>
-            <pre class="cmd">gocov test go-financial-transactions go-financial-transactions/api go-financial-transactions/consumer go-financial-transactions/mocks go-financial-transactions/producer go-financial-transactions/repositories go-financial-transactions/services go-financial-transactions/workers | gocov-html </pre>
+            <pre class="cmd">gocov test go-financial-transactions go-financial-transactions/api go-financial-transactions/config go-financial-transactions/consumer go-financial-transactions/mocks go-financial-transactions/producer go-financial-transactions/repositories go-financial-transactions/services go-financial-transactions/workers | gocov-html </pre>
         </div>
         
         
         <div id="pkg_go-financial-transactions" class="funcname">
             Package Overview: go-financial-transactions
-            <span class="packageTotal">9.3%</span>
+            <span class="packageTotal">29.2%</span>
         </div>
         <p>Please select a function to see what's left for testing.</p>
 
         <table class="overview">
         
-            <tr id="s_fn_Run">
+            <tr id="s_fn_RunApp">
                 <td>
-                    <code><a href="#fn_Run">Run(...)</a></code>
+                    <code><a href="#fn_RunApp">RunApp(...)</a></code>
                 </td>
                 <td>
                     <code>go-financial-transactions/main.go</code>
                 </td>
                 <td class="percent">
-                    <code>11.1%</code>
+                    <code>43.8%</code>
                 </td>
                 <td class="linecount">
-                    <code>4/36</code>
+                    <code>7/16</code>
                 </td>
             </tr>
         
-            <tr id="s_fn_@83:5">
+            <tr id="s_fn_@45:5">
                 <td>
-                    <code><a href="#fn_@83:5">@83:5(...)</a></code>
+                    <code><a href="#fn_@45:5">@45:5(...)</a></code>
                 </td>
                 <td>
                     <code>go-financial-transactions/main.go</code>
@@ -268,9 +274,9 @@ p {
                 </td>
             </tr>
         
-            <tr id="s_fn_@65:5">
+            <tr id="s_fn_@28:5">
                 <td>
-                    <code><a href="#fn_@65:5">@65:5(...)</a></code>
+                    <code><a href="#fn_@28:5">@28:5(...)</a></code>
                 </td>
                 <td>
                     <code>go-financial-transactions/main.go</code>
@@ -294,7 +300,7 @@ p {
                     <code>0.0%</code>
                 </td>
                 <td class="linecount">
-                    <code>0/1</code>
+                    <code>0/2</code>
                 </td>
             </tr>
         
@@ -302,220 +308,255 @@ p {
 
         
         
-        <div class="funcname" id="fn_Run">func Run</div>
+        <div class="funcname" id="fn_RunApp">func RunApp</div>
         <div class="info">
-            <a href="#s_fn_Run">Back</a>
+            <a href="#s_fn_RunApp">Back</a>
             <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/main.go</code>:</p>
         </div>
         <table class="listing">
             
             <tr>
-                <td>21</td>
+                <td>16</td>
                 <td>
-                    <code><pre>func Run() {</pre></code>
+                    <code><pre>func RunApp() {</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>22</td>
+                <td>17</td>
                 <td>
                     <code><pre>        fmt.Println(&#34;🚀 Starting application...&#34;)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>23</td>
+                <td>18</td>
                 <td>
                     <code><pre></pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>24</td>
-                <td>
-                    <code><pre>        // Graceful shutdown setup</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>25</td>
+                <td>19</td>
                 <td>
                     <code><pre>        ctx, cancel := context.WithCancel(context.Background())</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>26</td>
+                <td>20</td>
                 <td>
                     <code><pre>        defer cancel()</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>27</td>
+                <td>21</td>
                 <td>
                     <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td>
+                    <code><pre>        cfg := config.LoadConfig()</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td>
+                    <code><pre>        app := config.SetupApplication()</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
+                <td>
+                    <code><pre>        defer app.KafkaWriter.Close()</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>26</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>27</td>
+                <td>
+                    <code><pre>        // Start HTTP server</pre></code>
                 </td>
             </tr>
             
             <tr>
                 <td>28</td>
                 <td>
-                    <code><pre>        if err := godotenv.Load(); err != nil {</pre></code>
+                    <code><pre>        go func() {</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>29</td>
                 <td>
-                    <code><pre>                fmt.Println(&#34;⚠️ Error loading .env file&#34;)</pre></code>
+                    <code><pre>                if err := app.API.Fiber.Listen(&#34;:&#34; + app.Config.APIPort); err != nil {</pre></code>
                 </td>
             </tr>
             
             <tr>
                 <td>30</td>
                 <td>
-                    <code><pre>        }</pre></code>
+                    <code><pre>                        fmt.Printf(&#34;⚠️ Failed to start API server: %v\n&#34;, err)</pre></code>
                 </td>
             </tr>
             
             <tr>
                 <td>31</td>
                 <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>32</td>
-                <td>
-                    <code><pre>        apiPort := os.Getenv(&#34;API_PORT&#34;)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>33</td>
-                <td>
-                    <code><pre>        if apiPort == &#34;&#34; {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>34</td>
-                <td>
-                    <code><pre>                apiPort = &#34;8080&#34;</pre></code>
+                    <code><pre>                }</pre></code>
                 </td>
             </tr>
             
             <tr>
+                <td>32</td>
+                <td>
+                    <code><pre>        }()</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>33</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>34</td>
+                <td>
+                    <code><pre>        // Setup signal handler</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
                 <td>35</td>
                 <td>
-                    <code><pre>        }</pre></code>
+                    <code><pre>        sigs := make(chan os.Signal, 1)</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
                 <td>36</td>
                 <td>
-                    <code><pre>        kafkaBroker := os.Getenv(&#34;KAFKA_BROKER&#34;)</pre></code>
+                    <code><pre>        signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>37</td>
                 <td>
-                    <code><pre>        kafkaTopic := os.Getenv(&#34;KAFKA_TOPIC&#34;)</pre></code>
+                    <code><pre></pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
                 <td>38</td>
                 <td>
-                    <code><pre>        kafkaGroupID := os.Getenv(&#34;KAFKA_GROUP_ID&#34;)</pre></code>
+                    <code><pre>        done := make(chan struct{})</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>39</td>
+                <td>
+                    <code><pre>        transactions := make(chan domain.Transaction, 100)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>39</td>
+                <td>40</td>
                 <td>
                     <code><pre></pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
-                <td>40</td>
-                <td>
-                    <code><pre>        dbHost := os.Getenv(&#34;DB_HOST&#34;)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
+            <tr>
                 <td>41</td>
                 <td>
-                    <code><pre>        dbPort := os.Getenv(&#34;DB_PORT&#34;)</pre></code>
+                    <code><pre>        // Start consumer &amp; workers</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
                 <td>42</td>
                 <td>
-                    <code><pre>        dbUser := os.Getenv(&#34;DB_USER&#34;)</pre></code>
+                    <code><pre>        go consumer.InitConsumer(ctx, transactions, cfg.KafkaBroker, cfg.KafkaTopic, cfg.KafkaGroupID)</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
                 <td>43</td>
                 <td>
-                    <code><pre>        dbPassword := os.Getenv(&#34;DB_PASSWORD&#34;)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>44</td>
-                <td>
-                    <code><pre>        dbName := os.Getenv(&#34;DB_NAME&#34;)</pre></code>
+                    <code><pre>        go workers.StartWorkers(ctx, transactions, 4, app.DB)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>45</td>
+                <td>44</td>
                 <td>
                     <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>45</td>
+                <td>
+                    <code><pre>        go func() {</pre></code>
                 </td>
             </tr>
             
             <tr>
                 <td>46</td>
                 <td>
-                    <code><pre>        // Initialize database</pre></code>
+                    <code><pre>                &lt;-sigs</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>47</td>
                 <td>
-                    <code><pre>        db := repositories.InitDatabase(dbHost, dbUser, dbPassword, dbName, dbPort)</pre></code>
+                    <code><pre>                fmt.Println(&#34;\n🛑 Interrupt signal received, shutting down...&#34;)</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>48</td>
                 <td>
-                    <code><pre>        if db == nil {</pre></code>
+                    <code><pre>                cancel()</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>49</td>
                 <td>
-                    <code><pre>                panic(&#34;Database connection error&#34;)</pre></code>
+                    <code><pre>                close(done)</pre></code>
                 </td>
             </tr>
             
             <tr>
                 <td>50</td>
                 <td>
-                    <code><pre>        }</pre></code>
+                    <code><pre>        }()</pre></code>
                 </td>
             </tr>
             
@@ -526,288 +567,22 @@ p {
                 </td>
             </tr>
             
-            <tr>
+            <tr class="miss">
                 <td>52</td>
-                <td>
-                    <code><pre>        // Initialize Kafka writer (producer)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>53</td>
-                <td>
-                    <code><pre>        kafkaWriter := producer.NewKafkaWriter(kafkaBroker, kafkaTopic)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>54</td>
-                <td>
-                    <code><pre>        defer kafkaWriter.Close()</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>55</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>56</td>
-                <td>
-                    <code><pre>        // Repositories and services</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>57</td>
-                <td>
-                    <code><pre>        repo := repositories.NewGormRepository(db)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>58</td>
-                <td>
-                    <code><pre>        depositService := s.NewDepositService(repo, repo, kafkaWriter)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>59</td>
-                <td>
-                    <code><pre>        withdrawService := s.NewWithdrawService(repo, repo, kafkaWriter)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>60</td>
-                <td>
-                    <code><pre>        statementService := s.NewStatementService(repo, repo)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>61</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>62</td>
-                <td>
-                    <code><pre>        // Create and start Fiber app</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>63</td>
-                <td>
-                    <code><pre>        apiApp := api.NewApp(depositService, withdrawService, statementService)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>64</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>65</td>
-                <td>
-                    <code><pre>        go func() {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>66</td>
-                <td>
-                    <code><pre>                if err := apiApp.Fiber.Listen(&#34;:&#34; + apiPort); err != nil {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>67</td>
-                <td>
-                    <code><pre>                        fmt.Printf(&#34;⚠️ Failed to start API server: %v\n&#34;, err)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>68</td>
-                <td>
-                    <code><pre>                }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>69</td>
-                <td>
-                    <code><pre>        }()</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>70</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>71</td>
-                <td>
-                    <code><pre>        // Signal handling</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>72</td>
-                <td>
-                    <code><pre>        sigs := make(chan os.Signal, 1)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>73</td>
-                <td>
-                    <code><pre>        signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>74</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>75</td>
-                <td>
-                    <code><pre>        done := make(chan struct{})</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>76</td>
-                <td>
-                    <code><pre>        transactions := make(chan d.Transaction, 100)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>77</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>78</td>
-                <td>
-                    <code><pre>        // Start Kafka consumer and worker pool</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>79</td>
-                <td>
-                    <code><pre>        go consumer.InitConsumer(ctx, transactions, kafkaBroker, kafkaTopic, kafkaGroupID)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>80</td>
-                <td>
-                    <code><pre>        go workers.StartWorkers(ctx, transactions, 4, db)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>81</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>82</td>
-                <td>
-                    <code><pre>        // Shutdown handler</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>83</td>
-                <td>
-                    <code><pre>        go func() {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>84</td>
-                <td>
-                    <code><pre>                &lt;-sigs</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>85</td>
-                <td>
-                    <code><pre>                fmt.Println(&#34;\n🛑 Interrupt signal received, shutting down...&#34;)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>86</td>
-                <td>
-                    <code><pre>                cancel()</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>87</td>
-                <td>
-                    <code><pre>                close(done)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>88</td>
-                <td>
-                    <code><pre>        }()</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>89</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>90</td>
                 <td>
                     <code><pre>        &lt;-done</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>91</td>
+                <td>53</td>
                 <td>
                     <code><pre>        fmt.Println(&#34;✔️ Gracefully shut down.&#34;)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>92</td>
+                <td>54</td>
                 <td>
                     <code><pre>}</pre></code>
                 </td>
@@ -815,50 +590,50 @@ p {
             
         </table>
         
-        <div class="funcname" id="fn_@83:5">func @83:5</div>
+        <div class="funcname" id="fn_@45:5">func @45:5</div>
         <div class="info">
-            <a href="#s_fn_@83:5">Back</a>
+            <a href="#s_fn_@45:5">Back</a>
             <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/main.go</code>:</p>
         </div>
         <table class="listing">
             
             <tr>
-                <td>83</td>
+                <td>45</td>
                 <td>
                     <code><pre>func() {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>84</td>
+                <td>46</td>
                 <td>
                     <code><pre>                &lt;-sigs</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>85</td>
+                <td>47</td>
                 <td>
                     <code><pre>                fmt.Println(&#34;\n🛑 Interrupt signal received, shutting down...&#34;)</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>86</td>
+                <td>48</td>
                 <td>
                     <code><pre>                cancel()</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>87</td>
+                <td>49</td>
                 <td>
                     <code><pre>                close(done)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>88</td>
+                <td>50</td>
                 <td>
                     <code><pre>        }</pre></code>
                 </td>
@@ -866,43 +641,43 @@ p {
             
         </table>
         
-        <div class="funcname" id="fn_@65:5">func @65:5</div>
+        <div class="funcname" id="fn_@28:5">func @28:5</div>
         <div class="info">
-            <a href="#s_fn_@65:5">Back</a>
+            <a href="#s_fn_@28:5">Back</a>
             <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/main.go</code>:</p>
         </div>
         <table class="listing">
             
             <tr>
-                <td>65</td>
+                <td>28</td>
                 <td>
                     <code><pre>func() {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>66</td>
+                <td>29</td>
                 <td>
-                    <code><pre>                if err := apiApp.Fiber.Listen(&#34;:&#34; + apiPort); err != nil {</pre></code>
+                    <code><pre>                if err := app.API.Fiber.Listen(&#34;:&#34; + app.Config.APIPort); err != nil {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>67</td>
+                <td>30</td>
                 <td>
                     <code><pre>                        fmt.Printf(&#34;⚠️ Failed to start API server: %v\n&#34;, err)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>68</td>
+                <td>31</td>
                 <td>
                     <code><pre>                }</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>69</td>
+                <td>32</td>
                 <td>
                     <code><pre>        }</pre></code>
                 </td>
@@ -918,21 +693,28 @@ p {
         <table class="listing">
             
             <tr>
-                <td>94</td>
+                <td>56</td>
                 <td>
                     <code><pre>func main() {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>95</td>
+                <td>57</td>
                 <td>
-                    <code><pre>        Run()</pre></code>
+                    <code><pre>        RunApp()</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>58</td>
+                <td>
+                    <code><pre>        fmt.Println(&#34;✔️ Application exited.&#34;)</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>96</td>
+                <td>59</td>
                 <td>
                     <code><pre>}</pre></code>
                 </td>
@@ -942,7 +724,7 @@ p {
          
 
         <!--    Can be parsed by external script
-                PACKAGE:go-financial-transactions DONE:9.3
+                PACKAGE:go-financial-transactions DONE:29.2
         -->
         
         <div id="pkg_go-financial-transactions/api" class="funcname">
@@ -1730,6 +1512,459 @@ p {
 
         <!--    Can be parsed by external script
                 PACKAGE:go-financial-transactions/api DONE:96.8
+        -->
+        
+        <div id="pkg_go-financial-transactions/config" class="funcname">
+            Package Overview: go-financial-transactions/config
+            <span class="packageTotal">0.0%</span>
+        </div>
+        <p>Please select a function to see what's left for testing.</p>
+
+        <table class="overview">
+        
+            <tr id="s_fn_SetupApplication">
+                <td>
+                    <code><a href="#fn_SetupApplication">SetupApplication(...)</a></code>
+                </td>
+                <td>
+                    <code>go-financial-transactions/config/setup.go</code>
+                </td>
+                <td class="percent">
+                    <code>0.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>0/14</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_getEnv">
+                <td>
+                    <code><a href="#fn_getEnv">getEnv(...)</a></code>
+                </td>
+                <td>
+                    <code>go-financial-transactions/config/setup.go</code>
+                </td>
+                <td class="percent">
+                    <code>0.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>0/3</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_LoadConfig">
+                <td>
+                    <code><a href="#fn_LoadConfig">LoadConfig(...)</a></code>
+                </td>
+                <td>
+                    <code>go-financial-transactions/config/setup.go</code>
+                </td>
+                <td class="percent">
+                    <code>0.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>0/2</code>
+                </td>
+            </tr>
+        
+        </table>
+
+        
+        
+        <div class="funcname" id="fn_SetupApplication">func SetupApplication</div>
+        <div class="info">
+            <a href="#s_fn_SetupApplication">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>50</td>
+                <td>
+                    <code><pre>func SetupApplication() *AppResources {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>51</td>
+                <td>
+                    <code><pre>        fmt.Println(&#34;🚀 Initializing dependencies...&#34;)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>52</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>53</td>
+                <td>
+                    <code><pre>        ctx, cancel := context.WithCancel(context.Background())</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>54</td>
+                <td>
+                    <code><pre>        cfg := LoadConfig()</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>55</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>56</td>
+                <td>
+                    <code><pre>        db := repositories.InitDatabase(cfg.DBHost, cfg.DBUser, cfg.DBPassword, cfg.DBName, cfg.DBPort)</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>57</td>
+                <td>
+                    <code><pre>        if db == nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>58</td>
+                <td>
+                    <code><pre>                panic(&#34;❌ Failed to connect to database&#34;)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>59</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>60</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>61</td>
+                <td>
+                    <code><pre>        kafkaWriter := producer.NewKafkaWriter(cfg.KafkaBroker, cfg.KafkaTopic)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>62</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>63</td>
+                <td>
+                    <code><pre>        repo := repositories.NewGormRepository(db)</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>64</td>
+                <td>
+                    <code><pre>        deposit := s.NewDepositService(repo, repo, kafkaWriter)</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>65</td>
+                <td>
+                    <code><pre>        withdraw := s.NewWithdrawService(repo, repo, kafkaWriter)</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>66</td>
+                <td>
+                    <code><pre>        statement := s.NewStatementService(repo, repo)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>67</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>68</td>
+                <td>
+                    <code><pre>        apiApp := api.NewApp(deposit, withdraw, statement)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>69</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>70</td>
+                <td>
+                    <code><pre>        transactions := make(chan d.Transaction, 100)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>71</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>72</td>
+                <td>
+                    <code><pre>        return &amp;AppResources{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>73</td>
+                <td>
+                    <code><pre>                DB:            db,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>74</td>
+                <td>
+                    <code><pre>                KafkaWriter:   kafkaWriter,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>75</td>
+                <td>
+                    <code><pre>                API:           apiApp,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>76</td>
+                <td>
+                    <code><pre>                TransactionCh: transactions,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>77</td>
+                <td>
+                    <code><pre>                Context:       ctx,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>78</td>
+                <td>
+                    <code><pre>                CancelFunc:    cancel,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>79</td>
+                <td>
+                    <code><pre>                Config:        cfg,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>80</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>81</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_getEnv">func getEnv</div>
+        <div class="info">
+            <a href="#s_fn_getEnv">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>43</td>
+                <td>
+                    <code><pre>func getEnv(key, defaultVal string) string {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>44</td>
+                <td>
+                    <code><pre>        if val := os.Getenv(key); val != &#34;&#34; {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>45</td>
+                <td>
+                    <code><pre>                return val</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>46</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>47</td>
+                <td>
+                    <code><pre>        return defaultVal</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>48</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_LoadConfig">func LoadConfig</div>
+        <div class="info">
+            <a href="#s_fn_LoadConfig">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>28</td>
+                <td>
+                    <code><pre>func LoadConfig() Config {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>29</td>
+                <td>
+                    <code><pre>        _ = godotenv.Load()</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>30</td>
+                <td>
+                    <code><pre>        return Config{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>31</td>
+                <td>
+                    <code><pre>                APIPort:      getEnv(&#34;API_PORT&#34;, &#34;8080&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>32</td>
+                <td>
+                    <code><pre>                KafkaBroker:  os.Getenv(&#34;KAFKA_BROKER&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>33</td>
+                <td>
+                    <code><pre>                KafkaTopic:   os.Getenv(&#34;KAFKA_TOPIC&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>34</td>
+                <td>
+                    <code><pre>                KafkaGroupID: os.Getenv(&#34;KAFKA_GROUP_ID&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>35</td>
+                <td>
+                    <code><pre>                DBHost:       os.Getenv(&#34;DB_HOST&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>36</td>
+                <td>
+                    <code><pre>                DBPort:       os.Getenv(&#34;DB_PORT&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>37</td>
+                <td>
+                    <code><pre>                DBUser:       os.Getenv(&#34;DB_USER&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>38</td>
+                <td>
+                    <code><pre>                DBPassword:   os.Getenv(&#34;DB_PASSWORD&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>39</td>
+                <td>
+                    <code><pre>                DBName:       os.Getenv(&#34;DB_NAME&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>40</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>41</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+         
+
+        <!--    Can be parsed by external script
+                PACKAGE:go-financial-transactions/config DONE:0.0
         -->
         
         <div id="pkg_go-financial-transactions/consumer" class="funcname">
@@ -6906,7 +7141,7 @@ p {
         <div id="summaryWrapper">
         
             <div class="package">Report Total</div>
-            <div id="totalcov">35.0%</div>
+            <div id="totalcov">36.0%</div>
          
         </div>
          
