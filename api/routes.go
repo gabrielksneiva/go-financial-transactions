@@ -7,12 +7,10 @@ import (
 
 func RegisterRoutes(app *fiber.App, h *Handlers) {
 
-	app.Post("/login", h.LoginHandler)
-	app.Post("/register", h.RegisterHandler)
+	app.Post("/api/login", h.LoginHandler)
+	app.Post("/api/register", h.RegisterHandler)
 
-	app.Use(middleware.JWTMiddleware())
-
-	api := app.Group("/api")
+	api := app.Group("/api", middleware.JWTMiddleware())
 	api.Post("/deposit", h.CreateDepositHandler)
 	api.Post("/withdraw", h.CreateWithdrawHandler)
 	api.Get("/balance/:user_id", h.GetBalanceHandler)

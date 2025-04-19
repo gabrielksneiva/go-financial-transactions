@@ -13,19 +13,22 @@ import (
 )
 
 // Setup helpers
-func setupDepositService() (*mocks.Producer, *services.DepositService) {
+func setupDepositService() (*mocks.Producer, *mocks.RateLimiter, *services.DepositService) {
 	producer := new(mocks.Producer)
-	service := services.NewDepositService(nil, nil, producer)
-	return producer, service
+	rateLimiter := new(mocks.RateLimiter)
+
+	service := services.NewDepositService(nil, nil, producer, rateLimiter)
+	return producer, rateLimiter, service
 }
 
-func setupWithdrawService() (*mocks.TransactionRepository, *mocks.BalanceRepository, *mocks.Producer, *services.WithdrawService) {
+func setupWithdrawService() (*mocks.TransactionRepository, *mocks.BalanceRepository, *mocks.Producer, *mocks.RateLimiter, *services.WithdrawService) {
 	txRepo := new(mocks.TransactionRepository)
 	balanceRepo := new(mocks.BalanceRepository)
 	producer := new(mocks.Producer)
+	rateLimiter := new(mocks.RateLimiter)
 
-	service := services.NewWithdrawService(txRepo, balanceRepo, producer)
-	return txRepo, balanceRepo, producer, service
+	service := services.NewWithdrawService(txRepo, balanceRepo, producer, rateLimiter)
+	return txRepo, balanceRepo, producer, rateLimiter, service
 }
 
 func setupStatementService() (*mocks.TransactionRepository, *mocks.BalanceRepository, *services.StatementService) {
@@ -39,16 +42,22 @@ func setupStatementService() (*mocks.TransactionRepository, *mocks.BalanceReposi
 
 func TestDepositService(t *testing.T) {
 	t.Run("Deposit_Success", func(t *testing.T) {
-		producer, service := setupDepositService()
+		producer, rateLimiter, service := setupDepositService()
 		userID := uint(123)
 		amount := 100.0
 
+		// Configuração do mock para RateLimiter
+		rateLimiter.On("CheckTransactionRateLimit", userID).Return(nil)
+
+		// Configuração do mock para Producer
 		producer.On("SendTransaction", mock.AnythingOfType("domain.Transaction")).Return(nil)
 
 		err := service.Deposit(userID, amount)
 
+		// Verificações
 		assert.NoError(t, err)
 		producer.AssertCalled(t, "SendTransaction", mock.AnythingOfType("domain.Transaction"))
+		rateLimiter.AssertCalled(t, "CheckTransactionRateLimit", userID)
 	})
 }
 
@@ -58,7 +67,7 @@ func TestWithdrawService(t *testing.T) {
 	amount := 50.0
 
 	t.Run("Withdraw_Success", func(t *testing.T) {
-		_, balanceRepo, producer, service := setupWithdrawService()
+		_, balanceRepo, producer, rateLimiter, service := setupWithdrawService()
 
 		balanceRepo.On("GetBalance", userID).
 			Return(&domain.Balance{UserID: userID, Amount: 100.0}, nil)
@@ -66,36 +75,48 @@ func TestWithdrawService(t *testing.T) {
 		producer.On("SendTransaction", mock.AnythingOfType("domain.Transaction")).
 			Return(nil)
 
+		// Configuração do mock para RateLimiter
+		rateLimiter.On("CheckTransactionRateLimit", userID).Return(nil)
+
 		err := service.Withdraw(userID, amount)
 		assert.NoError(t, err)
 
 		balanceRepo.AssertExpectations(t)
 		producer.AssertExpectations(t)
+		rateLimiter.AssertCalled(t, "CheckTransactionRateLimit", userID)
 	})
 
 	t.Run("Withdraw_InsufficientFunds", func(t *testing.T) {
-		_, balanceRepo, producer, service := setupWithdrawService()
+		_, balanceRepo, producer, rateLimiter, service := setupWithdrawService()
 
 		balanceRepo.On("GetBalance", userID).Return(&domain.Balance{
 			UserID: userID,
 			Amount: 20.0,
 		}, nil)
 
+		// Configuração do mock para RateLimiter
+		rateLimiter.On("CheckTransactionRateLimit", userID).Return(nil)
+
 		err := service.Withdraw(userID, amount)
 		assert.EqualError(t, err, "insufficient funds")
 
 		producer.AssertNotCalled(t, "SendTransaction", mock.Anything)
+		rateLimiter.AssertCalled(t, "CheckTransactionRateLimit", userID)
 	})
 
 	t.Run("Withdraw_BalanceError", func(t *testing.T) {
-		_, balanceRepo, producer, service := setupWithdrawService()
+		_, balanceRepo, producer, rateLimiter, service := setupWithdrawService()
 
 		balanceRepo.On("GetBalance", userID).Return(nil, errors.New("db error"))
+
+		// Configuração do mock para RateLimiter
+		rateLimiter.On("CheckTransactionRateLimit", userID).Return(nil)
 
 		err := service.Withdraw(userID, amount)
 		assert.EqualError(t, err, "db error")
 
 		producer.AssertNotCalled(t, "SendTransaction", mock.Anything)
+		rateLimiter.AssertCalled(t, "CheckTransactionRateLimit", userID)
 	})
 }
 

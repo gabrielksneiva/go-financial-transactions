@@ -10,5 +10,7 @@ type Config struct {
 	DBUser       string
 	DBPassword   string
 	DBName       string
+	RedisHost    string
+	RedisDB      int
 	JwtSecret    string
 }

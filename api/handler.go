@@ -45,14 +45,13 @@ func NewHandlers(
 }
 
 func (h *Handlers) CreateDepositHandler(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+
 	var req TransactionRequest
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid JSON"})
 	}
 
-	userID := c.Locals("user_id").(uint)
-
-	// Passa userIDUint como uint para o serviço
 	if err := h.DepositService.Deposit(userID, req.Amount); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -63,12 +62,12 @@ func (h *Handlers) CreateDepositHandler(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) CreateWithdrawHandler(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+
 	var req TransactionRequest
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid JSON"})
 	}
-
-	userID := c.Locals("user_id").(uint)
 
 	if err := h.WithdrawService.Withdraw(userID, req.Amount); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})

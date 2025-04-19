@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"context"
 	"time"
 )
 
@@ -29,6 +30,17 @@ type Transaction struct {
 type Balance struct {
 	UserID uint `gorm:"primaryKey" json:"user_id"` // Alterado de string para uint
 	Amount float64
+}
+
+type RedisClientInterface interface {
+	Get(ctx context.Context, key string) (int, error)
+	Set(ctx context.Context, key string, value int) error
+	Incr(ctx context.Context, key string) (int, error)
+	Expire(ctx context.Context, key string, expiration time.Duration) error
+}
+
+type RateLimiter interface {
+	CheckTransactionRateLimit(userID uint) error
 }
 
 type TransactionRepository interface {

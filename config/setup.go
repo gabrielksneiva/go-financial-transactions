@@ -4,7 +4,9 @@ package config
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 
 	"github.com/gabrielksneiva/go-financial-transactions/api"
 	d "github.com/gabrielksneiva/go-financial-transactions/domain"
@@ -29,6 +31,10 @@ type AppResources struct {
 
 func LoadConfig() Config {
 	_ = godotenv.Load()
+	redisDB, err := strconv.Atoi(os.Getenv("REDIS_DB"))
+	if err != nil {
+		log.Fatalf("❌ Erro ao converter REDIS_DB para inteiro: %v", err)
+	}
 	return Config{
 		APIPort:      getEnv("API_PORT", "8080"),
 		KafkaBroker:  os.Getenv("KAFKA_BROKER"),
@@ -39,6 +45,8 @@ func LoadConfig() Config {
 		DBUser:       os.Getenv("DB_USER"),
 		DBPassword:   os.Getenv("DB_PASSWORD"),
 		DBName:       os.Getenv("DB_NAME"),
+		RedisHost:    os.Getenv("REDIS_HOST"),
+		RedisDB:      redisDB,
 		JwtSecret:    os.Getenv("JWT_SECRET"),
 	}
 }
@@ -61,11 +69,14 @@ func SetupApplication() *AppResources {
 		panic("❌ Failed to connect to database")
 	}
 
+	redisClient := repositories.InitRedis(cfg.RedisHost, cfg.RedisDB)
+	rateLimiter := repositories.NewRedisRateLimiter(redisClient)
+
 	kafkaWriter := producer.NewKafkaWriter(cfg.KafkaBroker, cfg.KafkaTopic)
 
 	repo := repositories.NewGormRepository(db)
-	deposit := s.NewDepositService(repo, repo, kafkaWriter)
-	withdraw := s.NewWithdrawService(repo, repo, kafkaWriter)
+	deposit := s.NewDepositService(repo, repo, kafkaWriter, rateLimiter)
+	withdraw := s.NewWithdrawService(repo, repo, kafkaWriter, rateLimiter)
 	statement := s.NewStatementService(repo, repo)
 	userService := services.NewUserService(repo)
 
