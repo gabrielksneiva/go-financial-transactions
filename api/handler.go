@@ -1,9 +1,8 @@
 package api
 
 import (
-	"strconv"
-
 	"github.com/gabrielksneiva/go-financial-transactions/services"
+	"github.com/gabrielksneiva/go-financial-transactions/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,17 +15,16 @@ type Handlers struct {
 }
 
 type TransactionRequest struct {
-	UserID uint    `json:"user_id"`
 	Amount float64 `json:"amount"`
 }
 
 type BalanceResponse struct {
-	UserID string  `json:"user_id"`
+	UserID uint    `json:"user_id"`
 	Amount float64 `json:"amount"`
 }
 
 type StatementResponse struct {
-	UserID       string                        `json:"user_id"`
+	UserID       uint                          `json:"user_id"`
 	UserEmail    string                        `json:"user_email"`
 	Balance      float64                       `json:"balance"`
 	Transactions []services.TransactionDisplay `json:"transactions"`
@@ -52,8 +50,10 @@ func (h *Handlers) CreateDepositHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid JSON"})
 	}
 
+	userID := c.Locals("user_id").(uint)
+
 	// Passa userIDUint como uint para o serviço
-	if err := h.DepositService.Deposit(req.UserID, req.Amount); err != nil {
+	if err := h.DepositService.Deposit(userID, req.Amount); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
@@ -68,7 +68,9 @@ func (h *Handlers) CreateWithdrawHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid JSON"})
 	}
 
-	if err := h.WithdrawService.Withdraw(req.UserID, req.Amount); err != nil {
+	userID := c.Locals("user_id").(uint)
+
+	if err := h.WithdrawService.Withdraw(userID, req.Amount); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
@@ -78,14 +80,9 @@ func (h *Handlers) CreateWithdrawHandler(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) GetBalanceHandler(c *fiber.Ctx) error {
-	userID := c.Params("user_id")
+	userID := c.Locals("user_id").(uint)
 
-	// Converte userID para uint
-	userIDUint, err := strconv.ParseUint(userID, 10, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid user ID"})
-	}
-	amount, err := h.StatementService.GetBalance(uint(userIDUint))
+	amount, err := h.StatementService.GetBalance(userID)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -97,32 +94,27 @@ func (h *Handlers) GetBalanceHandler(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) GetStatementHandler(c *fiber.Ctx) error {
-	userID := c.Params("user_id")
+	userID := c.Locals("user_id").(uint)
 
-	userIDUint, err := strconv.ParseUint(userID, 10, 64)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid user ID"})
-	}
-
-	statement, err := h.StatementService.GetStatement(uint(userIDUint))
+	statement, err := h.StatementService.GetStatement(userID)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	user, err := h.UserService.GetUserByID(uint(userIDUint))
+	userRetrieved, err := h.UserService.GetUserByID(userID)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	return c.JSON(StatementResponse{
 		UserID:       userID,
-		UserEmail:    user.Email,
+		UserEmail:    userRetrieved.Email,
 		Balance:      statement.Balance,
 		Transactions: services.ToTransactionDisplay(statement.Transactions),
 	})
 }
 
-func (h *Handlers) CreateUsersHandler(c *fiber.Ctx) error {
+func (h *Handlers) RegisterHandler(c *fiber.Ctx) error {
 	var req struct {
 		Name     string `json:"name"`
 		Email    string `json:"email"`
@@ -133,6 +125,10 @@ func (h *Handlers) CreateUsersHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid JSON"})
 	}
 
+	if req.Name == "" || req.Email == "" || req.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Todos os campos são obrigatórios"})
+	}
+
 	if err := h.UserService.CreateUser(req.Name, req.Email, req.Password); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -140,4 +136,31 @@ func (h *Handlers) CreateUsersHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"message": "User created",
 	})
+}
+
+func (h *Handlers) LoginHandler(c *fiber.Ctx) error {
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "JSON inválido"})
+	}
+
+	if req.Email == "" || req.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Todos os campos são obrigatórios"})
+	}
+
+	user, err := h.UserService.Authenticate(req.Email, req.Password)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	token, err := utils.GenerateJWT(user) // Função que você vai criar
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	return c.JSON(fiber.Map{"token": token})
 }

@@ -39,6 +39,7 @@ func LoadConfig() Config {
 		DBUser:       os.Getenv("DB_USER"),
 		DBPassword:   os.Getenv("DB_PASSWORD"),
 		DBName:       os.Getenv("DB_NAME"),
+		JwtSecret:    os.Getenv("JWT_SECRET"),
 	}
 }
 

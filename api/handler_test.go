@@ -1,4 +1,3 @@
-// api/handler_test.go
 package api_test
 
 import (
@@ -40,7 +39,7 @@ func TestStatementHandler_Success(t *testing.T) {
 	userID := uint(789)
 
 	// Mock para o GetByID
-	userRepoMock.On("GetByID", userID).Return(&domain.User{ID: userID}, nil) // Configure o retorno esperado
+	userRepoMock.On("GetByID", userID).Return(&domain.User{ID: userID}, nil)
 
 	txRepoMock.On("GetByUser", userID).Return([]domain.Transaction{
 		{ID: "tx1", UserID: userID, Amount: 50.0, Type: "deposit"},
@@ -50,7 +49,7 @@ func TestStatementHandler_Success(t *testing.T) {
 		UserID: userID, Amount: 50.0,
 	}, nil)
 
-	req := httptest.NewRequest(http.MethodGet, "/statement/789", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/statement/789", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusOK, resp.StatusCode)
@@ -69,8 +68,8 @@ func TestWithdrawHandler_InsufficientFunds(t *testing.T) {
 		UserID: 456, Amount: 50.0,
 	}, nil)
 
-	body := []byte(`{"user_id":456,"amount":100.0}`)
-	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
+	body := []byte(`{"amount":100.0}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/withdraw", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -95,7 +94,7 @@ func TestDepositHandler_InvalidJSON(t *testing.T) {
 	app, _, _, _, _ := setupTestApp()
 
 	body := []byte(`invalid json`)
-	req := httptest.NewRequest(http.MethodPost, "/deposit", bytes.NewBuffer(body))
+	req := httptest.NewRequest(http.MethodPost, "/api/deposit", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -108,8 +107,8 @@ func TestDepositHandler_InternalError(t *testing.T) {
 
 	producerMock.On("SendTransaction", mock.Anything).Return(errors.New("kafka error"))
 
-	body := []byte(`{"user_id":999,"amount":50.0}`)
-	req := httptest.NewRequest(http.MethodPost, "/deposit", bytes.NewBuffer(body))
+	body := []byte(`{"amount":50.0}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/deposit", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -121,7 +120,7 @@ func TestWithdrawHandler_InvalidJSON(t *testing.T) {
 	app, _, _, _, _ := setupTestApp()
 
 	body := []byte(`not-a-json`)
-	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
+	req := httptest.NewRequest(http.MethodPost, "/api/withdraw", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -134,8 +133,8 @@ func TestWithdrawHandler_DBError(t *testing.T) {
 
 	balanceRepo.On("GetBalance", uint(999)).Return(nil, errors.New("db error"))
 
-	body := []byte(`{"user_id":999,"amount":20.0}`)
-	req := httptest.NewRequest(http.MethodPost, "/withdraw", bytes.NewBuffer(body))
+	body := []byte(`{"amount":20.0}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/withdraw", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := app.Test(req)
@@ -148,18 +147,22 @@ func TestBalanceHandler_NotFound(t *testing.T) {
 
 	balanceRepo.On("GetBalance", uint(404)).Return(nil, errors.New("not found"))
 
-	req := httptest.NewRequest(http.MethodGet, "/balance/404", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/balance/404", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)
 }
 
 func TestStatementHandler_NotFound(t *testing.T) {
-	app, _, _, balanceRepo, _ := setupTestApp()
+	app, _, _, txRepoMock, _ := setupTestApp()
 
-	balanceRepo.On("GetBalance", uint(789)).Return(nil, errors.New("user not found"))
+	userID := uint(789)
 
-	req := httptest.NewRequest(http.MethodGet, "/statement/789", nil)
+	// Simulando um erro ao buscar transações ou balanço
+	txRepoMock.On("GetByUser", userID).Return(nil, errors.New("transactions not found"))
+	txRepoMock.On("GetBalance", userID).Return(nil, errors.New("user not found"))
+
+	req := httptest.NewRequest(http.MethodGet, "/api/statement/789", nil)
 	resp, err := app.Test(req)
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusNotFound, resp.StatusCode)

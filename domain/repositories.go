@@ -10,10 +10,11 @@ var (
 )
 
 type User struct {
-	ID       uint   `gorm:"primaryKey"`
-	Name     string `gorm:"size:255;not null"`
-	Password string `gorm:"size:255;not null"`
-	Email    string `gorm:"size:255;unique;not null"`
+	ID       uint `gorm:"primaryKey"`
+	Name     string
+	Email    string `gorm:"unique"`
+	Password string
+	Role     string // Ex: "user" ou "admin"
 }
 
 type Transaction struct {
