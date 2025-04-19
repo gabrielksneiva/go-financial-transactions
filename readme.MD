@@ -1,50 +1,85 @@
-
 # 💸 Go Financial Transactions
+
+> Sistema de transações financeiras assíncronas e escaláveis com Go, Kafka, PostgreSQL e Redis.
+
+![Arquitetura do Projeto](docs/assets/architecture.png)
 
 [![Go](https://img.shields.io/badge/Go-1.21-blue)](https://golang.org/)
 [![Tests](https://github.com/gabrielksneiva/go-financial-transactions/actions/workflows/go-ci.yml/badge.svg)](https://github.com/gabrielksneiva/go-financial-transactions/actions)
-[![Coverage](https://img.shields.io/badge/Coverage-90%25-brightgreen)](https://github.com/gabrielksneiva/go-financial-transactions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/gabrielksneiva/go-financial-transactions)](https://goreportcard.com/report/github.com/gabrielksneiva/go-financial-transactions)
-
-> Projeto backend financeiro em Go com arquitetura moderna, paralelismo e Kafka. Ideal para processar e auditar transações de usuários em tempo real.
+[![Coverage](https://img.shields.io/badge/coverage-89%25-brightgreen)](#)
+[![License](https://img.shields.io/github/license/gabrielksneiva/go-financial-transactions)](LICENSE)
 
 ---
 
-## ✨ Funcionalidades
+## 🧠 Sobre o Projeto
 
-- 📤 Envio de depósitos e saques com controle de saldo
-- 🧾 Extrato completo com transações e saldo atual
-- ✅ Validação por JWT
-- 📈 Limite de requisições via Redis (Rate Limiting)
-- 🧵 Workers concorrentes processando mensagens Kafka
-- 🧪 Alta cobertura de testes unitários (>90%)
+Este projeto simula um sistema de transações financeiras, projetado para ser altamente performático, assíncrono e escalável, ideal para aplicações bancárias, carteiras digitais e processadores de pagamento. Ele demonstra:
 
----
-
-## 📦 Stack
-
-- **Go** 1.21
-- **Fiber** (HTTP server)
-- **Kafka** (mensageria)
-- **PostgreSQL** + GORM
-- **Redis** (rate limit)
-- **GitHub Actions** (CI/CD)
-- **sqlmock**, **testify** (testes)
+- Comunicação assíncrona via **Apache Kafka**
+- Processamento concorrente com **workers Go**
+- Controle de limite de requisições com **Redis Rate Limiter**
+- Armazenamento e consistência com **PostgreSQL + GORM**
+- Autenticação via **JWT**
+- Testes com cobertura > 85%
+- CI/CD com **GitHub Actions**
 
 ---
 
-## 🚀 Rodando o projeto
+## 🧩 Arquitetura
+
+A arquitetura segue o padrão Clean Architecture com camadas desacopladas e testáveis.
+
+```plaintext
+            +------------+
+            |  API (Fiber)
+            +------+-----+
+                   |
+                   v
+         +---------+----------+
+         | Services (Business)|
+         +---------+----------+
+                   |
+         +---------+----------+
+         |    Repositories    |
+         +----+----------+----+
+              |          |
+        +-----+      +---+---------+
+        |Kafka|      | PostgreSQL  |
+        +-----+      +-------------+
+```
+
+O Kafka atua como middleware entre as requisições HTTP e os workers. Workers processam as mensagens assincronamente, atualizando os saldos no banco de dados.
+
+---
+
+## 🛠️ Tecnologias
+
+- [Go 1.21](https://golang.org/)
+- [Apache Kafka](https://kafka.apache.org/)
+- [Fiber](https://gofiber.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
+- [GORM](https://gorm.io/)
+- [JWT](https://github.com/golang-jwt/jwt)
+- [sqlmock](https://github.com/DATA-DOG/go-sqlmock)
+- [GitHub Actions](https://github.com/features/actions)
+
+---
+
+## 🚀 Como Rodar
+
+### Pré-requisitos
+
+- Docker + Docker Compose
+- Go 1.21+
 
 ```bash
-# Clone o repositório
+# Clone o projeto
 git clone https://github.com/gabrielksneiva/go-financial-transactions.git
 cd go-financial-transactions
 
-# Instale dependências
-go mod tidy
-
-# Copie o .env de exemplo
-cp .env.example .env
+# Suba os serviços (Kafka, Redis, PostgreSQL)
+docker-compose up -d
 
 # Rode a aplicação
 go run main.go
@@ -52,68 +87,68 @@ go run main.go
 
 ---
 
-## 🧪 Rodando os testes
+## 🧪 Testes
 
 ```bash
-# Testes com coverage
-make test
+# Executar todos os testes unitários
+go test ./... -coverprofile=coverage.out
 
-# Cobertura em HTML
-make coverage-html
+# Ver cobertura
+go tool cover -func=coverage.out
 ```
+
+✅ Testes de unidades cobrindo: services, API handlers, middleware, workers, repositories, Kafka producer e consumer.
 
 ---
 
-## 📂 Estrutura
+## 📁 Estrutura do Projeto
 
 ```bash
 .
-├── api/            # Endpoints HTTP
-├── consumer/       # Leitor Kafka
-├── producer/       # Escritor Kafka
-├── services/       # Regras de negócio
-├── repositories/   # Acesso a dados
-├── workers/        # Workers concorrentes
-├── config/         # Config e setup da aplicação
-├── mocks/          # Mocks de interfaces
-├── main.go         # Entrada principal
+├── api/               # Handlers, rotas e inicialização HTTP (Fiber)
+├── config/            # Configuração da aplicação
+├── consumer/          # Kafka consumer
+├── producer/          # Kafka producer
+├── domain/            # Entidades e interfaces
+├── services/          # Lógica de negócio
+├── workers/           # Workers paralelos
+├── repositories/      # Integração com banco de dados
+├── mocks/             # Mocks para testes
+├── main.go            # Entry point
+├── go.mod / go.sum    # Dependências
+└── README.md          # Documentação do projeto
 ```
 
 ---
 
-## 🧠 Arquitetura
+## 🧠 Conceitos Demonstrados
 
-> Arquitetura hexagonal com serviços desacoplados e workers concorrentes para processamento paralelo de transações financeiras.
-
----
-
-## ✅ Testes e Qualidade
-
-- [x] Cobertura >90%
-- [x] Testes unitários com mocks (`testify`, `sqlmock`)
-- [x] Linters via `golangci-lint`
-- [x] Pipeline CI GitHub Actions
+- Go routines, canais e `context.Context`
+- Injeção de dependência
+- Testes com `sqlmock` e `testify`
+- Arquitetura orientada a mensagens
+- Pipeline CI/CD com GitHub Actions
+- Rate Limiting baseado em Redis TTL
+- Modularização e clean code
 
 ---
 
-## 🛣️ Roadmap
+## 🎯 Próximos Passos
 
-- [ ] Deploy com Docker + docker-compose
+- [ ] Swagger para documentação de endpoints
 - [ ] Integração com Fireblocks API
-- [ ] Dashboard admin para visualizar extratos
-- [ ] Suporte a múltiplas moedas
+- [ ] Deploy automatizado via Docker + Render ou Railway
+- [ ] Observabilidade com Prometheus + Grafana
 
 ---
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **Gabriel K. S. Neiva**
-
-[LinkedIn](https://www.linkedin.com/in/gabrielneiva/)  
-[Email](mailto:gabrielksneivagi@gmail.com)
+**Gabriel Kryzanovski dos Santos Neiva**  
+[GitHub](https://github.com/gabrielksneiva) | [LinkedIn](https://linkedin.com/in/gabrielksneiva)
 
 ---
 
 ## 📄 Licença
 
-MIT License © 2023 Gabriel Krzyzanovski dos Santos Neiva
+Distribuído sob a licença MIT. Veja [`LICENSE`](LICENSE) para mais detalhes.
