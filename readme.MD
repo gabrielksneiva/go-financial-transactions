@@ -1,8 +1,8 @@
 # 💸 Go Financial Transactions
 
-> Sistema de transações financeiras assíncronas e escaláveis com Go, Kafka, PostgreSQL e Redis.
+> Asynchronous and scalable financial transaction system built with Go, Kafka, PostgreSQL, and Redis.
 
-![Arquitetura do Projeto](docs/assets/architecture.png)
+![Project Architecture](docs/assets/architecture.png)
 
 [![Go](https://img.shields.io/badge/Go-1.21-blue)](https://golang.org/)
 [![Tests](https://github.com/gabrielksneiva/go-financial-transactions/actions/workflows/go-ci.yml/badge.svg)](https://github.com/gabrielksneiva/go-financial-transactions/actions)
@@ -11,48 +11,48 @@
 
 ---
 
-## 🧠 Sobre o Projeto
+## 🧠 About the Project
 
-Este projeto simula um sistema de transações financeiras, projetado para ser altamente performático, assíncrono e escalável, ideal para aplicações bancárias, carteiras digitais e processadores de pagamento. Ele demonstra:
+This project simulates a financial transaction system designed to be highly performant, asynchronous, and scalable — ideal for banking applications, digital wallets, and payment processors. It demonstrates:
 
-- Comunicação assíncrona via **Apache Kafka**
-- Processamento concorrente com **workers Go**
-- Controle de limite de requisições com **Redis Rate Limiter**
-- Armazenamento e consistência com **PostgreSQL + GORM**
-- Autenticação via **JWT**
-- Testes com cobertura > 85%
-- CI/CD com **GitHub Actions**
+- Asynchronous messaging via **Apache Kafka**
+- Concurrent transaction processing with **Go workers**
+- Request rate limiting with **Redis**
+- Data consistency and storage with **PostgreSQL + GORM**
+- Authentication using **JWT**
+- Test coverage > 85%
+- CI/CD using **GitHub Actions**
 
 ---
 
-## 🧩 Arquitetura
+## 🧩 Architecture
 
-A arquitetura segue o padrão Clean Architecture com camadas desacopladas e testáveis.
+The system is built using a clean and modular architecture.
 
-```plaintext
-            +------------+
-            |  API (Fiber)
-            +------+-----+
-                   |
-                   v
-         +---------+----------+
-         | Services (Business)|
-         +---------+----------+
-                   |
-         +---------+----------+
-         |    Repositories    |
-         +----+----------+----+
-              |          |
-        +-----+      +---+---------+
-        |Kafka|      | PostgreSQL  |
-        +-----+      +-------------+
+```
+        +---------------+
+        |  API (Fiber)  |
+        +------+--------+
+               |
+               v
+     +---------+----------+
+     | Services (Business)|
+     +---------+----------+
+               |
+     +---------+----------+
+     |    Repositories    |
+     +----+----------+----+
+          |          |
+    +-----+      +---+---------+
+    |Kafka|      | PostgreSQL  |
+    +-----+      +-------------+
 ```
 
-O Kafka atua como middleware entre as requisições HTTP e os workers. Workers processam as mensagens assincronamente, atualizando os saldos no banco de dados.
+Kafka acts as a middleware between the HTTP layer and the processing workers. Workers consume messages asynchronously and update balances in the database.
 
 ---
 
-## 🛠️ Tecnologias
+## 🛠️ Technologies
 
 - [Go 1.21](https://golang.org/)
 - [Apache Kafka](https://kafka.apache.org/)
@@ -66,89 +66,83 @@ O Kafka atua como middleware entre as requisições HTTP e os workers. Workers p
 
 ---
 
-## 🚀 Como Rodar
+## 🚀 Getting Started
 
-### Pré-requisitos
+### Prerequisites
 
 - Docker + Docker Compose
 - Go 1.21+
 
 ```bash
-# Clone o projeto
+# Clone the project
 git clone https://github.com/gabrielksneiva/go-financial-transactions.git
 cd go-financial-transactions
 
-# Suba os serviços (Kafka, Redis, PostgreSQL)
+# Start required services (Kafka, Redis, PostgreSQL)
 docker-compose up -d
 
-# Rode a aplicação
+# Run the application
 go run main.go
 ```
 
 ---
 
-## 🧪 Testes
+## 🧪 Tests
 
 ```bash
-# Executar todos os testes unitários
+# Run all unit tests
 go test ./... -coverprofile=coverage.out
 
-# Ver cobertura
+# View coverage report
 go tool cover -func=coverage.out
 ```
 
-✅ Testes de unidades cobrindo: services, API handlers, middleware, workers, repositories, Kafka producer e consumer.
+✅ The project includes comprehensive unit tests for services, handlers, middleware, workers, repositories, and Kafka components.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```bash
 .
-├── api/               # Handlers, rotas e inicialização HTTP (Fiber)
-├── config/            # Configuração da aplicação
+├── api/               # HTTP handlers and routing (Fiber)
+├── config/            # Configuration logic
 ├── consumer/          # Kafka consumer
 ├── producer/          # Kafka producer
-├── domain/            # Entidades e interfaces
-├── services/          # Lógica de negócio
-├── workers/           # Workers paralelos
-├── repositories/      # Integração com banco de dados
-├── mocks/             # Mocks para testes
-├── main.go            # Entry point
-├── go.mod / go.sum    # Dependências
-└── README.md          # Documentação do projeto
+├── domain/            # Entities and interfaces
+├── services/          # Business logic
+├── workers/           # Transaction workers
+├── repositories/      # Database access layer
+├── mocks/             # Mocks for testing
+├── main.go            # Application entry point
+├── go.mod / go.sum    # Dependencies
+└── README.md          # Project documentation
 ```
 
 ---
 
-## 🧠 Conceitos Demonstrados
+## 🧠 Key Concepts
 
-- Go routines, canais e `context.Context`
-- Injeção de dependência
-- Testes com `sqlmock` e `testify`
-- Arquitetura orientada a mensagens
-- Pipeline CI/CD com GitHub Actions
-- Rate Limiting baseado em Redis TTL
-- Modularização e clean code
-
----
-
-## 🎯 Próximos Passos
-
-- [ ] Swagger para documentação de endpoints
-- [ ] Integração com Fireblocks API
-- [ ] Deploy automatizado via Docker + Render ou Railway
-- [ ] Observabilidade com Prometheus + Grafana
+- Goroutines, channels and context cancellation
+- Dependency injection
+- Testing with `sqlmock` and `testify`
+- Message-driven architecture with Kafka
+- CI/CD with GitHub Actions
+- Redis-based rate limiting
+- Clean code and modularity
 
 ---
 
-## 👨‍💻 Autor
+## 🎯 Roadmap
+
+- [ ] Swagger documentation for API endpoints
+- [ ] Fireblocks API integration
+- [ ] Automated deployment with Docker + Render or Railway
+- [ ] Observability with Prometheus and Grafana
+
+---
+
+## 👨‍💻 Author
 
 **Gabriel Kryzanovski dos Santos Neiva**  
-[GitHub](https://github.com/gabrielksneiva) | [LinkedIn](https://linkedin.com/in/gabrielksneiva)
-
----
-
-## 📄 Licença
-
-Distribuído sob a licença MIT. Veja [`LICENSE`](LICENSE) para mais detalhes.
+[GitHub](https://github.com/gabrielksneiva) • [LinkedIn](https://linkedin.com/in/gabrielksneiva)
