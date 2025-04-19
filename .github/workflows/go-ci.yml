@@ -2,21 +2,29 @@ name: Go CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-  build:
+  testes-e-build:
     name: Testes e Build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Instalar Go
+      - name: 🔄 Checkout do código
+        uses: actions/checkout@v3
+
+      - name: 🏗️ Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.20
-      - name: Instalar dependências
+          go-version: 1.21
+
+      - name: 📦 Instalar dependências
         run: go mod tidy
-      - name: Rodar testes
-        run: go test ./... -v -cover
+
+      - name: ✅ Rodar testes
+        run: go test ./... -v -coverprofile=coverage.out
+
+      - name: 📊 Cobertura
+        run: go tool cover -func=coverage.out
