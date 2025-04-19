@@ -23,8 +23,11 @@ jobs:
       - name: 📦 Instalar dependências
         run: go mod tidy
 
-      - name: ✅ Rodar testes unitários
-        run: go test -v -coverprofile=coverage.out $(go list ./... | grep -v /integration)
+      - name: ✅ Rodar testes unitários (exceto integração)
+        run: |
+          packages=$(go list ./... | grep -v /integration || true)
+          go test -v -coverprofile=coverage.out $packages
 
-      - name: 📊 Cobertura
-        run: go tool cover -func=coverage.out
+      - name: 📊 Mostrar cobertura (sem falhar)
+        run: |
+          go tool cover -func=coverage.out || true
