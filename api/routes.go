@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/gabrielksneiva/go-financial-transactions/utils"
+	"github.com/gabrielksneiva/go-financial-transactions/api/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -10,7 +10,7 @@ func RegisterRoutes(app *fiber.App, h *Handlers) {
 	app.Post("/login", h.LoginHandler)
 	app.Post("/register", h.RegisterHandler)
 
-	app.Use(utils.JWTMiddleware())
+	app.Use(middleware.JWTMiddleware())
 
 	api := app.Group("/api")
 	api.Post("/deposit", h.CreateDepositHandler)

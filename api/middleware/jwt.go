@@ -1,6 +1,7 @@
-package utils
+package middleware
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -11,6 +12,11 @@ import (
 )
 
 func GenerateJWT(user *d.User) (string, error) {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		return "", fmt.Errorf("JWT_SECRET is not set")
+	}
+
 	claims := jwt.MapClaims{
 		"user_id": user.ID,
 		"email":   user.Email,
@@ -19,7 +25,7 @@ func GenerateJWT(user *d.User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	return token.SignedString([]byte(secret))
 }
 
 func JWTMiddleware() fiber.Handler {

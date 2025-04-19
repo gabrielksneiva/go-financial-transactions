@@ -1,8 +1,8 @@
 package api
 
 import (
+	"github.com/gabrielksneiva/go-financial-transactions/api/middleware"
 	"github.com/gabrielksneiva/go-financial-transactions/services"
-	"github.com/gabrielksneiva/go-financial-transactions/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -157,7 +157,7 @@ func (h *Handlers) LoginHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	token, err := utils.GenerateJWT(user) // Função que você vai criar
+	token, err := middleware.GenerateJWT(user) // Função que você vai criar
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
