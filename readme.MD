@@ -116,4 +116,4 @@ Desenvolvido por **Gabriel K. S. Neiva**
 
 ## 📄 Licença
 
-MIT
+MIT License © 2023 Gabriel Krzyzanovski dos Santos Neiva
