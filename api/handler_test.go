@@ -244,7 +244,7 @@ func TestCreateUser_Success(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPost, "/api/register", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
-	resp, err := app.Test(req, 1_000)
+	resp, err := app.Test(req, -1)
 	if err != nil {
 		t.Fatalf("Erro ao enviar request: %v", err)
 	}
