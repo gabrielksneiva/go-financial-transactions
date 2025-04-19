@@ -4,7 +4,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -13,15 +12,10 @@ import (
 	"github.com/gabrielksneiva/go-financial-transactions/consumer"
 	"github.com/gabrielksneiva/go-financial-transactions/domain"
 	"github.com/gabrielksneiva/go-financial-transactions/workers"
-	"github.com/joho/godotenv"
 )
 
 func RunApp() {
 	fmt.Println("🚀 Starting application...")
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Erro ao carregar o arquivo .env")
-	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
