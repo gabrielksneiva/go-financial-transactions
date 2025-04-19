@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 // main_test.go
 package main
 
