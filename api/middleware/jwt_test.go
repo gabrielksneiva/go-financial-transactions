@@ -14,23 +14,27 @@ import (
 )
 
 func setup() string {
-	// Definindo a variável de ambiente para o JWT_SECRET
-	if secret := os.Getenv("JWT_SECRET"); secret == "" {
-		os.Setenv("JWT_SECRET", "secret") // Garantir que o JWT_SECRET esteja configurado
-		return secret
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		// Definir JWT_SECRET caso não esteja configurada
+		os.Setenv("JWT_SECRET", "testsecret")
+		return "testsecret"
 	}
-	return os.Getenv("JWT_SECRET")
+	return secret
 }
 
 func TestGenerateJWT_Success(t *testing.T) {
 	// Setup
-	secret := setup()
+	_ = setup()
 
 	user := &domain.User{
 		ID:    1,
 		Email: "test@example.com",
 		Role:  "user",
 	}
+
+	os.Setenv("JWT_SECRET", "testsecret") // Defina a chave corretamente
+	defer os.Unsetenv("JWT_SECRET")
 
 	token, err := middleware.GenerateJWT(user)
 
@@ -44,7 +48,7 @@ func TestGenerateJWT_Success(t *testing.T) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			t.Errorf("expected signing method to be HMAC")
 		}
-		return []byte(secret), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil // Use o JWT_SECRET corretamente
 	})
 	assert.NoError(t, err)
 	assert.True(t, parsedToken.Valid)
@@ -57,6 +61,10 @@ func TestGenerateJWT_Success(t *testing.T) {
 }
 
 func TestJWTMiddleware_ValidToken(t *testing.T) {
+	// Garantir que o JWT_SECRET está configurado antes de cada teste
+	os.Setenv("JWT_SECRET", "testsecret")
+	defer os.Unsetenv("JWT_SECRET") // Limpar a variável após o teste
+
 	app := fiber.New()
 
 	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
@@ -127,6 +135,10 @@ func TestJWTMiddleware_InvalidAuthorizationFormat(t *testing.T) {
 }
 
 func TestJWTMiddleware_InvalidToken(t *testing.T) {
+	// Garantir que o JWT_SECRET está configurado antes de cada teste
+	os.Setenv("JWT_SECRET", "testsecret")
+	defer os.Unsetenv("JWT_SECRET") // Limpar a variável após o teste
+
 	app := fiber.New()
 
 	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {

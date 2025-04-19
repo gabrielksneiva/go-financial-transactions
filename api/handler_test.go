@@ -226,13 +226,25 @@ func TestDepositHandler_Unauthorized(t *testing.T) {
 func TestCreateUser_Success(t *testing.T) {
 	app, _, _, _, userRepo, _ := setupTestApp()
 
-	userRepo.On("Create", mock.AnythingOfType("domain.User")).Return(nil)
+	userRepo.On("Create", mock.MatchedBy(func(u interface{}) bool {
+		user, ok := u.(*domain.User)
+		if !ok {
+			// Tenta converter se vier como valor
+			usr, ok := u.(domain.User)
+			if ok {
+				user = &usr
+			} else {
+				return false
+			}
+		}
+		return user.Email == "john@example.com"
+	})).Return(nil)
 
 	body := []byte(`{"name":"John","email":"john@example.com","password":"secret"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/register", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
-	resp, err := app.Test(req)
+	resp, err := app.Test(req, 1_000) // adiciona timeout
 	assert.NoError(t, err)
 	assert.Equal(t, fiber.StatusCreated, resp.StatusCode)
 }
