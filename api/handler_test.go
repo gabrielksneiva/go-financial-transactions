@@ -244,8 +244,11 @@ func TestCreateUser_Success(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPost, "/api/register", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 
-	resp, err := app.Test(req, 1_000) // adiciona timeout
-	assert.NoError(t, err)
+	resp, err := app.Test(req, 1_000)
+	if err != nil {
+		t.Fatalf("Erro ao enviar request: %v", err)
+	}
+	assert.NotNil(t, resp)
 	assert.Equal(t, fiber.StatusCreated, resp.StatusCode)
 }
 
