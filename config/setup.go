@@ -30,13 +30,19 @@ type AppResources struct {
 }
 
 func LoadConfig() Config {
-	_ = godotenv.Load()
-	redisDB, err := strconv.Atoi(os.Getenv("REDIS_DB"))
+	err := godotenv.Load(".env") // tenta carregar da raiz se estiver rodando `go run main.go`
+	if err != nil {
+		_ = godotenv.Load("../.env") // tenta carregar da raiz se estiver em `integration/`
+	}
+
+	redisDBStr := GetEnv("REDIS_DB", "0") // default: "0"
+	redisDB, err := strconv.Atoi(redisDBStr)
 	if err != nil {
 		log.Fatalf("❌ Erro ao converter REDIS_DB para inteiro: %v", err)
 	}
+
 	return Config{
-		APIPort:      getEnv("API_PORT", "8080"),
+		APIPort:      GetEnv("API_PORT", "8080"),
 		KafkaBroker:  os.Getenv("KAFKA_BROKER"),
 		KafkaTopic:   os.Getenv("KAFKA_TOPIC"),
 		KafkaGroupID: os.Getenv("KAFKA_GROUP_ID"),
@@ -51,7 +57,7 @@ func LoadConfig() Config {
 	}
 }
 
-func getEnv(key, defaultVal string) string {
+func GetEnv(key, defaultVal string) string {
 	if val := os.Getenv(key); val != "" {
 		return val
 	}

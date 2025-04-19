@@ -66,6 +66,52 @@ func (_c *UserRepository_Create_Call) RunAndReturn(run func(domain.User) error) 
 	return _c
 }
 
+// Delete provides a mock function with given fields: email
+func (_m *UserRepository) Delete(email string) error {
+	ret := _m.Called(email)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Delete")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(email)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UserRepository_Delete_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Delete'
+type UserRepository_Delete_Call struct {
+	*mock.Call
+}
+
+// Delete is a helper method to define mock.On call
+//   - email string
+func (_e *UserRepository_Expecter) Delete(email interface{}) *UserRepository_Delete_Call {
+	return &UserRepository_Delete_Call{Call: _e.mock.On("Delete", email)}
+}
+
+func (_c *UserRepository_Delete_Call) Run(run func(email string)) *UserRepository_Delete_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string))
+	})
+	return _c
+}
+
+func (_c *UserRepository_Delete_Call) Return(_a0 error) *UserRepository_Delete_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *UserRepository_Delete_Call) RunAndReturn(run func(string) error) *UserRepository_Delete_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetByEmail provides a mock function with given fields: email
 func (_m *UserRepository) GetByEmail(email string) (*domain.User, error) {
 	ret := _m.Called(email)

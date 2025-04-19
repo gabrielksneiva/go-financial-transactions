@@ -78,6 +78,64 @@ func (_c *TransactionRepository_GetByUser_Call) RunAndReturn(run func(uint) ([]d
 	return _c
 }
 
+// GetTransactionsByUserID provides a mock function with given fields: userID
+func (_m *TransactionRepository) GetTransactionsByUserID(userID uint) ([]domain.Transaction, error) {
+	ret := _m.Called(userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetTransactionsByUserID")
+	}
+
+	var r0 []domain.Transaction
+	var r1 error
+	if rf, ok := ret.Get(0).(func(uint) ([]domain.Transaction, error)); ok {
+		return rf(userID)
+	}
+	if rf, ok := ret.Get(0).(func(uint) []domain.Transaction); ok {
+		r0 = rf(userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]domain.Transaction)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// TransactionRepository_GetTransactionsByUserID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetTransactionsByUserID'
+type TransactionRepository_GetTransactionsByUserID_Call struct {
+	*mock.Call
+}
+
+// GetTransactionsByUserID is a helper method to define mock.On call
+//   - userID uint
+func (_e *TransactionRepository_Expecter) GetTransactionsByUserID(userID interface{}) *TransactionRepository_GetTransactionsByUserID_Call {
+	return &TransactionRepository_GetTransactionsByUserID_Call{Call: _e.mock.On("GetTransactionsByUserID", userID)}
+}
+
+func (_c *TransactionRepository_GetTransactionsByUserID_Call) Run(run func(userID uint)) *TransactionRepository_GetTransactionsByUserID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(uint))
+	})
+	return _c
+}
+
+func (_c *TransactionRepository_GetTransactionsByUserID_Call) Return(_a0 []domain.Transaction, _a1 error) *TransactionRepository_GetTransactionsByUserID_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *TransactionRepository_GetTransactionsByUserID_Call) RunAndReturn(run func(uint) ([]domain.Transaction, error)) *TransactionRepository_GetTransactionsByUserID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // Save provides a mock function with given fields: tx
 func (_m *TransactionRepository) Save(tx domain.Transaction) error {
 	ret := _m.Called(tx)

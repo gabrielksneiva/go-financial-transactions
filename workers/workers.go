@@ -39,7 +39,10 @@ func worker(
 				// Lock user's balance row
 				if err := txDB.Clauses(clause.Locking{Strength: "UPDATE"}).
 					Where("user_id = ?", tx.UserID).
-					FirstOrCreate(&balance, d.Balance{UserID: tx.UserID}).Error; err != nil {
+					FirstOrCreate(&balance, d.Balance{
+						UserID: tx.UserID,
+						Amount: 0,
+					}).Error; err != nil {
 					return err
 				}
 

@@ -1,33 +1,33 @@
 .PHONY: test coverage cover-html lint fmt all coverage-html
 
+WIN_DIR = /mnt/c/Users/gabri/Documents/
+
 # Formata o código
 fmt:
 	go fmt ./...
 
-# Roda o lint (se tiver o golangci-lint instalado)
+# Roda o lint (requer o golangci-lint instalado)
 lint:
 	golangci-lint run
 
-# Gera um arquivo de cobertura
+# Roda os testes com cobertura e gera arquivo coverage.out
 coverage:
 	go test ./... -coverprofile=coverage.out
 
-# Gera o HTML da cobertura e copia pro Windows
+# Gera coverage.html com gocov-html via go run
 coverage-html: coverage
-	go install github.com/axw/gocov/gocov@latest
-	go install github.com/matm/gocov-html/cmd/gocov-html@latest
-	gocov test ./... | gocov-html > coverage.html
-	cp coverage.html /mnt/c/Users/gabri/Documents/
-	@echo "✔ coverage.html copiado para /mnt/c/Users/gabri/Documents/"
+	go run github.com/axw/gocov/gocov@latest test ./... | \
+	go run github.com/matm/gocov-html/cmd/gocov-html@latest > coverage.html
+	cp coverage.html $(WIN_DIR)
+	@echo "✔ coverage.html copiado para $(WIN_DIR)"
 
-# Roda todos os testes com cobertura + gera HTML
+# Roda todos os testes com cobertura e exporta HTML
 test:
 	go test ./... -coverprofile=coverage.out
-	go install github.com/axw/gocov/gocov@latest
-	go install github.com/matm/gocov-html/cmd/gocov-html@latest
-	gocov test ./... | gocov-html > coverage.html
-	cp coverage.html /mnt/c/Users/gabri/Documents/
-	@echo "✔ Testes rodados e coverage.html copiado para /mnt/c/Users/gabri/Documents/"
+	go run github.com/axw/gocov/gocov@latest test ./... | \
+	go run github.com/matm/gocov-html/cmd/gocov-html@latest > coverage.html
+	cp coverage.html $(WIN_DIR)
+	@echo "✔ Testes rodados e coverage.html copiado para $(WIN_DIR)"
 
-# Roda tudo
+# Roda tudo: fmt, test, lint
 all: fmt test lint

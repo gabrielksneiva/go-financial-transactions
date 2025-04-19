@@ -46,6 +46,7 @@ type RateLimiter interface {
 type TransactionRepository interface {
 	Save(tx Transaction) error
 	GetByUser(userID uint) ([]Transaction, error)
+	GetTransactionsByUserID(userID uint) ([]Transaction, error)
 }
 
 type BalanceRepository interface {
@@ -57,4 +58,5 @@ type UserRepository interface {
 	Create(user User) error
 	GetByEmail(email string) (*User, error)
 	GetByID(id uint) (*User, error)
+	Delete(email string) error
 }

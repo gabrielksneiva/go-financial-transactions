@@ -11,13 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-// Mock do UserRepository
-type mockUser struct {
-	mock.Mock
-}
 
 func setup() string {
 	// Definindo a variável de ambiente para o JWT_SECRET

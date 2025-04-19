@@ -43,6 +43,7 @@ func (s *WithdrawService) Withdraw(userID uint, amount float64) error {
 	tx := d.Transaction{
 		ID:        uuid.New().String(),
 		UserID:    userID,
+		User:      d.User{ID: userID},
 		Amount:    -amount,
 		Timestamp: time.Now(),
 		Type:      "withdrawal",

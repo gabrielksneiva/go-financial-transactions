@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
 	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 
 	"gorm.io/gorm"
@@ -56,6 +57,10 @@ func (r *GormRepository) Create(user d.User) error {
 	return r.db.Create(&user).Error
 }
 
+func (r *GormRepository) Delete(email string) error {
+	return r.db.Where("email = ?", email).Delete(&d.User{}).Error
+}
+
 func (r *GormRepository) GetByEmail(email string) (*d.User, error) {
 	var user *d.User
 	err := r.db.Where("email = ?", email).First(&user).Error
@@ -66,4 +71,27 @@ func (r *GormRepository) GetByID(id uint) (*d.User, error) {
 	var user *d.User
 	err := r.db.Where("id = ?", id).First(&user).Error
 	return user, err
+}
+
+func (r *GormRepository) GetTransactionsByUserID(userID uint) ([]d.Transaction, error) {
+	var txs []d.Transaction
+
+	err := r.db.
+		Where("user_id = ?", userID).
+		Order("timestamp ASC, id ASC").
+		Find(&txs).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return txs, nil
+}
+
+func (r *GormRepository) GetDB() *gorm.DB {
+	return r.db
+}
+
+func (r *GormRepository) DeleteTransactionsByUserID(userID uint) error {
+	return r.db.Where("user_id = ?", userID).Delete(&domain.Transaction{}).Error
 }
