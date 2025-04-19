@@ -28,6 +28,17 @@ jobs:
           packages=$(go list ./... | grep -v /integration || true)
           go test -v -coverprofile=coverage.out $packages
 
-      - name: 📊 Mostrar cobertura (sem falhar)
+      - name: 📊 Gerar coverage.html
         run: |
-          go tool cover -func=coverage.out || true
+          go tool cover -html=coverage.out -o coverage.html
+
+      - name: 📤 Upload do coverage.html como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.html
+
+      - name: 🔍 Lint com golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest

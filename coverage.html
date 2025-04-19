@@ -168,7 +168,7 @@ p {
 	<body>
 		<div id="doctitle">Coverage Report</div>
         
-        <div id="about">Generated on Sat, 19 Apr 2025 15:16:09 -03 with <a href="https://github.com/matm/gocov-html">gocov-html</a></div>
+        <div id="about">Generated on Sat, 19 Apr 2025 16:34:29 -03 with <a href="https://github.com/matm/gocov-html">gocov-html</a></div>
         
         
         <div class="funcname">Report Overview</div>
@@ -194,8 +194,8 @@ p {
             
             <tr id="s_pkg_github.com/gabrielksneiva/go-financial-transactions/config">
                 <td><code><a href="#pkg_github.com/gabrielksneiva/go-financial-transactions/config">github.com/gabrielksneiva/go-financial-transactions/config</a></code></td>
-                <td class="percent"><code>0.0%</code></td>
-                <td class="linecount"><code>0/28</code></td>
+                <td class="percent"><code>35.7%</code></td>
+                <td class="linecount"><code>10/28</code></td>
             </tr>
             
             <tr id="s_pkg_github.com/gabrielksneiva/go-financial-transactions/consumer">
@@ -224,8 +224,8 @@ p {
             
             <tr id="s_pkg_github.com/gabrielksneiva/go-financial-transactions/services">
                 <td><code><a href="#pkg_github.com/gabrielksneiva/go-financial-transactions/services">github.com/gabrielksneiva/go-financial-transactions/services</a></code></td>
-                <td class="percent"><code>39.3%</code></td>
-                <td class="linecount"><code>24/61</code></td>
+                <td class="percent"><code>78.7%</code></td>
+                <td class="linecount"><code>48/61</code></td>
             </tr>
             
             <tr id="s_pkg_github.com/gabrielksneiva/go-financial-transactions/workers">
@@ -3146,11 +3146,41 @@ p {
         
         <div id="pkg_github.com/gabrielksneiva/go-financial-transactions/config" class="funcname">
             Package Overview: github.com/gabrielksneiva/go-financial-transactions/config
-            <span class="packageTotal">0.0%</span>
+            <span class="packageTotal">35.7%</span>
         </div>
         <p>Please select a function to see what's left for testing.</p>
 
         <table class="overview">
+        
+            <tr id="s_fn_GetEnv">
+                <td>
+                    <code><a href="#fn_GetEnv">GetEnv(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/config/setup.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>3/3</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_LoadConfig">
+                <td>
+                    <code><a href="#fn_LoadConfig">LoadConfig(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/config/setup.go</code>
+                </td>
+                <td class="percent">
+                    <code>87.5%</code>
+                </td>
+                <td class="linecount">
+                    <code>7/8</code>
+                </td>
+            </tr>
         
             <tr id="s_fn_SetupApplication">
                 <td>
@@ -3167,39 +3197,258 @@ p {
                 </td>
             </tr>
         
-            <tr id="s_fn_LoadConfig">
-                <td>
-                    <code><a href="#fn_LoadConfig">LoadConfig(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/config/setup.go</code>
-                </td>
-                <td class="percent">
-                    <code>0.0%</code>
-                </td>
-                <td class="linecount">
-                    <code>0/8</code>
-                </td>
-            </tr>
-        
-            <tr id="s_fn_getEnv">
-                <td>
-                    <code><a href="#fn_getEnv">getEnv(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/config/setup.go</code>
-                </td>
-                <td class="percent">
-                    <code>0.0%</code>
-                </td>
-                <td class="linecount">
-                    <code>0/3</code>
-                </td>
-            </tr>
-        
         </table>
 
         
+        
+        <div class="funcname" id="fn_GetEnv">func GetEnv</div>
+        <div class="info">
+            <a href="#s_fn_GetEnv">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>60</td>
+                <td>
+                    <code><pre>func GetEnv(key, defaultVal string) string {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>61</td>
+                <td>
+                    <code><pre>        if val := os.Getenv(key); val != &#34;&#34; {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>62</td>
+                <td>
+                    <code><pre>                return val</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>63</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>64</td>
+                <td>
+                    <code><pre>        return defaultVal</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>65</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_LoadConfig">func LoadConfig</div>
+        <div class="info">
+            <a href="#s_fn_LoadConfig">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>32</td>
+                <td>
+                    <code><pre>func LoadConfig() Config {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>33</td>
+                <td>
+                    <code><pre>        err := godotenv.Load(&#34;.env&#34;) // tenta carregar da raiz se estiver rodando `go run main.go`</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>34</td>
+                <td>
+                    <code><pre>        if err != nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>35</td>
+                <td>
+                    <code><pre>                _ = godotenv.Load(&#34;../.env&#34;) // tenta carregar da raiz se estiver em `integration/`</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>36</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>37</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>38</td>
+                <td>
+                    <code><pre>        redisDBStr := GetEnv(&#34;REDIS_DB&#34;, &#34;0&#34;) // default: &#34;0&#34;</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>39</td>
+                <td>
+                    <code><pre>        redisDB, err := strconv.Atoi(redisDBStr)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>40</td>
+                <td>
+                    <code><pre>        if err != nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr class="miss">
+                <td>41</td>
+                <td>
+                    <code><pre>                log.Fatalf(&#34;❌ Erro ao converter REDIS_DB para inteiro: %v&#34;, err)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>42</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>43</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>44</td>
+                <td>
+                    <code><pre>        return Config{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>45</td>
+                <td>
+                    <code><pre>                APIPort:      GetEnv(&#34;API_PORT&#34;, &#34;8080&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>46</td>
+                <td>
+                    <code><pre>                KafkaBroker:  os.Getenv(&#34;KAFKA_BROKER&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>47</td>
+                <td>
+                    <code><pre>                KafkaTopic:   os.Getenv(&#34;KAFKA_TOPIC&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>48</td>
+                <td>
+                    <code><pre>                KafkaGroupID: os.Getenv(&#34;KAFKA_GROUP_ID&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>49</td>
+                <td>
+                    <code><pre>                DBHost:       os.Getenv(&#34;DB_HOST&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>50</td>
+                <td>
+                    <code><pre>                DBPort:       os.Getenv(&#34;DB_PORT&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>51</td>
+                <td>
+                    <code><pre>                DBUser:       os.Getenv(&#34;DB_USER&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>52</td>
+                <td>
+                    <code><pre>                DBPassword:   os.Getenv(&#34;DB_PASSWORD&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>53</td>
+                <td>
+                    <code><pre>                DBName:       os.Getenv(&#34;DB_NAME&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>54</td>
+                <td>
+                    <code><pre>                RedisHost:    os.Getenv(&#34;REDIS_HOST&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>55</td>
+                <td>
+                    <code><pre>                RedisDB:      redisDB,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>56</td>
+                <td>
+                    <code><pre>                JwtSecret:    os.Getenv(&#34;JWT_SECRET&#34;),</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>57</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>58</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
         
         <div class="funcname" id="fn_SetupApplication">func SetupApplication</div>
         <div class="info">
@@ -3461,259 +3710,10 @@ p {
             </tr>
             
         </table>
-        
-        <div class="funcname" id="fn_LoadConfig">func LoadConfig</div>
-        <div class="info">
-            <a href="#s_fn_LoadConfig">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>32</td>
-                <td>
-                    <code><pre>func LoadConfig() Config {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>33</td>
-                <td>
-                    <code><pre>        err := godotenv.Load(&#34;.env&#34;) // tenta carregar da raiz se estiver rodando `go run main.go`</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>34</td>
-                <td>
-                    <code><pre>        if err != nil {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>35</td>
-                <td>
-                    <code><pre>                _ = godotenv.Load(&#34;../.env&#34;) // tenta carregar da raiz se estiver em `integration/`</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>36</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>37</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>38</td>
-                <td>
-                    <code><pre>        redisDBStr := getEnv(&#34;REDIS_DB&#34;, &#34;0&#34;) // default: &#34;0&#34;</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>39</td>
-                <td>
-                    <code><pre>        redisDB, err := strconv.Atoi(redisDBStr)</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>40</td>
-                <td>
-                    <code><pre>        if err != nil {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>41</td>
-                <td>
-                    <code><pre>                log.Fatalf(&#34;❌ Erro ao converter REDIS_DB para inteiro: %v&#34;, err)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>42</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>43</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>44</td>
-                <td>
-                    <code><pre>        return Config{</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>45</td>
-                <td>
-                    <code><pre>                APIPort:      getEnv(&#34;API_PORT&#34;, &#34;8080&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>46</td>
-                <td>
-                    <code><pre>                KafkaBroker:  os.Getenv(&#34;KAFKA_BROKER&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>47</td>
-                <td>
-                    <code><pre>                KafkaTopic:   os.Getenv(&#34;KAFKA_TOPIC&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>48</td>
-                <td>
-                    <code><pre>                KafkaGroupID: os.Getenv(&#34;KAFKA_GROUP_ID&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>49</td>
-                <td>
-                    <code><pre>                DBHost:       os.Getenv(&#34;DB_HOST&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>50</td>
-                <td>
-                    <code><pre>                DBPort:       os.Getenv(&#34;DB_PORT&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>51</td>
-                <td>
-                    <code><pre>                DBUser:       os.Getenv(&#34;DB_USER&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>52</td>
-                <td>
-                    <code><pre>                DBPassword:   os.Getenv(&#34;DB_PASSWORD&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>53</td>
-                <td>
-                    <code><pre>                DBName:       os.Getenv(&#34;DB_NAME&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>54</td>
-                <td>
-                    <code><pre>                RedisHost:    os.Getenv(&#34;REDIS_HOST&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>55</td>
-                <td>
-                    <code><pre>                RedisDB:      redisDB,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>56</td>
-                <td>
-                    <code><pre>                JwtSecret:    os.Getenv(&#34;JWT_SECRET&#34;),</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>57</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>58</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
-        <div class="funcname" id="fn_getEnv">func getEnv</div>
-        <div class="info">
-            <a href="#s_fn_getEnv">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/config/setup.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>60</td>
-                <td>
-                    <code><pre>func getEnv(key, defaultVal string) string {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>61</td>
-                <td>
-                    <code><pre>        if val := os.Getenv(key); val != &#34;&#34; {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>62</td>
-                <td>
-                    <code><pre>                return val</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>63</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>64</td>
-                <td>
-                    <code><pre>        return defaultVal</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>65</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
          
 
         <!--    Can be parsed by external script
-                PACKAGE:github.com/gabrielksneiva/go-financial-transactions/config DONE:0.0
+                PACKAGE:github.com/gabrielksneiva/go-financial-transactions/config DONE:35.7
         -->
         
         <div id="pkg_github.com/gabrielksneiva/go-financial-transactions/consumer" class="funcname">
@@ -16211,30 +16211,30 @@ p {
         
         <div id="pkg_github.com/gabrielksneiva/go-financial-transactions/services" class="funcname">
             Package Overview: github.com/gabrielksneiva/go-financial-transactions/services
-            <span class="packageTotal">39.3%</span>
+            <span class="packageTotal">78.7%</span>
         </div>
         <p>Please select a function to see what's left for testing.</p>
 
         <table class="overview">
         
-            <tr id="s_fn_NewDepositService">
+            <tr id="s_fn_WithdrawService.Withdraw">
                 <td>
-                    <code><a href="#fn_NewDepositService">NewDepositService(...)</a></code>
+                    <code><a href="#fn_WithdrawService.Withdraw">WithdrawService.Withdraw(...)</a></code>
                 </td>
                 <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/deposits_service.go</code>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/withdraws_service.go</code>
                 </td>
                 <td class="percent">
                     <code>100.0%</code>
                 </td>
                 <td class="linecount">
-                    <code>1/1</code>
+                    <code>9/9</code>
                 </td>
             </tr>
         
-            <tr id="s_fn_NewStatementService">
+            <tr id="s_fn_StatementService.GetStatement">
                 <td>
-                    <code><a href="#fn_NewStatementService">NewStatementService(...)</a></code>
+                    <code><a href="#fn_StatementService.GetStatement">StatementService.GetStatement(...)</a></code>
                 </td>
                 <td>
                     <code>github.com/gabrielksneiva/go-financial-transactions/services/statement_service.go</code>
@@ -16243,7 +16243,52 @@ p {
                     <code>100.0%</code>
                 </td>
                 <td class="linecount">
-                    <code>1/1</code>
+                    <code>7/7</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_UserService.Authenticate">
+                <td>
+                    <code><a href="#fn_UserService.Authenticate">UserService.Authenticate(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/users_service.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>7/7</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_DepositService.Deposit">
+                <td>
+                    <code><a href="#fn_DepositService.Deposit">DepositService.Deposit(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/deposits_service.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>6/6</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_StatementService.GetBalance">
+                <td>
+                    <code><a href="#fn_StatementService.GetBalance">StatementService.GetBalance(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/statement_service.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>4/4</code>
                 </td>
             </tr>
         
@@ -16253,6 +16298,36 @@ p {
                 </td>
                 <td>
                     <code>github.com/gabrielksneiva/go-financial-transactions/services/statement_service.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>1/1</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_NewUserService">
+                <td>
+                    <code><a href="#fn_NewUserService">NewUserService(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/users_service.go</code>
+                </td>
+                <td class="percent">
+                    <code>100.0%</code>
+                </td>
+                <td class="linecount">
+                    <code>1/1</code>
+                </td>
+            </tr>
+        
+            <tr id="s_fn_NewDepositService">
+                <td>
+                    <code><a href="#fn_NewDepositService">NewDepositService(...)</a></code>
+                </td>
+                <td>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/deposits_service.go</code>
                 </td>
                 <td class="percent">
                     <code>100.0%</code>
@@ -16277,63 +16352,18 @@ p {
                 </td>
             </tr>
         
-            <tr id="s_fn_WithdrawService.Withdraw">
+            <tr id="s_fn_NewStatementService">
                 <td>
-                    <code><a href="#fn_WithdrawService.Withdraw">WithdrawService.Withdraw(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/withdraws_service.go</code>
-                </td>
-                <td class="percent">
-                    <code>88.9%</code>
-                </td>
-                <td class="linecount">
-                    <code>8/9</code>
-                </td>
-            </tr>
-        
-            <tr id="s_fn_StatementService.GetBalance">
-                <td>
-                    <code><a href="#fn_StatementService.GetBalance">StatementService.GetBalance(...)</a></code>
+                    <code><a href="#fn_NewStatementService">NewStatementService(...)</a></code>
                 </td>
                 <td>
                     <code>github.com/gabrielksneiva/go-financial-transactions/services/statement_service.go</code>
                 </td>
                 <td class="percent">
-                    <code>75.0%</code>
+                    <code>100.0%</code>
                 </td>
                 <td class="linecount">
-                    <code>3/4</code>
-                </td>
-            </tr>
-        
-            <tr id="s_fn_StatementService.GetStatement">
-                <td>
-                    <code><a href="#fn_StatementService.GetStatement">StatementService.GetStatement(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/statement_service.go</code>
-                </td>
-                <td class="percent">
-                    <code>71.4%</code>
-                </td>
-                <td class="linecount">
-                    <code>5/7</code>
-                </td>
-            </tr>
-        
-            <tr id="s_fn_DepositService.Deposit">
-                <td>
-                    <code><a href="#fn_DepositService.Deposit">DepositService.Deposit(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/deposits_service.go</code>
-                </td>
-                <td class="percent">
-                    <code>66.7%</code>
-                </td>
-                <td class="linecount">
-                    <code>4/6</code>
+                    <code>1/1</code>
                 </td>
             </tr>
         
@@ -16345,25 +16375,25 @@ p {
                     <code>github.com/gabrielksneiva/go-financial-transactions/services/users_service.go</code>
                 </td>
                 <td class="percent">
-                    <code>0.0%</code>
+                    <code>90.9%</code>
                 </td>
                 <td class="linecount">
-                    <code>0/11</code>
+                    <code>10/11</code>
                 </td>
             </tr>
         
-            <tr id="s_fn_UserService.Authenticate">
+            <tr id="s_fn_ToTransactionDisplay">
                 <td>
-                    <code><a href="#fn_UserService.Authenticate">UserService.Authenticate(...)</a></code>
+                    <code><a href="#fn_ToTransactionDisplay">ToTransactionDisplay(...)</a></code>
                 </td>
                 <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/users_service.go</code>
+                    <code>github.com/gabrielksneiva/go-financial-transactions/services/transaction_formatter.go</code>
                 </td>
                 <td class="percent">
                     <code>0.0%</code>
                 </td>
                 <td class="linecount">
-                    <code>0/7</code>
+                    <code>0/4</code>
                 </td>
             </tr>
         
@@ -16397,250 +16427,9 @@ p {
                 </td>
             </tr>
         
-            <tr id="s_fn_ToTransactionDisplay">
-                <td>
-                    <code><a href="#fn_ToTransactionDisplay">ToTransactionDisplay(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/transaction_formatter.go</code>
-                </td>
-                <td class="percent">
-                    <code>0.0%</code>
-                </td>
-                <td class="linecount">
-                    <code>0/4</code>
-                </td>
-            </tr>
-        
-            <tr id="s_fn_NewUserService">
-                <td>
-                    <code><a href="#fn_NewUserService">NewUserService(...)</a></code>
-                </td>
-                <td>
-                    <code>github.com/gabrielksneiva/go-financial-transactions/services/users_service.go</code>
-                </td>
-                <td class="percent">
-                    <code>0.0%</code>
-                </td>
-                <td class="linecount">
-                    <code>0/1</code>
-                </td>
-            </tr>
-        
         </table>
 
         
-        
-        <div class="funcname" id="fn_NewDepositService">func NewDepositService</div>
-        <div class="info">
-            <a href="#s_fn_NewDepositService">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/deposits_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>21</td>
-                <td>
-                    <code><pre>func NewDepositService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer, rate d.RateLimiter) *DepositService {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>22</td>
-                <td>
-                    <code><pre>        return &amp;DepositService{</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>23</td>
-                <td>
-                    <code><pre>                Repo:        r,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>24</td>
-                <td>
-                    <code><pre>                BalanceRepo: b,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>25</td>
-                <td>
-                    <code><pre>                producer:    p,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>26</td>
-                <td>
-                    <code><pre>                RateLimiter: rate,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>27</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>28</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
-        <div class="funcname" id="fn_NewStatementService">func NewStatementService</div>
-        <div class="info">
-            <a href="#s_fn_NewStatementService">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>20</td>
-                <td>
-                    <code><pre>func NewStatementService(r d.TransactionRepository, b d.BalanceRepository) *StatementService {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>21</td>
-                <td>
-                    <code><pre>        return &amp;StatementService{</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>22</td>
-                <td>
-                    <code><pre>                Repo:        r,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>23</td>
-                <td>
-                    <code><pre>                BalanceRepo: b,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>24</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>25</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
-        <div class="funcname" id="fn_StatementService.GetTransactions">func StatementService.GetTransactions</div>
-        <div class="info">
-            <a href="#s_fn_StatementService.GetTransactions">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>37</td>
-                <td>
-                    <code><pre>func (s *StatementService) GetTransactions(userID uint) ([]d.Transaction, error) {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>38</td>
-                <td>
-                    <code><pre>        return s.Repo.GetByUser(userID)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>39</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
-        <div class="funcname" id="fn_NewWithdrawService">func NewWithdrawService</div>
-        <div class="info">
-            <a href="#s_fn_NewWithdrawService">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/withdraws_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>20</td>
-                <td>
-                    <code><pre>func NewWithdrawService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer, rate d.RateLimiter) *WithdrawService {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>21</td>
-                <td>
-                    <code><pre>        return &amp;WithdrawService{</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>22</td>
-                <td>
-                    <code><pre>                Repo:        r,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>23</td>
-                <td>
-                    <code><pre>                BalanceRepo: b,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>24</td>
-                <td>
-                    <code><pre>                producer:    p,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>25</td>
-                <td>
-                    <code><pre>                RateLimiter: rate,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>26</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>27</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
         
         <div class="funcname" id="fn_WithdrawService.Withdraw">func WithdrawService.Withdraw</div>
         <div class="info">
@@ -16663,7 +16452,7 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>31</td>
                 <td>
                     <code><pre>                return err</pre></code>
@@ -16826,64 +16615,6 @@ p {
             
         </table>
         
-        <div class="funcname" id="fn_StatementService.GetBalance">func StatementService.GetBalance</div>
-        <div class="info">
-            <a href="#s_fn_StatementService.GetBalance">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>28</td>
-                <td>
-                    <code><pre>func (s *StatementService) GetBalance(userID uint) (float64, error) {</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>29</td>
-                <td>
-                    <code><pre>        balance, err := s.BalanceRepo.GetBalance(userID)</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>30</td>
-                <td>
-                    <code><pre>        if err != nil {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>31</td>
-                <td>
-                    <code><pre>                return 0.0, err</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>32</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>33</td>
-                <td>
-                    <code><pre>        return balance.Amount, nil</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>34</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
         <div class="funcname" id="fn_StatementService.GetStatement">func StatementService.GetStatement</div>
         <div class="info">
             <a href="#s_fn_StatementService.GetStatement">Back</a>
@@ -16912,7 +16643,7 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>45</td>
                 <td>
                     <code><pre>                return nil, err</pre></code>
@@ -16947,7 +16678,7 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>50</td>
                 <td>
                     <code><pre>                return nil, err</pre></code>
@@ -17005,6 +16736,106 @@ p {
             
         </table>
         
+        <div class="funcname" id="fn_UserService.Authenticate">func UserService.Authenticate</div>
+        <div class="info">
+            <a href="#s_fn_UserService.Authenticate">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/users_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>38</td>
+                <td>
+                    <code><pre>func (s *UserService) Authenticate(email, password string) (*d.User, error) {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>39</td>
+                <td>
+                    <code><pre>        user, err := s.repo.GetByEmail(email)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>40</td>
+                <td>
+                    <code><pre>        if err != nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>41</td>
+                <td>
+                    <code><pre>                return &amp;d.User{}, errors.New(&#34;usuário não encontrado&#34;)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>42</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>43</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>44</td>
+                <td>
+                    <code><pre>        err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>45</td>
+                <td>
+                    <code><pre>        if err != nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>46</td>
+                <td>
+                    <code><pre>                return &amp;d.User{}, errors.New(&#34;senha inválida&#34;)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>47</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>48</td>
+                <td>
+                    <code><pre></pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>49</td>
+                <td>
+                    <code><pre>        return user, nil</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>50</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
         <div class="funcname" id="fn_DepositService.Deposit">func DepositService.Deposit</div>
         <div class="info">
             <a href="#s_fn_DepositService.Deposit">Back</a>
@@ -17022,14 +16853,14 @@ p {
             <tr>
                 <td>31</td>
                 <td>
-                    <code><pre>        if err := s.RateLimiter.CheckTransactionRateLimit(userID); err != nil {</pre></code>
+                    <code><pre>        if amount &lt;= 0 {</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>32</td>
                 <td>
-                    <code><pre>                return err</pre></code>
+                    <code><pre>                return errors.New(&#34;amount must be greater than zero&#34;)</pre></code>
                 </td>
             </tr>
             
@@ -17050,14 +16881,14 @@ p {
             <tr>
                 <td>35</td>
                 <td>
-                    <code><pre>        if amount &lt;= 0 {</pre></code>
+                    <code><pre>        if err := s.RateLimiter.CheckTransactionRateLimit(userID); err != nil {</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>36</td>
                 <td>
-                    <code><pre>                return errors.New(&#34;amount must be greater than zero&#34;)</pre></code>
+                    <code><pre>                return err</pre></code>
                 </td>
             </tr>
             
@@ -17154,6 +16985,305 @@ p {
             
         </table>
         
+        <div class="funcname" id="fn_StatementService.GetBalance">func StatementService.GetBalance</div>
+        <div class="info">
+            <a href="#s_fn_StatementService.GetBalance">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>28</td>
+                <td>
+                    <code><pre>func (s *StatementService) GetBalance(userID uint) (float64, error) {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>29</td>
+                <td>
+                    <code><pre>        balance, err := s.BalanceRepo.GetBalance(userID)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>30</td>
+                <td>
+                    <code><pre>        if err != nil {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>31</td>
+                <td>
+                    <code><pre>                return 0.0, err</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>32</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>33</td>
+                <td>
+                    <code><pre>        return balance.Amount, nil</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>34</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_StatementService.GetTransactions">func StatementService.GetTransactions</div>
+        <div class="info">
+            <a href="#s_fn_StatementService.GetTransactions">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>37</td>
+                <td>
+                    <code><pre>func (s *StatementService) GetTransactions(userID uint) ([]d.Transaction, error) {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>38</td>
+                <td>
+                    <code><pre>        return s.Repo.GetByUser(userID)</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>39</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_NewUserService">func NewUserService</div>
+        <div class="info">
+            <a href="#s_fn_NewUserService">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/users_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>15</td>
+                <td>
+                    <code><pre>func NewUserService(repo d.UserRepository) *UserService {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>16</td>
+                <td>
+                    <code><pre>        return &amp;UserService{repo: repo}</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>17</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_NewDepositService">func NewDepositService</div>
+        <div class="info">
+            <a href="#s_fn_NewDepositService">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/deposits_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>21</td>
+                <td>
+                    <code><pre>func NewDepositService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer, rate d.RateLimiter) *DepositService {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td>
+                    <code><pre>        return &amp;DepositService{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td>
+                    <code><pre>                Repo:        r,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td>
+                    <code><pre>                BalanceRepo: b,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
+                <td>
+                    <code><pre>                producer:    p,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>26</td>
+                <td>
+                    <code><pre>                RateLimiter: rate,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>27</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>28</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_NewWithdrawService">func NewWithdrawService</div>
+        <div class="info">
+            <a href="#s_fn_NewWithdrawService">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/withdraws_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>20</td>
+                <td>
+                    <code><pre>func NewWithdrawService(r d.TransactionRepository, b d.BalanceRepository, p p.Producer, rate d.RateLimiter) *WithdrawService {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>21</td>
+                <td>
+                    <code><pre>        return &amp;WithdrawService{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td>
+                    <code><pre>                Repo:        r,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td>
+                    <code><pre>                BalanceRepo: b,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td>
+                    <code><pre>                producer:    p,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
+                <td>
+                    <code><pre>                RateLimiter: rate,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>26</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>27</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <div class="funcname" id="fn_NewStatementService">func NewStatementService</div>
+        <div class="info">
+            <a href="#s_fn_NewStatementService">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/statement_service.go</code>:</p>
+        </div>
+        <table class="listing">
+            
+            <tr>
+                <td>20</td>
+                <td>
+                    <code><pre>func NewStatementService(r d.TransactionRepository, b d.BalanceRepository) *StatementService {</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>21</td>
+                <td>
+                    <code><pre>        return &amp;StatementService{</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td>
+                    <code><pre>                Repo:        r,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td>
+                    <code><pre>                BalanceRepo: b,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td>
+                    <code><pre>        }</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
+                <td>
+                    <code><pre>}</pre></code>
+                </td>
+            </tr>
+            
+        </table>
+        
         <div class="funcname" id="fn_UserService.CreateUser">func UserService.CreateUser</div>
         <div class="info">
             <a href="#s_fn_UserService.CreateUser">Back</a>
@@ -17168,14 +17298,14 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>20</td>
                 <td>
                     <code><pre>        hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 14)</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>21</td>
                 <td>
                     <code><pre>        if err != nil {</pre></code>
@@ -17203,42 +17333,42 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>25</td>
                 <td>
                     <code><pre>        user := d.User{Name: name, Email: email, Password: string(hashedPassword)}</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>26</td>
                 <td>
                     <code><pre>        err = s.repo.Create(user)</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>27</td>
                 <td>
                     <code><pre>        if err != nil {</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>28</td>
                 <td>
                     <code><pre>                var pgErr *pgconn.PgError</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>29</td>
                 <td>
                     <code><pre>                if errors.As(err, &amp;pgErr) &amp;&amp; pgErr.Code == &#34;23505&#34; {</pre></code>
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>30</td>
                 <td>
                     <code><pre>                        return errors.New(&#34;e-mail já cadastrado&#34;)</pre></code>
@@ -17252,7 +17382,7 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>32</td>
                 <td>
                     <code><pre>                return err</pre></code>
@@ -17273,7 +17403,7 @@ p {
                 </td>
             </tr>
             
-            <tr class="miss">
+            <tr>
                 <td>35</td>
                 <td>
                     <code><pre>        return nil</pre></code>
@@ -17289,99 +17419,92 @@ p {
             
         </table>
         
-        <div class="funcname" id="fn_UserService.Authenticate">func UserService.Authenticate</div>
+        <div class="funcname" id="fn_ToTransactionDisplay">func ToTransactionDisplay</div>
         <div class="info">
-            <a href="#s_fn_UserService.Authenticate">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/users_service.go</code>:</p>
+            <a href="#s_fn_ToTransactionDisplay">Back</a>
+            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/transaction_formatter.go</code>:</p>
         </div>
         <table class="listing">
             
             <tr>
-                <td>38</td>
+                <td>16</td>
                 <td>
-                    <code><pre>func (s *UserService) Authenticate(email, password string) (*d.User, error) {</pre></code>
+                    <code><pre>func ToTransactionDisplay(txs []d.Transaction) []TransactionDisplay {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>39</td>
+                <td>17</td>
                 <td>
-                    <code><pre>        user, err := s.repo.GetByEmail(email)</pre></code>
+                    <code><pre>        result := make([]TransactionDisplay, 0, len(txs))</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>40</td>
+                <td>18</td>
                 <td>
-                    <code><pre>        if err != nil {</pre></code>
+                    <code><pre>        for _, tx := range txs {</pre></code>
                 </td>
             </tr>
             
             <tr class="miss">
-                <td>41</td>
+                <td>19</td>
                 <td>
-                    <code><pre>                return &amp;d.User{}, errors.New(&#34;usuário não encontrado&#34;)</pre></code>
+                    <code><pre>                result = append(result, TransactionDisplay{</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>42</td>
+                <td>20</td>
+                <td>
+                    <code><pre>                        ID:        tx.ID,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>21</td>
+                <td>
+                    <code><pre>                        Amount:    tx.Amount,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td>
+                    <code><pre>                        Type:      tx.Type,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td>
+                    <code><pre>                        Timestamp: tx.Timestamp,</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td>
+                    <code><pre>                })</pre></code>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
                 <td>
                     <code><pre>        }</pre></code>
                 </td>
             </tr>
             
-            <tr>
-                <td>43</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
             <tr class="miss">
-                <td>44</td>
+                <td>26</td>
                 <td>
-                    <code><pre>        err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>45</td>
-                <td>
-                    <code><pre>        if err != nil {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>46</td>
-                <td>
-                    <code><pre>                return &amp;d.User{}, errors.New(&#34;senha inválida&#34;)</pre></code>
+                    <code><pre>        return result</pre></code>
                 </td>
             </tr>
             
             <tr>
-                <td>47</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>48</td>
-                <td>
-                    <code><pre></pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>49</td>
-                <td>
-                    <code><pre>        return user, nil</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>50</td>
+                <td>27</td>
                 <td>
                     <code><pre>}</pre></code>
                 </td>
@@ -17518,133 +17641,10 @@ p {
             </tr>
             
         </table>
-        
-        <div class="funcname" id="fn_ToTransactionDisplay">func ToTransactionDisplay</div>
-        <div class="info">
-            <a href="#s_fn_ToTransactionDisplay">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/transaction_formatter.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>16</td>
-                <td>
-                    <code><pre>func ToTransactionDisplay(txs []d.Transaction) []TransactionDisplay {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>17</td>
-                <td>
-                    <code><pre>        result := make([]TransactionDisplay, 0, len(txs))</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>18</td>
-                <td>
-                    <code><pre>        for _, tx := range txs {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>19</td>
-                <td>
-                    <code><pre>                result = append(result, TransactionDisplay{</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>20</td>
-                <td>
-                    <code><pre>                        ID:        tx.ID,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>21</td>
-                <td>
-                    <code><pre>                        Amount:    tx.Amount,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>22</td>
-                <td>
-                    <code><pre>                        Type:      tx.Type,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>23</td>
-                <td>
-                    <code><pre>                        Timestamp: tx.Timestamp,</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>24</td>
-                <td>
-                    <code><pre>                })</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>25</td>
-                <td>
-                    <code><pre>        }</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>26</td>
-                <td>
-                    <code><pre>        return result</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>27</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
-        
-        <div class="funcname" id="fn_NewUserService">func NewUserService</div>
-        <div class="info">
-            <a href="#s_fn_NewUserService">Back</a>
-            <p>In <code>/mnt/c/Users/gabri/repos/go-financial-transactions/services/users_service.go</code>:</p>
-        </div>
-        <table class="listing">
-            
-            <tr>
-                <td>15</td>
-                <td>
-                    <code><pre>func NewUserService(repo d.UserRepository) *UserService {</pre></code>
-                </td>
-            </tr>
-            
-            <tr class="miss">
-                <td>16</td>
-                <td>
-                    <code><pre>        return &amp;UserService{repo: repo}</pre></code>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>17</td>
-                <td>
-                    <code><pre>}</pre></code>
-                </td>
-            </tr>
-            
-        </table>
          
 
         <!--    Can be parsed by external script
-                PACKAGE:github.com/gabrielksneiva/go-financial-transactions/services DONE:39.3
+                PACKAGE:github.com/gabrielksneiva/go-financial-transactions/services DONE:78.7
         -->
         
         <div id="pkg_github.com/gabrielksneiva/go-financial-transactions/workers" class="funcname">
@@ -18349,7 +18349,7 @@ p {
         <div id="summaryWrapper">
         
             <div class="package">Report Total</div>
-            <div id="totalcov">19.5%</div>
+            <div id="totalcov">24.1%</div>
          
         </div>
          
