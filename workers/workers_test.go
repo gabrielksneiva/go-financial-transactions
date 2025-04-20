@@ -70,7 +70,7 @@ func TestWorker_ProcessTransaction_Success(t *testing.T) {
 	repoMock := new(mocks.TransactionRepository)
 
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
+	go workers.Worker(ctx, 1, ch, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }
@@ -102,7 +102,7 @@ func TestWorker_InsufficientFunds(t *testing.T) {
 	ch <- tx
 
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
+	go workers.Worker(ctx, 1, ch, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }
@@ -143,7 +143,7 @@ func TestWorker_ErrorOnInsert(t *testing.T) {
 	ch <- tx
 
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
+	go workers.Worker(ctx, 1, ch, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }
