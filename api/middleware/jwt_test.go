@@ -67,7 +67,7 @@ func TestJWTMiddleware_ValidToken(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		userID := c.Locals("user_id")
 		assert.Equal(t, uint(1), userID)
 		return c.SendString("Success")
@@ -108,7 +108,7 @@ func TestGenerateJWT_InvalidSecret(t *testing.T) {
 func TestJWTMiddleware_MissingAuthorizationHeader(t *testing.T) {
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		return c.SendString("Success")
 	})
 
@@ -122,7 +122,7 @@ func TestJWTMiddleware_MissingAuthorizationHeader(t *testing.T) {
 func TestJWTMiddleware_InvalidAuthorizationFormat(t *testing.T) {
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		return c.SendString("Success")
 	})
 
@@ -141,7 +141,7 @@ func TestJWTMiddleware_InvalidToken(t *testing.T) {
 
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		return c.SendString("Success")
 	})
 
@@ -159,7 +159,7 @@ func TestJWTMiddleware_InvalidToken(t *testing.T) {
 func TestJWTMiddleware_ExpiredToken(t *testing.T) {
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		return c.SendString("Success")
 	})
 
@@ -184,7 +184,7 @@ func TestJWTMiddleware_ExpiredToken(t *testing.T) {
 func TestJWTMiddleware_MissingUserIDClaim(t *testing.T) {
 	app := fiber.New()
 
-	app.Get("/protected", middleware.JWTMiddleware(), func(c *fiber.Ctx) error {
+	app.Get("/protected", middleware.JWTProtected(), func(c *fiber.Ctx) error {
 		return c.SendString("Success")
 	})
 

@@ -28,59 +28,50 @@ func GenerateJWT(user *d.User) (string, error) {
 	return token.SignedString([]byte(secret))
 }
 
-func JWTMiddleware() fiber.Handler {
+func JWTProtected() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		authHeader := c.Get("Authorization")
+		tokenStr := ""
 
-		if authHeader == "" {
+		// 1. Primeiro tenta pegar do header
+		auth := c.Get("Authorization")
+		if strings.HasPrefix(auth, "Bearer ") {
+			tokenStr = strings.TrimPrefix(auth, "Bearer ")
+		}
+
+		// 2. Se não encontrar no header, tenta pegar do cookie
+		if tokenStr == "" {
+			tokenStr = c.Cookies("token")
+		}
+
+		if tokenStr == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "Missing Authorization header",
+				"error": "Missing or invalid token",
 			})
 		}
 
-		// Espera o formato: "Bearer <token>"
-		tokenParts := strings.Split(authHeader, " ")
-		if len(tokenParts) != 2 || strings.ToLower(tokenParts[0]) != "bearer" {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "Invalid Authorization header format",
-			})
-		}
-
-		tokenString := tokenParts[1]
-
-		// Parse do token
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			// Valida se está usando o método de assinatura correto
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
-			}
-			// Pega a secret do env
+		// ✅ Use MapClaims sem ponteiro
+		claims := jwt.MapClaims{}
+		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (any, error) {
 			return []byte(os.Getenv("JWT_SECRET")), nil
 		})
 
 		if err != nil || !token.Valid {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "Invalid or expired token",
+				"error": "Invalid token",
 			})
 		}
 
-		// Extrai o user_id das claims
-		claims, ok := token.Claims.(jwt.MapClaims)
-		if !ok || claims["user_id"] == nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "Invalid token claims",
-			})
-		}
-
+		// 🛠️ Converte user_id para uint com verificação
 		userIDFloat, ok := claims["user_id"].(float64)
 		if !ok {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "user_id must be a number",
+				"error": "Invalid or missing user_id in token",
 			})
 		}
 
-		userID := uint(userIDFloat)
-		c.Locals("user_id", userID)
+		// ✅ Salva como uint para evitar cast nos handlers
+		c.Locals("user_id", uint(userIDFloat))
+		c.Locals("email", claims["email"])
 
 		return c.Next()
 	}

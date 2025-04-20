@@ -10,7 +10,7 @@ func RegisterRoutes(app *fiber.App, h *Handlers) {
 	app.Post("/api/login", h.LoginHandler)
 	app.Post("/api/register", h.RegisterHandler)
 
-	api := app.Group("/api", middleware.JWTMiddleware())
+	api := app.Group("/api", middleware.JWTProtected())
 	api.Post("/deposit", h.CreateDepositHandler)
 	api.Post("/withdraw", h.CreateWithdrawHandler)
 	api.Get("/balance/:user_id", h.GetBalanceHandler)

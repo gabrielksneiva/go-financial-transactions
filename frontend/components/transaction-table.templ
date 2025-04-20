@@ -1,0 +1,80 @@
+package components
+
+import (
+    "fmt"
+    "strings"
+    "time"
+
+    "github.com/gabrielksneiva/go-financial-transactions/services"
+)
+
+// formata data no layout desejado
+func formatDate(t time.Time) string {
+    return t.Format("02 Jan 2006 15:04")
+}
+
+// retorna classes de cor conforme o status
+func statusColorClass(status string) string {
+    switch strings.ToUpper(status) {
+    case "COMPLETED":
+        return "text-green-700 bg-green-100 dark:bg-green-900 dark:text-green-300"
+    case "PENDING":
+        return "text-yellow-700 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300"
+    case "FAILED":
+        return "text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300"
+    default:
+        return "text-gray-700 bg-gray-100 dark:bg-gray-800 dark:text-gray-300"
+    }
+}
+
+// rótulo legível para o status
+func statusLabel(status string) string {
+    switch strings.ToUpper(status) {
+    case "COMPLETED":
+        return "Concluída"
+    case "PENDING":
+        return "Pendente"
+    case "FAILED":
+        return "Falhou"
+    default:
+        return status
+    }
+}
+
+templ TransactionExtract(transactions []services.TransactionDisplay) {
+    <div class="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-2xl shadow transition-colors">
+        <ul class="divide-y divide-gray-200 dark:divide-gray-800">
+            for _, tx := range transactions {
+                <li class="py-4 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        if tx.Type == "deposit" {
+                            <span class="text-green-500 text-xl">⬆️</span>
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">Depósito</p>
+                                <p class="text-sm text-gray-500">{ formatDate(tx.CreatedAt) }</p>
+                            </div>
+                        } else {
+                            <span class="text-red-500 text-xl">⬇️</span>
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white">Saque</p>
+                                <p class="text-sm text-gray-500">{ formatDate(tx.CreatedAt) }</p>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="text-right space-y-1">
+                        if tx.Type == "deposit" {
+                            <p class="text-green-600 font-bold">+ R${ fmt.Sprintf("%.2f", tx.Amount) }</p>
+                        } else {
+                            <p class="text-red-600 font-bold">- R${ fmt.Sprintf("%.2f", tx.Amount) }</p>
+                        }
+
+                        <span class={ "inline-block text-xs font-medium px-2 py-0.5 rounded-full " + statusColorClass(tx.Status) }>
+                            { statusLabel(tx.Status) }
+                        </span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
