@@ -1,6 +1,7 @@
+
 # 💸 Go Financial Transactions
 
-> Asynchronous and scalable financial transaction system built with Go, Kafka, PostgreSQL, and Redis.
+> A performant and scalable financial transaction system built with Go, Kafka, PostgreSQL, and Redis, featuring secure blockchain withdrawals via TRON.
 
 ![Project Architecture](docs/assets/architecture.png)
 
@@ -11,58 +12,87 @@
 
 ---
 
-## 🧠 About the Project
+## 🧠 Project Overview
 
-This project simulates a financial transaction system designed to be highly performant, asynchronous, and scalable — ideal for banking applications, digital wallets, and payment processors. It demonstrates:
+This repository presents a modern financial transaction system developed using the Go programming language. It is designed for high scalability, performance, and security—ideal for applications such as digital wallets, online banking platforms, and fintech APIs.
 
-- Asynchronous messaging via **Apache Kafka**
-- Concurrent transaction processing with **Go workers**
-- Request rate limiting with **Redis**
-- Data consistency and storage with **PostgreSQL + GORM**
-- Authentication using **JWT**
-- Test coverage > 85%
-- CI/CD using **GitHub Actions**
+**Key features include:**
+
+- 🔐 JWT-based authentication
+- 🧵 Asynchronous transaction processing using Apache Kafka
+- 🧠 Worker-based concurrency model in Go
+- 📦 PostgreSQL with GORM for persistent storage
+- 🚦 Redis for request rate limiting
+- 🌐 Integration with the TRON blockchain for secure withdrawals
+- ✅ >85% test coverage
+- ⚙️ CI/CD via GitHub Actions
 
 ---
 
 ## 🧩 Architecture
 
-The system is built using a clean and modular architecture.
+The project follows a modular and layered architecture, ensuring code clarity, separation of concerns, and scalability.
 
 ```
-        +---------------+
-        |  API (Fiber)  |
-        +------+--------+
-               |
-               v
-     +---------+----------+
-     | Services (Business)|
-     +---------+----------+
-               |
-     +---------+----------+
-     |    Repositories    |
-     +----+----------+----+
-          |          |
-    +-----+      +---+---------+
-    |Kafka|      | PostgreSQL  |
-    +-----+      +-------------+
+        +------------------+
+        |   API (Fiber)    |
+        +--------+---------+
+                 |
+                 v
+     +-----------+------------+
+     |     Business Logic     |
+     +-----------+------------+
+                 |
+     +-----------+------------+
+     |      Repositories      |
+     +-----+------------+-----+
+           |            |
+     +-----+         +--+-------------+
+     | Kafka         | PostgreSQL     |
+     +-----+         +----------------+
+        |
+   +----+-------+
+   |  Workers   |
+   +------------+
 ```
 
-Kafka acts as a middleware between the HTTP layer and the processing workers. Workers consume messages asynchronously and update balances in the database.
+Kafka acts as a message broker between the API and background workers, allowing for asynchronous, distributed transaction processing.
 
 ---
 
-## 🛠️ Technologies
+## 🛠️ Technologies Used
 
 - [Go 1.21](https://golang.org/)
 - [Apache Kafka](https://kafka.apache.org/)
-- [Fiber](https://gofiber.io/)
+- [Fiber Web Framework](https://gofiber.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Redis](https://redis.io/)
-- [GORM](https://gorm.io/)
+- [GORM ORM](https://gorm.io/)
 - [JWT](https://github.com/golang-jwt/jwt)
+- [TRON Blockchain SDK](https://developers.tron.network/)
 - [sqlmock](https://github.com/DATA-DOG/go-sqlmock)
 - [GitHub Actions](https://github.com/features/actions)
+
+---
+
+## 🔐 Authentication
+
+All secure routes require a valid JWT token. Authentication is handled via the `/api/login` endpoint, and token validation is enforced via middleware.
+
+---
+
+## 🧾 API Endpoints
+
+| Method | Endpoint                     | Description                                | Authentication |
+|--------|------------------------------|--------------------------------------------|----------------|
+| POST   | `/api/register`              | Register a new user                        | ❌ No           |
+| POST   | `/api/login`                 | Authenticate and receive JWT               | ❌ No           |
+| POST   | `/api/deposit`               | Create a new deposit                       | ✅ Yes          |
+| POST   | `/api/withdraw`              | Initiate a withdrawal via TRON blockchain  | ✅ Yes          |
+| GET    | `/api/balance/:user_id`      | Retrieve user's current balance            | ✅ Yes          |
+| GET    | `/api/statement/:user_id`    | Retrieve user's transaction statement      | ✅ Yes          |
+
+> 🔄 Withdrawals are processed through the **TRON blockchain**, ensuring fast and secure crypto transfers.
 
 ---
 
@@ -70,15 +100,17 @@ Kafka acts as a middleware between the HTTP layer and the processing workers. Wo
 
 ### Prerequisites
 
-- Docker + Docker Compose
 - Go 1.21+
+- Docker + Docker Compose
+
+### Installation
 
 ```bash
-# Clone the project
+# Clone the repository
 git clone https://github.com/gabrielksneiva/go-financial-transactions.git
 cd go-financial-transactions
 
-# Start required services (Kafka, Redis, PostgreSQL)
+# Start services (PostgreSQL, Kafka, Redis)
 docker-compose up -d
 
 # Run the application
@@ -87,17 +119,17 @@ go run main.go
 
 ---
 
-## 🧪 Tests
+## 🧪 Running Tests
 
 ```bash
 # Run all unit tests
 go test ./... -coverprofile=coverage.out
 
-# View coverage report
+# Check coverage
 go tool cover -func=coverage.out
 ```
 
-✅ The project includes comprehensive unit tests for services, handlers, middleware, workers, repositories, and Kafka components.
+> ✅ Unit tests are available for all core layers: services, handlers, middleware, repositories, and workers.
 
 ---
 
@@ -108,6 +140,7 @@ go tool cover -func=coverage.out
 ├── api/               # HTTP handlers and routing (Fiber)
 ├── config/            # Configuration logic
 ├── consumer/          # Kafka consumer
+├── client/            # Application clients
 ├── producer/          # Kafka producer
 ├── domain/            # Entities and interfaces
 ├── services/          # Business logic
@@ -123,22 +156,23 @@ go tool cover -func=coverage.out
 
 ## 🧠 Key Concepts
 
-- Goroutines, channels and context cancellation
-- Dependency injection
-- Testing with `sqlmock` and `testify`
-- Message-driven architecture with Kafka
-- CI/CD with GitHub Actions
-- Redis-based rate limiting
-- Clean code and modularity
+- Clean and modular architecture
+- Kafka-based asynchronous event processing
+- Goroutines and channel patterns
+- Rate limiting with Redis
+- Blockchain integration using the TRON SDK
+- Extensive unit testing with mocking
+- CI/CD pipelines with GitHub Actions
 
 ---
 
-## 🎯 Roadmap
+## 🔮 Future Enhancements
 
-- [ ] Swagger documentation for API endpoints
-- [ ] Fireblocks API integration
-- [ ] Automated deployment with Docker + Render or Railway
-- [ ] Observability with Prometheus and Grafana
+- [ ] Add Swagger/OpenAPI documentation
+- [ ] Integrate with external custody services (e.g. Fireblocks)
+- [ ] Enable observability with Prometheus and Grafana
+- [ ] Deploy on Render, Railway or AWS ECS
+- [ ] Implement audit logs for compliance
 
 ---
 
@@ -146,3 +180,5 @@ go tool cover -func=coverage.out
 
 **Gabriel Kryzanovski dos Santos Neiva**  
 [GitHub](https://github.com/gabrielksneiva) • [LinkedIn](https://linkedin.com/in/gabrielksneiva)
+
+---
