@@ -7,6 +7,7 @@ import (
 	"os"
 
 	d "github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -68,7 +69,12 @@ func worker(
 					return err
 				}
 
-				tx.Status = "PENDING"
+				if tx.Type == "deposit" {
+					tx.Status = "COMPLETED"
+				} else {
+					tx.Status = "PENDING"
+				}
+
 				if err := txDB.Create(&tx).Error; err != nil {
 					log.Printf("❌ Worker %d: erro ao salvar transação no banco: %v", workerID, err)
 					return err
@@ -116,12 +122,58 @@ func worker(
 				result, err := b.SendSignedTRX(txOut, tx.ID)
 				if err != nil {
 					log.Printf("❌ Worker %d: erro ao enviar TRX: %v", workerID, err)
-					// ❗ Aqui você pode marcar como "FAILED", se quiser adicionar esse status
+
+					// ❗ Atualizar status para "FAILED"
 					if err := repo.UpdateTransactionStatus(tx.ID, "FAILED"); err != nil {
 						log.Printf("⚠️ Worker %d: erro ao atualizar status para FAILED: %v", workerID, err)
 					} else {
 						log.Printf("📝 Worker %d: status da transação %s atualizado para FAILED", workerID, tx.ID)
 					}
+
+					// ❗ Devolver o balance ao usuário
+					err = db.Transaction(func(txDB *gorm.DB) error {
+						var balance d.Balance
+						if err := txDB.Clauses(clause.Locking{Strength: "UPDATE"}).
+							Where("user_id = ?", tx.UserID).
+							First(&balance).Error; err != nil {
+							log.Printf("❌ Worker %d: erro ao buscar saldo para devolução: %v", workerID, err)
+							return err
+						}
+
+						newBalance := balance.Amount + tx.Amount
+						log.Printf("↩️ Worker %d: devolvendo %.2f para o saldo do usuário %d (saldo atual %.2f → %.2f)", workerID, tx.Amount, tx.UserID, balance.Amount, newBalance)
+
+						if err := txDB.Model(&d.Balance{}).
+							Where("user_id = ?", tx.UserID).
+							Update("amount", newBalance).Error; err != nil {
+							log.Printf("❌ Worker %d: erro ao devolver saldo: %v", workerID, err)
+							return err
+						}
+
+						// Registrar o estorno na tabela Transaction
+						refundTx := d.Transaction{
+							ID: uuid.New().String(),
+							UserID: tx.UserID,
+							Amount: tx.Amount,
+							Type:   "refund",
+							Status: "COMPLETED",
+						}
+
+						if err := txDB.Create(&refundTx).Error; err != nil {
+							log.Printf("❌ Worker %d: erro ao registrar estorno na tabela Transaction: %v", workerID, err)
+							return err
+						}
+
+						log.Printf("✅ Worker %d: estorno registrado com sucesso para o usuário %d", workerID, tx.UserID)
+						return nil
+					})
+
+					if err != nil {
+						log.Printf("⚠️ Worker %d: erro ao devolver saldo ao usuário %d: %v", workerID, tx.UserID, err)
+					} else {
+						log.Printf("✅ Worker %d: saldo devolvido com sucesso ao usuário %d", workerID, tx.UserID)
+					}
+
 					continue
 				}
 

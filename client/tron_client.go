@@ -35,7 +35,7 @@ type TronClient struct {
 }
 
 func NewTronClient() domain.BlockchainClient {
-	grpcCli := client.NewGrpcClient("grpc.shasta.trongrid.io:50051")
+	grpcCli := client.NewGrpcClient(os.Getenv("TRON_GRPC_URL"))
 	if err := grpcCli.Start(grpc.WithTransportCredentials(insecure.NewCredentials())); err != nil {
 		log.Fatalf("❌ Erro ao conectar gRPC TRON: %v", err)
 	}
@@ -116,7 +116,7 @@ func (t *TronClient) SendSignedTRX(tx domain.BlockchainTransaction, transactionI
 }
 
 func ValidateTronAddress(address string) (bool, error) {
-	const url = "https://api.shasta.trongrid.io/wallet/validateaddress"
+	url := os.Getenv("TRON_URL") + "/wallet/validateaddress"
 	b, _ := json.Marshal(validateRequest{Address: address})
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(b))
 	if err != nil {
