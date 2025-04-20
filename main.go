@@ -48,7 +48,7 @@ func RunApp() {
 
 	// Start consumer & workers
 	go consumer.InitConsumer(ctx, transactions, cfg.KafkaBroker, cfg.KafkaTopic, cfg.KafkaGroupID)
-	go workers.StartWorkers(ctx, transactions, 4, app.DB, tronClient, repo)
+	go workers.Worker(ctx, 4, transactions, app.DB, tronClient, repo)
 
 	go func() {
 		<-sigs
