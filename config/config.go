@@ -2,6 +2,7 @@ package config
 
 type Config struct {
 	APIPort      string
+	FrontendPort string
 	KafkaBroker  string
 	KafkaTopic   string
 	KafkaGroupID string

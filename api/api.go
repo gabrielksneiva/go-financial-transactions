@@ -4,6 +4,7 @@ import (
 	"github.com/gabrielksneiva/go-financial-transactions/services"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 type App struct {
@@ -18,6 +19,12 @@ func NewApp(
 	userService *services.UserService,
 ) *App {
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:4000",
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowCredentials: true,
+	}))
 
 	handlers := NewHandlers(depositService, withdrawService, statementService, userService)
 

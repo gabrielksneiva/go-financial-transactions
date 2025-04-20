@@ -21,6 +21,8 @@ require (
 	gorm.io/gorm v1.25.12
 )
 
+require github.com/a-h/templ v0.3.857
+
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect

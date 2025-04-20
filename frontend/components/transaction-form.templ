@@ -1,0 +1,63 @@
+package components
+
+templ TransactionForm() {
+<section>
+  <form id="transactionForm"
+    class="space-y-4 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm transition-shadow hover:shadow-md">
+    <div>
+      <label class="block mb-1 font-medium text-sm">Tipo</label>
+      <select name="type"
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"
+        id="transactionType">
+        <option value="deposit">Depósito</option>
+        <option value="withdraw">Saque</option>
+      </select>
+    </div>
+    <div>
+      <label class="block mb-1 font-medium text-sm">Valor</label>
+      <input type="number" name="amount" step="0.01" required
+        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 dark:text-white" />
+    </div>
+    <button type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+      Enviar
+    </button>
+  </form>
+
+  <script>
+    document.getElementById("transactionForm")
+      .addEventListener("submit", async function (ev) {
+        ev.preventDefault();
+        const formData = new FormData(ev.target);
+        const type = formData.get('type');
+        const amount = formData.get('amount');
+        const endpoint = type === "withdraw" ? "/api/withdraw" : "/api/deposit";
+
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ amount }),
+          });
+          if (!res.ok) throw new Error(await res.text());
+          await res.json();
+          await refreshExtract();      // <-- aqui
+        } catch (err) {
+          alert("Erro: " + err.message);
+        }
+      });
+
+    async function refreshExtract() {
+      const resp = await fetch('/dashboard/extract', { credentials: 'include' });
+      if (!resp.ok) throw new Error(await resp.text());
+      const html = await resp.text();
+      document.getElementById('transactionExtract').innerHTML = html;
+      lucide.createIcons();
+    }
+
+    lucide.createIcons();
+  </script>
+
+</section>
+}

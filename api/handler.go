@@ -170,5 +170,16 @@ func (h *Handlers) LoginHandler(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.JSON(fiber.Map{"token": token})
+	c.Cookie(&fiber.Cookie{
+		Name:     "token",
+		Value:    token,
+		HTTPOnly: true,
+		Secure:   false, // true em produção (HTTPS)
+		SameSite: "Lax", // ou "Strict" pra segurança extra
+		Path:     "/",
+	})
+
+	return c.JSON(fiber.Map{
+		"message": "Login bem-sucedido!",
+	})
 }

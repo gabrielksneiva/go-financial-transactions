@@ -1,0 +1,96 @@
+package views
+
+import (
+"github.com/gabrielksneiva/go-financial-transactions/api"
+"github.com/gabrielksneiva/go-financial-transactions/frontend/components"
+)
+
+templ Dashboard(txs api.StatementResponse) {
+<html lang="pt-BR" class="dark">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>FinSync - Dashboard</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script>
+		tailwind.config = {
+			darkMode: 'class',
+			theme: {
+				extend: {
+					fontFamily: {
+						sans: ['Inter', 'sans-serif'],
+					},
+				},
+			},
+		}
+	</script>
+
+	<!-- Lucide Icons -->
+	<script src="https://unpkg.com/lucide@latest"></script>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body
+	class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+	<!-- Header -->
+	<header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 transition-colors">
+		<div class="max-w-screen-xl mx-auto flex items-center justify-between py-4 px-6">
+			<div class="flex items-center">
+				<img src="/static/images/logo-header.png" alt="FinSync" class="h-[64px] w-auto mr-4" />
+				<h1 class="text-2xl font-bold tracking-tight">FinSync</h1>
+			</div>
+			<!-- Mini user menu -->
+			<div class="flex items-center space-x-3">
+				<button class="hover:text-primary transition-colors" onclick="lucide.alertCircle().toSvg()">
+					<!-- Placeholder icon -->
+					<i data-lucide="moon" class="w-5 h-5"></i>
+				</button>
+				<div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Main content -->
+	<main class="max-w-screen-xl mx-auto w-full flex-1 py-8 px-6">
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+			<!-- Extrato -->
+			<section
+				class="col-span-1 lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow p-6 hover:shadow-md transition duration-200 ease-in-out">
+				<h2>Extrato de Transações</h2>
+				<div id="transactionExtract">
+					@components.TransactionExtract(txs.Transactions)
+				</div>
+			</section>
+
+			<!-- Formulário -->
+			<aside
+				class="col-span-1 bg-white dark:bg-gray-800 rounded-2xl shadow p-6 hover:shadow-md transition duration-200 ease-in-out">
+				<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+					<i data-lucide="plus-circle" class="w-5 h-5 text-primary"></i>
+					Nova Transação
+				</h2>
+				@components.TransactionForm()
+			</aside>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 transition-colors">
+		<div class="max-w-screen-xl mx-auto text-center py-6 text-sm text-gray-400">
+			&copy; 2025 <span class="font-semibold text-gray-600 dark:text-gray-300">FinSync</span>. Todos os direitos
+			reservados.
+		</div>
+	</footer>
+
+	<script>
+		lucide.createIcons(); // Renderiza os ícones após carregamento
+	</script>
+</body>
+
+</html>
+}

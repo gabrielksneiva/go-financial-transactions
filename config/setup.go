@@ -43,6 +43,7 @@ func LoadConfig() Config {
 
 	return Config{
 		APIPort:      GetEnv("API_PORT", "8080"),
+		FrontendPort: GetEnv("FRONTEND_PORT", "4000"),
 		KafkaBroker:  os.Getenv("KAFKA_BROKER"),
 		KafkaTopic:   os.Getenv("KAFKA_TOPIC"),
 		KafkaGroupID: os.Getenv("KAFKA_GROUP_ID"),
