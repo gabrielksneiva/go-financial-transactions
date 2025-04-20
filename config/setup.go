@@ -54,6 +54,7 @@ func LoadConfig() Config {
 		RedisHost:    os.Getenv("REDIS_HOST"),
 		RedisDB:      redisDB,
 		JwtSecret:    os.Getenv("JWT_SECRET"),
+		TronWallet:   os.Getenv("TRON_FROM_ADDR"),
 	}
 }
 

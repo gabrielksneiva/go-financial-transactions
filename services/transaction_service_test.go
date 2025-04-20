@@ -317,10 +317,11 @@ func TestUserService_CreateUser(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		repo := new(mocks.UserRepository) // novo mock
 		service := services.NewUserService(repo)
+		user := &domain.User{Email: "test@example.com", Password: "password123"}
 
 		repo.On("Create", mock.Anything).Return(nil)
 
-		err := service.CreateUser("name", "email@example.com", "password")
+		err := service.CreateUser(user)
 		assert.NoError(t, err)
 	})
 
@@ -331,7 +332,9 @@ func TestUserService_CreateUser(t *testing.T) {
 		pgErr := &pgconn.PgError{Code: "23505"}
 		repo.On("Create", mock.Anything).Return(pgErr)
 
-		err := service.CreateUser("name", "email@example.com", "password")
+		user := &domain.User{Email: "test@example.com", Password: "password123"}
+
+		err := service.CreateUser(user)
 		assert.EqualError(t, err, "e-mail já cadastrado")
 	})
 
@@ -341,7 +344,9 @@ func TestUserService_CreateUser(t *testing.T) {
 
 		repo.On("Create", mock.Anything).Return(errors.New("db error"))
 
-		err := service.CreateUser("name", "email@example.com", "password")
+		user := &domain.User{Email: "test@example.com", Password: "password123"}
+
+		err := service.CreateUser(user)
 		assert.EqualError(t, err, "db error")
 	})
 }

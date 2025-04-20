@@ -7,10 +7,13 @@ import (
 )
 
 type TransactionDisplay struct {
-	ID        string    `json:"id"`
-	Amount    float64   `json:"amount"`
-	Type      string    `json:"type"`
-	Timestamp time.Time `json:"timestamp"`
+	ID            string    `json:"id"`
+	Amount        float64   `json:"amount"`
+	Type          string    `json:"type"`
+	Status        string    `json:"status"`
+	WalletAddress string    `json:"wallet"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 func ToTransactionDisplay(txs []d.Transaction) []TransactionDisplay {
@@ -20,7 +23,10 @@ func ToTransactionDisplay(txs []d.Transaction) []TransactionDisplay {
 			ID:        tx.ID,
 			Amount:    tx.Amount,
 			Type:      tx.Type,
-			Timestamp: tx.Timestamp,
+			CreatedAt: tx.CreatedAt,
+			UpdatedAt: tx.UpdatedAt,
+			//			Status:        tx.Status,
+			WalletAddress: tx.WalletAddress,
 		})
 	}
 	return result

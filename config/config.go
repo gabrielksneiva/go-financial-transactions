@@ -13,4 +13,5 @@ type Config struct {
 	RedisHost    string
 	RedisDB      int
 	JwtSecret    string
+	TronWallet   string
 }

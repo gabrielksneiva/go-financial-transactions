@@ -2,7 +2,9 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
+	"github.com/gabrielksneiva/go-financial-transactions/client"
 	d "github.com/gabrielksneiva/go-financial-transactions/domain"
 	"github.com/jackc/pgx/v5/pgconn"
 	"golang.org/x/crypto/bcrypt"
@@ -16,14 +18,21 @@ func NewUserService(repo d.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) CreateUser(name, email, password string) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+func (s *UserService) CreateUser(user *d.User) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
 	if err != nil {
 		return errors.New("erro ao gerar hash da senha")
 	}
 
-	user := d.User{Name: name, Email: email, Password: string(hashedPassword)}
-	err = s.repo.Create(user)
+	if user.WalletAddress != "" {
+		valid, err := client.ValidateTronAddress(user.WalletAddress)
+		if err != nil || !valid {
+			return fmt.Errorf("endereço TRON inválido")
+		}
+	}
+
+	user.Password = string(hashedPassword)
+	err = s.repo.Create(*user)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {

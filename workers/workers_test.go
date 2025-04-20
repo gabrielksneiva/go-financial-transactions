@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/mocks"
 	"github.com/gabrielksneiva/go-financial-transactions/workers"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -42,13 +43,13 @@ func TestWorker_ProcessTransaction_Success(t *testing.T) {
 		UserID:    1,
 		Amount:    100.0,
 		Type:      "deposit",
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	mock.ExpectBegin()
-
 	mock.ExpectQuery(`SELECT .* FROM "balances"`).
-		WithArgs(tx.UserID, tx.UserID, 1).
+		WithArgs(tx.UserID).
 		WillReturnRows(sqlmock.NewRows([]string{"user_id", "amount"}).
 			AddRow(tx.UserID, 0.0))
 
@@ -57,7 +58,7 @@ func TestWorker_ProcessTransaction_Success(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	mock.ExpectExec(`INSERT INTO "transactions"`).
-		WithArgs(tx.ID, tx.UserID, tx.Amount, sqlmock.AnyArg(), tx.Type).
+		WithArgs(tx.ID, tx.UserID, tx.Amount, sqlmock.AnyArg(), tx.Type, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	mock.ExpectCommit()
@@ -65,8 +66,11 @@ func TestWorker_ProcessTransaction_Success(t *testing.T) {
 	ch := make(chan domain.Transaction, 1)
 	ch <- tx
 
+	blockchainMock := new(mocks.BlockchainClient)
+	repoMock := new(mocks.TransactionRepository)
+
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db)
+	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }
@@ -75,28 +79,30 @@ func TestWorker_InsufficientFunds(t *testing.T) {
 	db, mock, cleanup := setupMockDB(t)
 	defer cleanup()
 
+	blockchainMock := new(mocks.BlockchainClient)
+	repoMock := new(mocks.TransactionRepository)
+
 	tx := domain.Transaction{
 		ID:        "tx-2",
 		UserID:    2,
 		Amount:    -100.0,
 		Type:      "withdraw",
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	mock.ExpectBegin()
-
 	mock.ExpectQuery(`SELECT .* FROM "balances"`).
-		WithArgs(tx.UserID, tx.UserID, 1).
+		WithArgs(tx.UserID).
 		WillReturnRows(sqlmock.NewRows([]string{"user_id", "amount"}).
 			AddRow(tx.UserID, 50.0))
-
 	mock.ExpectRollback()
 
 	ch := make(chan domain.Transaction, 1)
 	ch <- tx
 
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db)
+	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }
@@ -105,16 +111,19 @@ func TestWorker_ErrorOnInsert(t *testing.T) {
 	db, mock, cleanup := setupMockDB(t)
 	defer cleanup()
 
+	blockchainMock := new(mocks.BlockchainClient)
+	repoMock := new(mocks.TransactionRepository)
+
 	tx := domain.Transaction{
 		ID:        "tx-3",
 		UserID:    3,
 		Amount:    50.0,
 		Type:      "deposit",
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	mock.ExpectBegin()
-
 	mock.ExpectQuery(`SELECT .* FROM "balances"`).
 		WithArgs(tx.UserID, tx.UserID, 1).
 		WillReturnRows(sqlmock.NewRows([]string{"user_id", "amount"}).
@@ -125,7 +134,7 @@ func TestWorker_ErrorOnInsert(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	mock.ExpectExec(`INSERT INTO "transactions"`).
-		WithArgs(tx.ID, tx.UserID, tx.Amount, sqlmock.AnyArg(), tx.Type).
+		WithArgs(tx.ID, tx.UserID, tx.Amount, sqlmock.AnyArg(), tx.Type, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg()).
 		WillReturnError(assert.AnError)
 
 	mock.ExpectRollback()
@@ -134,7 +143,7 @@ func TestWorker_ErrorOnInsert(t *testing.T) {
 	ch <- tx
 
 	ctx, cancel := context.WithCancel(context.Background())
-	go workers.StartWorkers(ctx, ch, 1, db)
+	go workers.StartWorkers(ctx, ch, 1, db, blockchainMock, repoMock)
 	time.Sleep(200 * time.Millisecond)
 	cancel()
 }

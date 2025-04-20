@@ -41,7 +41,8 @@ func (s *DepositService) Deposit(userID uint, amount float64) error {
 		UserID:    userID,
 		User:      domain.User{ID: userID},
 		Amount:    amount,
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 		Type:      "deposit",
 	}
 

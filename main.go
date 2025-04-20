@@ -8,9 +8,11 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gabrielksneiva/go-financial-transactions/client"
 	"github.com/gabrielksneiva/go-financial-transactions/config"
 	"github.com/gabrielksneiva/go-financial-transactions/consumer"
 	"github.com/gabrielksneiva/go-financial-transactions/domain"
+	"github.com/gabrielksneiva/go-financial-transactions/repositories"
 	"github.com/gabrielksneiva/go-financial-transactions/workers"
 )
 
@@ -39,9 +41,14 @@ func RunApp() {
 	done := make(chan struct{})
 	transactions := make(chan domain.Transaction, 100)
 
+	tronClient := client.NewTronClient()
+
+	// poller.StartPollingTRXTransactions(ctx, cfg.TronWallet, 30*time.Second, app.DB)
+	repo := repositories.NewGormRepository(app.DB)
+
 	// Start consumer & workers
 	go consumer.InitConsumer(ctx, transactions, cfg.KafkaBroker, cfg.KafkaTopic, cfg.KafkaGroupID)
-	go workers.StartWorkers(ctx, transactions, 4, app.DB)
+	go workers.StartWorkers(ctx, transactions, 4, app.DB, tronClient, repo)
 
 	go func() {
 		<-sigs

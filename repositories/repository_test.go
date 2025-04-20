@@ -33,7 +33,8 @@ func TestGormRepository_SaveAndGetByUser(t *testing.T) {
 		ID:        "tx-1",
 		UserID:    123,
 		Amount:    200.0,
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 		Type:      domain.DepositTransaction,
 	}
 
@@ -130,7 +131,8 @@ func TestGormRepository_Save_TableMissing(t *testing.T) {
 		UserID:    999,
 		Amount:    100.0,
 		Type:      "deposit",
-		Timestamp: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	err := repo.Save(tx)
 	assert.Error(t, err)

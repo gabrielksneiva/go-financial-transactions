@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gabrielksneiva/go-financial-transactions/api/middleware"
+	"github.com/gabrielksneiva/go-financial-transactions/domain"
 	"github.com/gabrielksneiva/go-financial-transactions/services"
 
 	"github.com/gofiber/fiber/v2"
@@ -114,6 +115,7 @@ func (h *Handlers) GetStatementHandler(c *fiber.Ctx) error {
 }
 
 func (h *Handlers) RegisterHandler(c *fiber.Ctx) error {
+	// Agora só name, email e password são obrigatórios
 	var req struct {
 		Name     string `json:"name"`
 		Email    string `json:"email"`
@@ -128,7 +130,14 @@ func (h *Handlers) RegisterHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Todos os campos são obrigatórios"})
 	}
 
-	if err := h.UserService.CreateUser(req.Name, req.Email, req.Password); err != nil {
+	user := &domain.User{
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: req.Password,
+		// WalletAddress fica em branco
+	}
+
+	if err := h.UserService.CreateUser(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
@@ -156,7 +165,7 @@ func (h *Handlers) LoginHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	token, err := middleware.GenerateJWT(user) // Função que você vai criar
+	token, err := middleware.GenerateJWT(user)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}

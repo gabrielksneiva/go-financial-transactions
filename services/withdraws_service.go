@@ -44,9 +44,11 @@ func (s *WithdrawService) Withdraw(userID uint, amount float64) error {
 		ID:        uuid.New().String(),
 		UserID:    userID,
 		User:      d.User{ID: userID},
-		Amount:    -amount,
+		Amount:    amount,
 		Timestamp: time.Now(),
-		Type:      "withdrawal",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Type:      "withdraw",
 	}
 
 	return s.producer.SendTransaction(tx)

@@ -28,7 +28,7 @@ func (r *GormRepository) Save(tx d.Transaction) error {
 
 func (r *GormRepository) GetByUser(userID uint) ([]d.Transaction, error) {
 	var txs []d.Transaction
-	err := r.db.Where("user_id = ?", userID).Order("timestamp desc").Find(&txs).Error
+	err := r.db.Where("user_id = ?", userID).Order("updated_at desc").Find(&txs).Error
 	return txs, err
 }
 
@@ -78,7 +78,7 @@ func (r *GormRepository) GetTransactionsByUserID(userID uint) ([]d.Transaction, 
 
 	err := r.db.
 		Where("user_id = ?", userID).
-		Order("timestamp ASC, id ASC").
+		Order("updated_at ASC, id ASC").
 		Find(&txs).Error
 
 	if err != nil {
@@ -94,4 +94,16 @@ func (r *GormRepository) GetDB() *gorm.DB {
 
 func (r *GormRepository) DeleteTransactionsByUserID(userID uint) error {
 	return r.db.Where("user_id = ?", userID).Delete(&domain.Transaction{}).Error
+}
+
+func (r *GormRepository) UpdateTransactionHash(txID string, txHash string) error {
+	return r.db.Model(&domain.Transaction{}).
+		Where("id = ?", txID).
+		Update("tx_hash", txHash).Error
+}
+
+func (r *GormRepository) UpdateTransactionStatus(txID string, status string) error {
+	return r.db.Model(&domain.Transaction{}).
+		Where("id = ?", txID).
+		Update("status", status).Error
 }

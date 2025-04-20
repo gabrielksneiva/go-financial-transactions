@@ -182,6 +182,100 @@ func (_c *TransactionRepository_Save_Call) RunAndReturn(run func(domain.Transact
 	return _c
 }
 
+// UpdateTransactionHash provides a mock function with given fields: txID, txHash
+func (_m *TransactionRepository) UpdateTransactionHash(txID string, txHash string) error {
+	ret := _m.Called(txID, txHash)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateTransactionHash")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string, string) error); ok {
+		r0 = rf(txID, txHash)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// TransactionRepository_UpdateTransactionHash_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateTransactionHash'
+type TransactionRepository_UpdateTransactionHash_Call struct {
+	*mock.Call
+}
+
+// UpdateTransactionHash is a helper method to define mock.On call
+//   - txID string
+//   - txHash string
+func (_e *TransactionRepository_Expecter) UpdateTransactionHash(txID interface{}, txHash interface{}) *TransactionRepository_UpdateTransactionHash_Call {
+	return &TransactionRepository_UpdateTransactionHash_Call{Call: _e.mock.On("UpdateTransactionHash", txID, txHash)}
+}
+
+func (_c *TransactionRepository_UpdateTransactionHash_Call) Run(run func(txID string, txHash string)) *TransactionRepository_UpdateTransactionHash_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *TransactionRepository_UpdateTransactionHash_Call) Return(_a0 error) *TransactionRepository_UpdateTransactionHash_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *TransactionRepository_UpdateTransactionHash_Call) RunAndReturn(run func(string, string) error) *TransactionRepository_UpdateTransactionHash_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateTransactionStatus provides a mock function with given fields: txID, status
+func (_m *TransactionRepository) UpdateTransactionStatus(txID string, status string) error {
+	ret := _m.Called(txID, status)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateTransactionStatus")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string, string) error); ok {
+		r0 = rf(txID, status)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// TransactionRepository_UpdateTransactionStatus_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateTransactionStatus'
+type TransactionRepository_UpdateTransactionStatus_Call struct {
+	*mock.Call
+}
+
+// UpdateTransactionStatus is a helper method to define mock.On call
+//   - txID string
+//   - status string
+func (_e *TransactionRepository_Expecter) UpdateTransactionStatus(txID interface{}, status interface{}) *TransactionRepository_UpdateTransactionStatus_Call {
+	return &TransactionRepository_UpdateTransactionStatus_Call{Call: _e.mock.On("UpdateTransactionStatus", txID, status)}
+}
+
+func (_c *TransactionRepository_UpdateTransactionStatus_Call) Run(run func(txID string, status string)) *TransactionRepository_UpdateTransactionStatus_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].(string))
+	})
+	return _c
+}
+
+func (_c *TransactionRepository_UpdateTransactionStatus_Call) Return(_a0 error) *TransactionRepository_UpdateTransactionStatus_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *TransactionRepository_UpdateTransactionStatus_Call) RunAndReturn(run func(string, string) error) *TransactionRepository_UpdateTransactionStatus_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // NewTransactionRepository creates a new instance of TransactionRepository. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewTransactionRepository(t interface {
