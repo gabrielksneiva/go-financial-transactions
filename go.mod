@@ -7,7 +7,7 @@ require (
 	github.com/btcsuite/btcutil v1.0.2
 	github.com/ethereum/go-ethereum v1.15.6
 	github.com/fbsobreira/gotron-sdk v0.0.0-20250403083053-2943ce8c759b
-	github.com/gofiber/fiber/v2 v2.52.6
+	github.com/gofiber/fiber/v2 v2.52.7
 	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.6.0
